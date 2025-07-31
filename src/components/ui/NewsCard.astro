@@ -1,0 +1,57 @@
+---
+export interface News {
+  id?: number;
+  titulo: string;
+  contenido: string;
+  link?: string;
+  fecha: Date | string;
+  userName?: string;
+}
+
+const { noticia } = Astro.props;
+---
+
+<article
+  class="bg-[#f8f5f0] border border-[#d6c6b8] rounded-xl shadow-lg p-6 flex flex-col h-full transition hover:shadow-2xl hover:-translate-y-1 duration-200 font-serif relative overflow-hidden"
+>
+  <div
+    class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-[#c2b280] via-[#e2d3b1] to-[#c2b280] opacity-40"
+  >
+  </div>
+  <header class="mb-4 border-b border-[#d6c6b8] pb-2 flex flex-col gap-1">
+    <h2 class="text-2xl font-extrabold text-[#3e2c1c] tracking-wide drop-shadow vintage-title">
+      {noticia.titulo}
+    </h2>
+    <p class="text-xs text-[#7c6f57] italic flex gap-2 items-center">
+      {
+        noticia.userName && (
+          <span>
+            Por <span class="font-bold">{noticia.userName}</span>
+          </span>
+        )
+      }
+      {noticia.fecha && <span>• {new Date(noticia.fecha).toLocaleDateString()}</span>}
+    </p>
+  </header>
+  {
+    noticia.link && noticia.link !== '' && (
+      <img
+        src={noticia.link}
+        alt="Imagen de la noticia"
+        class="w-full h-full object-cover rounded-lg mb-4 border border-[#d6c6b8] shadow vintage-img"
+        style="filter: sepia(0.3) contrast(1.1) brightness(0.95);"
+      />
+    )
+  }
+  <div class="flex-1 mb-4">
+    <p class="text-[#3e2c1c] text-lg leading-relaxed vintage-body">
+      {noticia.contenido}
+    </p>
+  </div>
+  <div class="mt-auto flex justify-end">
+    <span
+      class="bg-[#e2d3b1] text-[#7c6f57] px-3 py-1 rounded vintage-label text-xs shadow-inner border border-[#d6c6b8]"
+      >Noticia</span
+    >
+  </div>
+</article>

@@ -21,17 +21,27 @@ export default async function () {
     role: 'user',
   });
 
+  await db.insert(Usuarios).values({
+    nombre: 'Prueba',
+    correo: 'prueba@a.com',
+    userName: 'SisInf',
+    password: hashedUser,
+    role: 'user',
+  });
+
   await db.insert(News).values([
     {
       userId: 2,
       titulo: 'Noticia 1',
       contenido: 'Contenido de la noticia 1',
+      link: '',
       fecha: new Date('2023-01-01'),
     },
     {
       userId: 2,
       titulo: 'Noticia 2',
       contenido: 'Contenido de la noticia 2',
+      link: 'https://ejemplo.com',
       fecha: new Date('2023-02-01'),
     },
   ]);

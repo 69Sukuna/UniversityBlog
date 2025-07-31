@@ -1,0 +1,88 @@
+---
+import Layout from '../../../../layouts/Layout.astro';
+import Form from '../../../../components/ui/Form.astro';
+import Input from '../../../../components/ui/Input.astro';
+import Button from '../../../../components/ui/Button.astro';
+import Alert from '../../../../components/ui/Alert.astro';
+import TextArea from '../../../../components/ui/TextArea.astro';
+import { getUserFromRequest } from '../../../../utils/session';
+import { requireRole } from '../../../../utils/auth';
+import { db, News, eq, and } from 'astro:db';
+
+const user = getUserFromRequest(Astro.request);
+
+if (!user || !requireRole(user, ['admin'])) {
+  return Astro.redirect('/login');
+}
+
+const { id } = Astro.params;
+const newsId = parseInt(id || '0');
+
+if (!newsId) {
+  return Astro.redirect('/admin/news?error=not_found');
+}
+
+// Buscar la noticia por ID y asegurar que pertenece al usuario (si es necesario)
+const noticias = await db
+  .select()
+  .from(News)
+  .where(and(eq(News.id, newsId))); // Si usas userId, añade eq(News.userId, user.id)
+
+if (noticias.length === 0) {
+  return Astro.redirect('/admin/news?error=not_found');
+}
+
+const noticiaEdit = noticias[0];
+
+const urlParams = new URLSearchParams(new URL(Astro.request.url).search);
+const error = urlParams.get('error');
+---
+
+<Layout title={`Editar Noticia: ${noticiaEdit.titulo}`}>
+  <main class="max-w-4xl mx-auto py-10">
+    {
+      error && (
+        <Alert type="error" class="mb-6">
+          {error === 'validation' && 'Todos los campos obligatorios deben completarse'}
+          {error === 'server' && 'Error del servidor. Intenta nuevamente'}
+        </Alert>
+      )
+    }
+
+    <div class="bg-white shadow rounded-lg px-6 py-8">
+      <h1 class="text-2xl font-bold mb-4">Editar Noticia</h1>
+
+      <Form action="/api/news/update" method="POST">
+        <input type="hidden" name="newsId" value={noticiaEdit.id} />
+
+        <Input
+          name="titulo"
+          type="text"
+          label="Título"
+          value={noticiaEdit.titulo}
+          required={true}
+        />
+
+        <Input
+          name="link"
+          type="text"
+          label="Enlace Relacionado (opcional)"
+          value={noticiaEdit.link || ''}
+          required={false}
+        />
+
+        <TextArea
+          name="contenido"
+          label="Contenido"
+          value={noticiaEdit.contenido}
+          required={true}
+        />
+
+        <div class="mt-6 flex justify-end space-x-3">
+          <Button href="/admin/news" variant="secondary">Cancelar</Button>
+          <Button type="submit" variant="primary">Actualizar Noticia</Button>
+        </div>
+      </Form>
+    </div>
+  </main>
+</Layout>

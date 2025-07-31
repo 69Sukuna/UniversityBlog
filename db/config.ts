@@ -17,6 +17,7 @@ const News = defineTable({
     userId: column.number({ references: () => Usuarios.columns.id }),
     titulo: column.text(),
     contenido: column.text(),
+    link: column.text(),
     fecha: column.date(),
   },
 });

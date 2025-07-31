@@ -1,0 +1,106 @@
+---
+// Recibir props desde el componente padre
+export interface Props {
+  items: Array<{
+    img: string;
+    text: string;
+    text_URL: string;
+  }>;
+  textColor?: string;
+  columnsPerRow?: number; // Nueva prop para controlar columnas
+}
+
+const { items, textColor = "text-[#030A8C]", columnsPerRow = 2 } = Astro.props;
+
+// Tipos más específicos para mejor type safety
+type GridColumns = 1 | 2 | 3 | 4 | 5 | 6;
+
+// Generar la clase de grid dinámicamente con validación
+const getGridClass = (cols: number): string => {
+  // Validar que cols esté en el rango permitido
+  const validCols = Math.max(1, Math.min(6, cols)) as GridColumns;
+  
+  const gridClasses: Record<GridColumns, string> = {
+    1: 'grid-cols-1',
+    2: 'grid-cols-2',
+    3: 'grid-cols-3',
+    4: 'grid-cols-4',
+    5: 'grid-cols-5',
+    6: 'grid-cols-6'
+  };
+  
+  return gridClasses[validCols];
+};
+
+// Generar el max-width dinámicamente con validación
+const getMaxWidth = (cols: number): string => {
+  // Validar que cols esté en el rango permitido
+  const validCols = Math.max(1, Math.min(6, cols)) as GridColumns;
+  
+  const maxWidths: Record<GridColumns, string> = {
+    1: 'max-w-sm',
+    2: 'max-w-2xl',
+    3: 'max-w-4xl',
+    4: 'max-w-6xl',
+    5: 'max-w-7xl',
+    6: 'max-w-full'
+  };
+  
+  return maxWidths[validCols];
+};
+
+const gridClass = getGridClass(columnsPerRow);
+const maxWidthClass = getMaxWidth(columnsPerRow);
+---
+
+<!-- Grid dinámico basado en columnsPerRow -->
+<div class={`grid ${gridClass} gap-4 justify-items-center my-8 ${maxWidthClass} mx-auto gap-y-16`}>
+  {items.map((item, index) => (
+    <div
+      class="image-slide transition-all duration-700 ease-in-out transform scale-100 opacity-50"
+      data-index={index}
+    >
+      <a href={item.text_URL ?? "#"} target="_blank" rel="noopener noreferrer">
+        <img src={item.img} alt={item.text} class="w-60 h-60 object-contain rounded-xl shadow-lg" />
+      </a>
+      {item.text.length > 27 ? (
+          <p class={`text-center mt-2 w-60 text-xs leading-tight break-words px-1 ${textColor} font-semibold`}>
+            {item.text}
+          </p>
+        ) : (
+          <p class={`text-center mt-2 ${textColor} font-semibold`}>
+            {item.text}
+          </p>
+        )}
+    </div>
+  ))}
+</div>
+
+<script>
+  window.addEventListener("DOMContentLoaded", () => {
+    const slides = document.querySelectorAll(".image-slide");
+    let active = 0;
+
+    // Función para actualizar el slide activo
+    const updateSlides = () => {
+      slides.forEach((slide, i) => {
+        slide.classList.remove("scale-110", "opacity-100", "scale-100", "opacity-50");
+        
+        if (i === active) {
+          slide.classList.add("scale-110", "opacity-100");
+        } else {
+          slide.classList.add("scale-100", "opacity-50");
+        }
+      });
+    };
+
+    // Activar el primer slide inmediatamente
+    updateSlides();
+
+    // Cambiar slides cada 3 segundos
+    setInterval(() => {
+      active = (active + 1) % slides.length;
+      updateSlides();
+    }, 3000);
+  });
+</script>

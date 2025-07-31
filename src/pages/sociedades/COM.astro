@@ -1,0 +1,313 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Button from '../../components/ui/Button.astro';
+import { BRAND } from 'astro:schema';
+import Carousel from '../../components/ui/Carousel.astro';
+import FlipCard from '../../components/ui/Target.astro';
+import ImageFocusGallery from '../../components/ui/ImageFocusGallery.astro';
+import CardsNotices from '../../components/ui/CardsNotices.astro';
+import { db, News, Usuarios } from 'astro:db';
+
+const items = [
+  {
+    img: '/src/Image/SocMec/Logo_carrera1.png',
+    text: 'Carrera de Ing. Mecánica Electromecanica Mecatrónica',
+    text_URL: 'https://mecanica.fni.uto.edu.bo/ingenieria-mecatronica/',
+  },
+  {
+    img: '/src/Image/SocMec/Logo_Soc3.png',
+    text: 'COM',
+    text_URL: '/sociedades/COM',
+  },
+];
+// Obtener noticias de la base de datos
+const noticiasAll = await db.select().from(News);
+
+const noticiasSisInf = noticiasAll.filter((noticia) => noticia.userId === 3);
+
+---
+
+<Layout
+  title="SCEIMEM - COM"
+  description="Bienvenido a mi aplicación construida con Astro y las mejores prácticas de desarrollo web"
+>
+  <!-- Hero Section -->
+  <section class="bg-gradient-to-r from-red-500 to-indigo-50 py-20">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center">
+        <div class="flex justify-between items-center">
+          <!-- Logo Izquierdo -->
+          <img src="/src/Image/UTO.png" alt="Logo izquierdo" class="w-30 h-auto" />
+          <h1 class="text-4xl md:text-4xl font-bold text-gray-900 mb-6">
+            <span style="color:#000000">
+                CLUB ORURO MECATRONICA <br /> COM</span>
+          </h1>
+          <!-- Logo derecho -->
+          <img src="/src/Image/FNI.png" alt="Logo derecho" class="w-30 h-auto" />
+        </div>
+        <div class="flex gap-8 py-10 text-xl text-[#177DA6] text-justify px-4 leading-relaxed">
+          <div class="w-1/2 flex-none space-y-6">
+                <h4 class="text-5xl text-[#333132] font-bold text-justify px-4 mb-4">
+                    Nuestra Historia
+                </h4>
+                <p class="text-xl text-[#333132] text-justify px-4 leading-relaxed ">
+                    El <strong>Club de Mecatrónica Oruro</strong> fue fundado el <strong>7 de mayo de 2015</strong> como una institución 
+                    académica sin fines de lucro, impulsada por el docente <strong>Msc. Ing. Miguel A. Ruiz Orellana</strong> y 
+                    los estudiantes <strong>Univ. José A. Sillerico Suárez</strong> y <strong>Univ. Rodolfo Tapia Ramírez</strong>, 
+                    con la aprobación del director de Carrera de Ingeniería Mecánica Electromecánica <strong>Dpl. Ing. Olker Maldonado Uria</strong> el cual se encuentra de acuerdo a las normas vigentes de la Universidad 
+                    Técnica de Oruro.
+                </p>
+                <p class="text-xl text-[#333132] text-justify px-4 leading-relaxed mt-4">
+                    El objetivo principal del club es fomentar, estimular e impulsar el desarrollo de la
+                     mecatrónica en todas sus áreas de aplicación. Se busca difundir 
+                     resultados de investigaciones, promover la formación y el perfeccionamiento del personal 
+                     investigador, así como garantizar la calidad científica y profesional de las actividades 
+                     mecatrónicas. También se fomenta el intercambio de experiencias entre estudiantes, docentes 
+                     y profesionales
+                </p>
+                <p class="text-xl text-[#333132] text-justify px-4 leading-relaxed mt-4 ">
+                    El club también organiza congresos, seminarios, cursos de formación y promueve la publicación
+                     de materiales educativos. Está abierto a cualquier persona con interés en la mecatrónica, 
+                     sin importar la nacionalidad, siempre que tenga la voluntad de contribuir activamente.
+                </p>
+            </div>
+
+          <div class="w-1/2 flex-none">
+            <ImageFocusGallery items={items} textColor="text-[#000000]" columnsPerRow={2}/>            
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="py-20 bg-white">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">Noticias</h2>
+        <!-- Mostrar noticias de SisInf -->
+        <CardsNotices noticias={noticiasSisInf} />
+      </div>
+
+      <div class="text-center mb-16">
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">Nuestra Directiva</h2>
+        <div class="flex flex-wrap justify-center gap-6">
+          <FlipCard
+            name="Univ. Mamani Cossio Fabricio Gabriel "
+            role="Presidente de la COM"
+            email=""
+            phone=""
+            photo=""
+          />
+          <FlipCard
+            name="Univ. Davila Olazo Adriana "
+            role="Unidad De Finanzas de la COM"
+            email=""
+            phone=""
+            photo=""
+          />
+          <FlipCard
+            name="Univ. Javier Quispe Andres Abraham"
+            role="Unidad De Documentación de la COM"
+            email=""
+            phone=""
+            photo=""
+
+          />
+          <FlipCard
+            name="Univ. Puña Canaviri Gabriela Katherine"
+            role="Unidad De Logística de la COM"
+            email=""
+            phone=""
+            photo=""
+            
+          />
+          <FlipCard
+            name="Univ. Univ. Quinto Chino Ronald"
+            role="Unidad De Proyectos de la COM"
+            email=""
+            phone=""
+            photo=""
+            
+          />
+        </div>
+      </div>
+
+      <div class="bg-purple-50 py-16 px-6">
+        <div class="max-w-5xl mx-auto text-center">
+          <h2 class="text-4xl font-bold text-purple-900 mb-10">Misión y Visión</h2>
+          <div class="grid md:grid-cols-2 gap-8">
+            
+            <!-- Misión -->
+            <div class="bg-white p-8 rounded-xl shadow-md border-t-4 border-purple-300">
+              <h3 class="text-2xl font-semibold text-purple-700 mb-4">Nuestra Misión</h3>
+              <p class="text-gray-700 leading-relaxed text-justify">
+                Impulsar el desarrollo de proyectos de investigación científica y tecnológica en 
+                las áreas de Ingeniería Mecánica, Electromecánica y Mecatrónica, fomentando la 
+                participación activa de estudiantes en la generación de conocimiento y soluciones 
+                aplicadas.
+              </p>
+              <p class="text-gray-700 leading-relaxed text-justify">
+                La SCEIMEM es una sociedad científica estudiantil activa e independiente que no 
+                solo administra, sino que genera y ejecuta actividades y proyectos propios, con o 
+                sin la participación de sus subgrupos. Sirve como una plataforma abierta para la creación y 
+                articulación de diversos subgrupos de investigación, los cuales funcionan como unidades 
+                complementarias y temáticas.
+              </p>
+              <p class="text-gray-700 leading-relaxed text-justify">
+                Todos los integrantes de los subgrupos deben ser miembros activos de la SCEIMEM, aunque no 
+                todos los socios de la SCEIMEM pertenezcan necesariamente a un subgrupo específico.
+              </p>
+              <p class="text-gray-700 leading-relaxed text-justify">
+                La sociedad se rige bajo el cumplimiento riguroso de las normas y requisitos establecidos por 
+                la DICyT, DPIC y otras instancias institucionales, garantizando la legalidad, la calidad y la 
+                responsabilidad de sus actividades y producciones científicas.
+              </p>
+            </div>
+            
+            <!-- Visión -->
+            <div class="bg-white p-8 rounded-xl shadow-md border-t-4 border-purple-300">
+              <h3 class="text-2xl font-semibold text-purple-700 mb-4">Nuestra Visión</h3>
+              <p class="text-gray-700 leading-relaxed text-justify">
+                Consolidarse como una sociedad científica líder y dinámica, reconocida por su excelencia 
+                en la investigación estudiantil, su capacidad organizativa, su independencia operativa y su 
+                impacto en la comunidad universitaria y la sociedad.
+              </p>
+              <p class="text-gray-700 leading-relaxed text-justify">
+                La SCEIMEM busca albergar y fortalecer múltiples líneas de investigación a través de subgrupos 
+                bien estructurados, sin perder su capacidad de generar iniciativas propias como sociedad activa.
+              </p>
+              <p class="text-gray-700 leading-relaxed text-justify">
+                Su modelo organizativo fomenta la innovación, el trabajo colaborativo y la formación integral de 
+                futuros profesionales comprometidos con la ciencia, la tecnología y el desarrollo del país. A 
+                través de esta estructura, la SCEIMEM aspira a ser un referente institucional, capaz de gestionar y 
+                ejecutar proyectos de alto nivel, tanto en coordinación con subgrupos como de forma autónoma.
+              </p>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      
+      <div class="text-center">
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">¿Cómo ser parte?</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="text-center p-6">
+            <div
+              class="w-12 h-12 bg-blue-100 rounded-lg mx-auto mb-4 flex items-center justify-center"
+            >
+              <svg
+                class="w-12 h-12 text-blue-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+                ></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 3v6h6"
+                ></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6"
+                ></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17h6"
+                ></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 mb-2">Matricula Universitaria</h3>
+            <p class="text-gray-600">
+              Presenta tu matricula del semestre actual, la cual se puede descargar de:
+              <br /><a class="text-blue-600 hover:underline" href="https://matricula.uto.edu.bo/">
+                Consulta Matricula U.T.O.</a
+              >
+            </p>
+          </div>
+
+          <div class="text-center p-6">
+            <div
+              class="w-12 h-12 bg-green-100 rounded-lg mx-auto mb-4 flex items-center justify-center"
+            >
+              <svg
+                class="w-12 h-12 text-blue-600"
+                fill="none"
+                viewBox="0 0 64 64"
+                stroke="currentColor"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <!-- Borde del carnet -->
+                <rect
+                  x="4"
+                  y="8"
+                  width="56"
+                  height="48"
+                  rx="4"
+                  stroke-width="2"
+                  stroke="currentColor"
+                  fill="none"></rect>
+                <!-- Silueta del usuario -->
+                <circle cx="20" cy="28" r="6" stroke-width="2" stroke="currentColor" fill="none"
+                ></circle>
+                <path
+                  d="M14 40c0-4 4-6 6-6s6 2 6 6"
+                  stroke-width="2"
+                  stroke="currentColor"
+                  fill="none"></path>
+                <!-- Líneas de texto -->
+                <line x1="34" y1="22" x2="50" y2="22" stroke-width="2" stroke="currentColor"></line>
+                <line x1="34" y1="30" x2="50" y2="30" stroke-width="2" stroke="currentColor"></line>
+                <line x1="34" y1="38" x2="50" y2="38" stroke-width="2" stroke="currentColor"></line>
+              </svg>
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </div>
+              <h3 class="text-xl font-semibold text-gray-900 mb-2">
+                Carnet de Identidad <br /> o <br />Carnet Universitario
+              </h3>
+              <p class="text-gray-600">
+                Cualquiera de los documento para poder identificarte junto con la matricula
+              </p>           
+          </div>
+            <div class="text-center p-6">
+              <div
+                class="w-12 h-12 bg-purple-100 rounded-lg mx-auto mb-4 flex items-center justify-center"
+              >
+                <svg
+                  class="w-12 h-12 text-blue-600"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <rect
+                    x="3"
+                    y="3"
+                    width="18"
+                    height="18"
+                    rx="2"
+                    stroke-width="2"
+                    stroke="currentColor"
+                    fill="none"></rect>
+                  <line x1="7" y1="8" x2="17" y2="8" stroke-width="2" stroke="currentColor"></line>
+                  <line x1="7" y1="12" x2="17" y2="12" stroke-width="2" stroke="currentColor"></line>
+                  <line x1="7" y1="16" x2="13" y2="16" stroke-width="2" stroke="currentColor"></line>
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold text-gray-900 mb-2">Formulario de Inscripcion</h3>
+              <p class="text-gray-600">
+                Formulario de no participación de alguna entidad políitica y/o partidaria de algun
+                centro facultativo o de carrera
+                <br /><a class="text-blue-600 hover:underline" href="https://docs.google.com/spreadsheets/d/1FtsuWQa7_OlWuXJzL_LDw1zUMV1zT7FC/edit?usp=drive_link&ouid=104725137215055273039&rtpof=true&sd=true">
+                  Formulario de Inscripcion</a
+                >
+              </p>
+            </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

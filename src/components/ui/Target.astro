@@ -1,0 +1,52 @@
+---
+const { name, role, biografia, email, phone, photo, } = Astro.props;
+---
+
+<div class="w-[300px] h-[400px] perspective cursor-pointer">
+  <div class="relative w-full h-full transition-transform duration-700 transform-style-preserve-3d hover:rotate-y-180">
+    <!-- Frente -->
+    <div class="absolute w-full h-full backface-hidden bg-[#B8D9FF] rounded-xl shadow-lg p-4 flex flex-col items-center justify-center">
+      {photo ? (
+        <img src={photo} class="w-50 h-50 rounded-full mb-4 object-cover" />
+      ) : (
+        <div class="w-50 h-50 rounded-full mb-4 bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white text-2xl font-bold">
+          <svg class="avatar" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" fill="#ccc">
+            <circle cx="32" cy="20" r="12"/>
+            <path d="M32 36c-12 0-22 6-22 14v6h44v-6c0-8-10-14-22-14z"/>
+          </svg>
+        </div>
+      )}
+      <h2 class="text-xl font-bold">{name}</h2>
+      <p class="text-sm text-gray-500">{role}</p>
+    </div>
+
+    <!-- Reverso -->
+<div class="absolute w-full h-full backface-hidden bg-[#023059] text-white rounded-xl shadow-lg p-4 transform rotate-y-180 flex flex-col justify-center items-center">
+  {biografia && (
+    <p class="mb-2 text-justify">{biografia}</p>
+  )}
+  {email && (
+    <p class="mb-2">✉️ Correo Electrónico: {email}</p>
+  )}
+
+  {phone && (
+    <p class="mb-2">📞 Celular: {phone}</p>
+  )}
+</div>
+  </div>
+</div>
+
+<style>
+  .perspective {
+    perspective: 1000px;
+  }
+  .transform-style-preserve-3d {
+    transform-style: preserve-3d;
+  }
+  .backface-hidden {
+    backface-visibility: hidden;
+  }
+  .rotate-y-180 {
+    transform: rotateY(180deg);
+  }
+</style>

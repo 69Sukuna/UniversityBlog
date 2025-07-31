@@ -1,0 +1,44 @@
+---
+import NewsCard from './NewsCard.astro';
+
+export interface News {
+  id?: number;
+  titulo: string;
+  contenido: string;
+  link?: string;
+  fecha: Date | string;
+  userName?: string;
+}
+
+const { noticias = [] } = Astro.props;
+---
+
+<section class="w-full">
+  {
+    noticias.length === 0 ? (
+      <div class="text-center py-12 text-gray-500">
+        <svg
+          class="mx-auto mb-4 w-12 h-12 text-gray-300"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 8v4l3 3m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+          />
+        </svg>
+        <h3 class="text-lg font-semibold">No hay noticias disponibles</h3>
+        <p class="mt-2 text-sm">Vuelve más tarde o crea una nueva noticia.</p>
+      </div>
+    ) : (
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {noticias.map((noticia: unknown) => (
+          <NewsCard noticia={noticia} />
+        ))}
+      </div>
+    )
+  }
+</section>

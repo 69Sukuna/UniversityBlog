@@ -1,0 +1,372 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Button from '../../components/ui/Button.astro';
+import { BRAND } from 'astro:schema';
+import Carousel from '../../components/ui/Carousel.astro';
+import FlipCard from '../../components/ui/Target.astro';
+import ImageFocusGallery from '../../components/ui/ImageFocusGallery.astro';
+import CardsNotices from '../../components/ui/CardsNotices.astro';
+import { db, News, Usuarios } from 'astro:db';
+
+const items = [
+  {
+    img: '/src/Image/SocMec/Logo_carrera1.png',
+    text: 'Carrera de Ing. Mecánica Electromecanica Mecatrónica',
+    text_URL: 'https://mecanica.fni.uto.edu.bo/ingenieria-mecatronica/',
+  },
+  {
+    img: '/src/Image/SocMec/Logo_Soc.png',
+    text: 'SCEIMEM',
+    text_URL: 'https://www.facebook.com/sceimem2023/about/?_rdr',
+  },
+  {
+    img: '/src/Image/SocMec/Logo_Soc2.png',
+    text: 'SIDDFAC',
+    text_URL: '/sociedades/SISinf',
+  },
+  {
+    img: '/src/Image/SocMec/Logo_Soc3.png',
+    text: 'COM',
+    text_URL: '/sociedades/COM',
+  },
+];
+// Obtener noticias de la base de datos
+const noticiasAll = await db.select().from(News);
+
+const noticiasSisInf = noticiasAll.filter((noticia) => noticia.userId === 3);
+
+
+//carrusell
+const modules = import.meta.glob('../../Image/SocMec/FotosSoc/*.{png,jpg,jpeg,gif}', { eager: true });
+
+const images = Object.values(modules)
+  .map(mod => {
+    if (typeof mod === 'string') return { src: mod };
+    if (mod && typeof mod === 'object' && 'default' in mod) return mod.default;
+    if (mod && typeof mod === 'object' && 'src' in mod) return mod;
+    return null;
+  })
+  .filter(Boolean);
+---
+
+<Layout
+  title="SCEIMEM"
+  description="Bienvenido a mi aplicación construida con Astro y las mejores prácticas de desarrollo web"
+>
+  <!-- Hero Section -->
+  <section class="bg-gradient-to-r from-red-500 to-indigo-50 py-20">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center">
+        <div class="flex justify-between items-center">
+          <!-- Logo Izquierdo -->
+          <img src="/src/Image/UTO.png" alt="Logo izquierdo" class="w-30 h-auto" />
+          <h1 class="text-4xl md:text-4xl font-bold text-gray-900 mb-6">
+            <span style="color:#000000"
+              >Sociedad Científica de Estudiantes de<br /> Ingeniería Mecánica Electromecanica Mecatrónica</span
+            >
+          </h1>
+          <!-- Logo derecho -->
+          <img src="/src/Image/FNI.png" alt="Logo derecho" class="w-30 h-auto" />
+        </div>
+        <div class="flex gap-8 py-10 text-xl text-[#177DA6] text-justify px-4 leading-relaxed">
+          <div class="w-1/2 flex-none space-y-6">
+                <h4 class="text-5xl text-[#333132] font-bold text-justify px-4 mb-4">
+                    Nuestra Historia
+                </h4>
+                <p class="text-xl text-[#333132] text-justify px-4 leading-relaxed ">
+                    La Sociedad Científica Estudiantil de Ingeniería Mecánica Electromecánica Mecatrónica (SCEIMEM) fue
+                    creada el 18 de mayo del 2018 como representación principal de la carrera de Ingeniería Mecánica,
+                    Electromecánica y Mecatrónica ante la Dirección de Postgrado e Investigación Científica de la Facultad Nacional
+                    de Ingeniería (DPIC - FNI) y la Dirección de Investigación Científica y Tecnológica de la UTO (DYCIT - UTO).
+                </p>
+                <p class="text-xl text-[#333132] text-justify px-4 leading-relaxed mt-4">
+                    Anteriormente ya se tenían grupos de investigación dentro de la carrera, como ser:
+                </p>
+                <ul style="list-style-type: disc; padding-left: 2rem; color: #333132; font-size: 1.25rem;">
+                    <li>Sociedad de Investigación en Ingeniería Energética (SIIE)</li>
+                    <li>Club Oruro Mecatrónica (COM)</li>                
+                    <li>Sociedad Estudiantil Científica en Ingeniería de Mantenimiento (SECIMAN)</li>
+                </ul>
+                <p class="text-xl text-[#333132] text-justify px-4 leading-relaxed mt-4 ">
+                    Actualmente se mantienen activos el SIIE, COM y se ha incorporado una nueva sociedad con el nombre de:
+                </p>
+                <ul style="list-style-type: disc; padding-left: 2rem; color: #333132; font-size: 1.25rem;">
+                    <li>Sociedad de Investigación Científica en Desarrollo Diseño y Fabricación Asistida por Computadora SIDDFAC.</li>
+                </ul>
+                <p class="text-xl text-[#333132] text-justify px-4 leading-relaxed ">
+                    La SCEIMEM alberga a los subgrupos los cuales están asociados manteniendo su trabajo 
+                    independiente, pero complementando al de la SCEIMEM que se encarga de la investigación 
+                    científica según reglamentos de DPIC- FNI, Dycit -UTO. 
+                </p>
+                <p class="text-xl text-[#333132] text-justify px-4 leading-relaxed mt-4">
+                    Los grupos vigentes actualmente son:
+                </p>
+                <ul style="list-style-type: disc; padding-left: 2rem; color: #333132; font-size: 1.25rem;">
+                    <li>Sociedad de Investigación en Ingeniería Energética SIIE</li>
+                    <li>Club Oruro Mecatrónica COM</li>                
+                    <li>Sociedad de Investigación en Desarrollo, Diseño y Fabricación Asistida por Computadora SIDDFAC </li>
+                </ul>
+                <p class="text-xl text-[#333132] text-justify px-4 leading-relaxed mt-4">
+                    El objetivo es la colaboración entre todos los grupos y la SCEIMEM en representación de 
+                    la carrera de Ingeniería Mecánica Electromecanica Mecatrónica de la Facultad Nacional de 
+                    Ingeniería a nivel Nacional e Internacional.
+                </p>
+                <p class="text-xl text-[#333132] text-justify px-4 leading-relaxed mt-4">
+                    La SCEIMEM se rige bajo los lineamientos de la DPIC-FNI, DICYT-UTO, OSCE-FNI, ASCE-UTO, OSCESUB, y el CEUB.
+                </p>
+            </div>
+
+          <div class="w-1/2 flex-none">
+            <ImageFocusGallery items={items} textColor="text-[#000000]" columnsPerRow={2}/>
+            <div class="mt-40">
+                <Carousel images={images} /></Carousel>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="py-20 bg-white">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">Noticias</h2>
+        <!-- Mostrar noticias de SisInf -->
+        <CardsNotices noticias={noticiasSisInf} />
+      </div>
+
+      <div class="text-center mb-16">
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">Nuestra Directiva</h2>
+        <div class="flex flex-wrap justify-center gap-6">
+          <FlipCard
+            name="Univ. Amanda Lorena Main Hurtado"
+            role="Presidente de la Sociedad Científica SCEIMEM"
+            email=""
+            phone=""
+            photo="/src/Image/SocMec/Presi.jpg"
+            
+          />
+          <FlipCard
+            name="Univ. Fabricio Gabriel Mamani Cossio"
+            role="Vicepresidente de la Sociedad Científica SCEIMEM "
+            email="fabriciomamanicossio@gmail.com"
+            phone="+591 65436960"
+            photo="/src/Image/SocMec/Vice.jpeg"
+          />
+          <FlipCard
+            name="Univ. Ariel Ramiro Villan Flores"
+            role="Secretario General de la Sociedad Científica SCEIMEM"
+            email="villanfloresarielramiro@gmail.com"
+            phone="+591 74466993"
+            photo="/src/Image/SocMec/General.jpeg"
+
+          />
+          <FlipCard
+            name="Univ. Osmar David Paredes Mamani"
+            role="Secretario Académico de la Sociedad Científica SCEIMEM"
+            
+            email=""
+            phone=""
+            photo="/src/Image/SocMec/Academico.jpg"
+            
+          />
+          <FlipCard
+            name="Univ. Jorge Luis Helguero Velasquez"
+            role="Secretario de Hacienda de la Sociedad Científica SCEIMEM"
+            email="jorgehelguero410@gmail.com "
+            phone="+591 62764787"
+            photo="/src/Image/SocMec/Hacienda.jpeg"
+            
+          />
+          
+          <FlipCard
+            name="Univ. Ronald Quinto Chino"
+            role="Secretario de Relaciones Públicas y Redes Sociales de la Sociedad Científica SCEIMEM"
+            email="ronaldquinto609@gmail.com"
+            phone="+591 76157589"
+            photo="/src/Image/SocMec/Publicas.jpeg"
+            
+          />
+        </div>
+      </div>
+
+      <div class="bg-purple-50 py-16 px-6">
+        <div class="max-w-5xl mx-auto text-center">
+          <h2 class="text-4xl font-bold text-purple-900 mb-10">Misión y Visión</h2>
+          <div class="grid md:grid-cols-2 gap-8">
+            
+            <!-- Misión -->
+            <div class="bg-white p-8 rounded-xl shadow-md border-t-4 border-purple-300">
+              <h3 class="text-2xl font-semibold text-purple-700 mb-4">Nuestra Misión</h3>
+              <p class="text-gray-700 leading-relaxed text-justify">
+                Impulsar el desarrollo de proyectos de investigación científica y tecnológica en 
+                las áreas de Ingeniería Mecánica, Electromecánica y Mecatrónica, fomentando la 
+                participación activa de estudiantes en la generación de conocimiento y soluciones 
+                aplicadas.
+              </p>
+              <p class="text-gray-700 leading-relaxed text-justify">
+                La SCEIMEM es una sociedad científica estudiantil activa e independiente que no 
+                solo administra, sino que genera y ejecuta actividades y proyectos propios, con o 
+                sin la participación de sus subgrupos. Sirve como una plataforma abierta para la creación y 
+                articulación de diversos subgrupos de investigación, los cuales funcionan como unidades 
+                complementarias y temáticas.
+              </p>
+              <p class="text-gray-700 leading-relaxed text-justify">
+                Todos los integrantes de los subgrupos deben ser miembros activos de la SCEIMEM, aunque no 
+                todos los socios de la SCEIMEM pertenezcan necesariamente a un subgrupo específico.
+              </p>
+              <p class="text-gray-700 leading-relaxed text-justify">
+                La sociedad se rige bajo el cumplimiento riguroso de las normas y requisitos establecidos por 
+                la DICyT, DPIC y otras instancias institucionales, garantizando la legalidad, la calidad y la 
+                responsabilidad de sus actividades y producciones científicas.
+              </p>
+            </div>
+            
+            <!-- Visión -->
+            <div class="bg-white p-8 rounded-xl shadow-md border-t-4 border-purple-300">
+              <h3 class="text-2xl font-semibold text-purple-700 mb-4">Nuestra Visión</h3>
+              <p class="text-gray-700 leading-relaxed text-justify">
+                Consolidarse como una sociedad científica líder y dinámica, reconocida por su excelencia 
+                en la investigación estudiantil, su capacidad organizativa, su independencia operativa y su 
+                impacto en la comunidad universitaria y la sociedad.
+              </p>
+              <p class="text-gray-700 leading-relaxed text-justify">
+                La SCEIMEM busca albergar y fortalecer múltiples líneas de investigación a través de subgrupos 
+                bien estructurados, sin perder su capacidad de generar iniciativas propias como sociedad activa.
+              </p>
+              <p class="text-gray-700 leading-relaxed text-justify">
+                Su modelo organizativo fomenta la innovación, el trabajo colaborativo y la formación integral de 
+                futuros profesionales comprometidos con la ciencia, la tecnología y el desarrollo del país. A 
+                través de esta estructura, la SCEIMEM aspira a ser un referente institucional, capaz de gestionar y 
+                ejecutar proyectos de alto nivel, tanto en coordinación con subgrupos como de forma autónoma.
+              </p>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      
+      <div class="text-center">
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">¿Cómo ser parte?</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="text-center p-6">
+            <div
+              class="w-12 h-12 bg-blue-100 rounded-lg mx-auto mb-4 flex items-center justify-center"
+            >
+              <svg
+                class="w-12 h-12 text-blue-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+                ></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 3v6h6"
+                ></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6"
+                ></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17h6"
+                ></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 mb-2">Matricula Universitaria</h3>
+            <p class="text-gray-600">
+              Presenta tu matricula del semestre actual, la cual se puede descargar de:
+              <br /><a class="text-blue-600 hover:underline" href="https://matricula.uto.edu.bo/">
+                Consulta Matricula U.T.O.</a
+              >
+            </p>
+          </div>
+
+          <div class="text-center p-6">
+            <div
+              class="w-12 h-12 bg-green-100 rounded-lg mx-auto mb-4 flex items-center justify-center"
+            >
+              <svg
+                class="w-12 h-12 text-blue-600"
+                fill="none"
+                viewBox="0 0 64 64"
+                stroke="currentColor"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <!-- Borde del carnet -->
+                <rect
+                  x="4"
+                  y="8"
+                  width="56"
+                  height="48"
+                  rx="4"
+                  stroke-width="2"
+                  stroke="currentColor"
+                  fill="none"></rect>
+                <!-- Silueta del usuario -->
+                <circle cx="20" cy="28" r="6" stroke-width="2" stroke="currentColor" fill="none"
+                ></circle>
+                <path
+                  d="M14 40c0-4 4-6 6-6s6 2 6 6"
+                  stroke-width="2"
+                  stroke="currentColor"
+                  fill="none"></path>
+                <!-- Líneas de texto -->
+                <line x1="34" y1="22" x2="50" y2="22" stroke-width="2" stroke="currentColor"></line>
+                <line x1="34" y1="30" x2="50" y2="30" stroke-width="2" stroke="currentColor"></line>
+                <line x1="34" y1="38" x2="50" y2="38" stroke-width="2" stroke="currentColor"></line>
+              </svg>
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </div>
+              <h3 class="text-xl font-semibold text-gray-900 mb-2">
+                Carnet de Identidad <br /> o <br />Carnet Universitario
+              </h3>
+              <p class="text-gray-600">
+                Cualquiera de los documento para poder identificarte junto con la matricula
+              </p>           
+          </div>
+            <div class="text-center p-6">
+              <div
+                class="w-12 h-12 bg-purple-100 rounded-lg mx-auto mb-4 flex items-center justify-center"
+              >
+                <svg
+                  class="w-12 h-12 text-blue-600"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <rect
+                    x="3"
+                    y="3"
+                    width="18"
+                    height="18"
+                    rx="2"
+                    stroke-width="2"
+                    stroke="currentColor"
+                    fill="none"></rect>
+                  <line x1="7" y1="8" x2="17" y2="8" stroke-width="2" stroke="currentColor"></line>
+                  <line x1="7" y1="12" x2="17" y2="12" stroke-width="2" stroke="currentColor"></line>
+                  <line x1="7" y1="16" x2="13" y2="16" stroke-width="2" stroke="currentColor"></line>
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold text-gray-900 mb-2">Formulario de Inscripcion</h3>
+              <p class="text-gray-600">
+                Formulario de no participación de alguna entidad políitica y/o partidaria de algun
+                centro facultativo o de carrera
+                <br /><a class="text-blue-600 hover:underline" href="https://docs.google.com/spreadsheets/d/1FtsuWQa7_OlWuXJzL_LDw1zUMV1zT7FC/edit?usp=drive_link&ouid=104725137215055273039&rtpof=true&sd=true">
+                  Formulario de Inscripcion</a
+                >
+              </p>
+            </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
