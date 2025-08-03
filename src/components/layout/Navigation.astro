@@ -3,16 +3,24 @@ const pathname = Astro.url.pathname;
 
 const navItems = [
   { name: 'Inicio', href: '/' },
-  { name: 'Log In', href: '/login' },
+  { name: 'Soc. Científica de Minas', href: '/login' },
+  { name: 'Soc. Científica de Metalurgia', href: '/login' },
+  { name: 'Soc. Científica de Minas', href: '/login' },
+  { name: 'Soc. Científica de Industrial', href: '/pages/Ind' },
+  { name: 'Soc. Científica de Minas', href: '/login' },
+  { name: 'Soc. Científica de Quimica', href: '/login' },
+  { name: 'Soc. Científica de ing. de Sistemas e Ing. Informática', href: '/sociedades/SISinf' },
+  
+
 ];
 ---
 
-<nav class="hidden md:flex space-x-8">
+<nav class="hidden md:flex flex-col space-y-2">
   {
     navItems.map((item) => (
       <a
         href={item.href}
-        class={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
+        class={`block px-4 py-2 rounded-md text-base font-medium transition-colors duration-200 ${
           pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href))
             ? 'text-blue-600 bg-blue-50'
             : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'
@@ -23,3 +31,4 @@ const navItems = [
     ))
   }
 </nav>
+

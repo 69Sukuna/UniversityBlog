@@ -25,6 +25,18 @@ const noticiasAll = await db.select().from(News);
 
 const noticiasSisInf = noticiasAll.filter((noticia) => noticia.userId === 3);
 
+//carrusell
+const modules = import.meta.glob('../../Image/SocMec/COM/FotosSoc/*.{png,jpg,jpeg,gif}', { eager: true });
+
+const images = Object.values(modules)
+  .map(mod => {
+    if (typeof mod === 'string') return { src: mod };
+    if (mod && typeof mod === 'object' && 'default' in mod) return mod.default;
+    if (mod && typeof mod === 'object' && 'src' in mod) return mod;
+    return null;
+  })
+  .filter(Boolean);
+
 ---
 
 <Layout
@@ -32,7 +44,7 @@ const noticiasSisInf = noticiasAll.filter((noticia) => noticia.userId === 3);
   description="Bienvenido a mi aplicación construida con Astro y las mejores prácticas de desarrollo web"
 >
   <!-- Hero Section -->
-  <section class="bg-gradient-to-r from-red-500 to-indigo-50 py-20">
+  <section class="bg-gradient-to-r from-red-500 to-indigo-50 py-5">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center">
         <div class="flex justify-between items-center">
@@ -74,6 +86,9 @@ const noticiasSisInf = noticiasAll.filter((noticia) => noticia.userId === 3);
 
           <div class="w-1/2 flex-none">
             <ImageFocusGallery items={items} textColor="text-[#000000]" columnsPerRow={2}/>            
+            <div class="mt-40">
+                <Carousel images={images} /></Carousel>
+            </div>
           </div>
         </div>
       </div>
@@ -95,39 +110,39 @@ const noticiasSisInf = noticiasAll.filter((noticia) => noticia.userId === 3);
           <FlipCard
             name="Univ. Mamani Cossio Fabricio Gabriel "
             role="Presidente de la COM"
-            email=""
-            phone=""
-            photo=""
+            email="fabriciomamanicossio@gmail.com"
+            phone="+591 65436960"
+            photo="/src/Image/SocMec/Vice.jpeg"
           />
           <FlipCard
             name="Univ. Davila Olazo Adriana "
             role="Unidad De Finanzas de la COM"
-            email=""
-            phone=""
+            email="adrianadaol97@gmail.com"
+            phone="+591 72476397"
             photo=""
           />
           <FlipCard
             name="Univ. Javier Quispe Andres Abraham"
             role="Unidad De Documentación de la COM"
-            email=""
-            phone=""
-            photo=""
+            email="javierabraham51@gmail.com"
+            phone="+591 73844268"
+            photo="/src/Image/SocMec/COM/Documentacion.jpg"
 
           />
           <FlipCard
             name="Univ. Puña Canaviri Gabriela Katherine"
             role="Unidad De Logística de la COM"
-            email=""
+            email="gabriela14.puna@gmail.com"
             phone=""
-            photo=""
+            photo="/src/Image/SocMec/COM/Logistica.jpg"
             
           />
           <FlipCard
-            name="Univ. Univ. Quinto Chino Ronald"
+            name="Univ. Quinto Chino Ronald"
             role="Unidad De Proyectos de la COM"
-            email=""
-            phone=""
-            photo=""
+            email="ronaldquinto609@gmail.com"
+            phone="+591 76157589"
+            photo="/src/Image/SocMec/COM/Proyectos.jpg"
             
           />
         </div>
