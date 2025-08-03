@@ -11,6 +11,12 @@ const Usuarios = defineTable({
   },
 });
 
+const Soces = defineTable({
+  columns: {
+    id: column.number({ primaryKey: true }),
+    nombre: column.text(),},
+});
+
 const News = defineTable({
   columns: {
     id: column.number({ primaryKey: true }),
@@ -19,9 +25,11 @@ const News = defineTable({
     contenido: column.text(),
     link: column.text(),
     fecha: column.date(),
+    linkFacebook: column.text(),
+    socesId: column.number({ references: () => Soces.columns.id }),
   },
 });
 
 export default defineDb({
-  tables: { Usuarios, News },
+  tables: { Usuarios, News, Soces },
 });

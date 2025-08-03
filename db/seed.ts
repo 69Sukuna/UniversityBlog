@@ -1,4 +1,4 @@
-import { db, Usuarios, News } from 'astro:db';
+import { db, Usuarios, News, Soces } from 'astro:db';
 import { AuthService } from '../src/utils/auth'; // Asegurate de importar bien
 
 export default async function () {
@@ -29,6 +29,12 @@ export default async function () {
     role: 'user',
   });
 
+  await db.insert(Soces).values([
+    { nombre: 'Sociedad SISINF' },
+    { nombre: 'Sociedad CIVIL' },
+    { nombre: 'Sociedad INDUSTRIAL' },
+  ]);
+
   await db.insert(News).values([
     {
       userId: 2,
@@ -36,6 +42,8 @@ export default async function () {
       contenido: 'Contenido de la noticia 1',
       link: '',
       fecha: new Date('2023-01-01'),
+      linkFacebook: 'https://facebook.com/',
+      socesId: 1,
     },
     {
       userId: 2,
@@ -43,6 +51,8 @@ export default async function () {
       contenido: 'Contenido de la noticia 2',
       link: 'https://ejemplo.com',
       fecha: new Date('2023-02-01'),
+      linkFacebook: 'https://facebook.com/',
+      socesId: 2,
     },
   ]);
 }
