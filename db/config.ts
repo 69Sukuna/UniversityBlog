@@ -24,8 +24,8 @@ const News = defineTable({
     titulo: column.text(),
     contenido: column.text(),
     link: column.text(),
-    fecha: column.date(),
     linkFacebook: column.text(),
+    fecha: column.date(),
     socesId: column.number({ references: () => Soces.columns.id }),
   },
 });

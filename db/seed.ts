@@ -41,8 +41,8 @@ export default async function () {
       titulo: 'Noticia 1',
       contenido: 'Contenido de la noticia 1',
       link: '',
-      fecha: new Date('2023-01-01'),
       linkFacebook: 'https://facebook.com/',
+      fecha: new Date('2023-01-01'),
       socesId: 1,
     },
     {
@@ -50,8 +50,8 @@ export default async function () {
       titulo: 'Noticia 2',
       contenido: 'Contenido de la noticia 2',
       link: 'https://ejemplo.com',
-      fecha: new Date('2023-02-01'),
       linkFacebook: 'https://facebook.com/',
+      fecha: new Date('2023-02-01'),
       socesId: 2,
     },
   ]);

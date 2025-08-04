@@ -23,7 +23,7 @@ const items = [
 // Obtener noticias de la base de datos
 const noticiasAll = await db.select().from(News);
 
-const noticiasSisInf = noticiasAll.filter((noticia) => noticia.userId === 3);
+const noticias = noticiasAll.filter((noticia) => noticia.userId === 3);
 
 
 ---
@@ -73,15 +73,15 @@ const noticiasSisInf = noticiasAll.filter((noticia) => noticia.userId === 3);
   <!-- Features Section -->
   <section class="py-20 bg-white">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-16">
+      <div class="text-center mb-16" id="noticias">
         <h2 class="text-3xl font-bold text-gray-900 mb-4">Noticias</h2>
         <!-- Mostrar noticias de SisInf -->
-        <CardsNotices noticias={noticiasSisInf} />
+        <CardsNotices noticias={noticias} />
       </div>
 
       <div class="text-center mb-16">
         <h2 class="text-3xl font-bold text-gray-900 mb-4">Nuestra Directiva</h2>
-        <div class="flex flex-wrap justify-center gap-6">
+        <div class="flex flex-wrap justify-center gap-6" id="direc">
           <FlipCard
             name="Univ. Rodríguez Humerez Eddy Paul"
             role="Presidente de la SIDDFAC"
