@@ -10,14 +10,14 @@ import { db, News, Usuarios } from 'astro:db';
 
 const items = [
   {
-    img: '/src/Image/SocInd/Logo_carrera1.png',
-    text: 'Carrera de Ing. Industrial',
-    text_URL: 'https://industrial.fni.uto.edu.bo/',
+    img: '/src/Image/SocGeo/Logo_carrera1.png',
+    text: 'Carrera de Ing. Geológica',
+    text_URL: 'https://geologia.fni.uto.edu.bo/',
   },
   {
-    img: '/src/Image/SocInd/Logo_Soc.png',
-    text: 'SCEII',
-    text_URL: 'https://industrial.fni.uto.edu.bo/Sociedad-Cientifica-Estudiantil-de-Ingenieria-Industrial',
+    img: '/src/Image/SocGeo/Logo_Soc.png',
+    text: 'SOCEIG',
+    text_URL: '/sociedades/Geo',
   },
 ];
 // Obtener noticias de la base de datos
@@ -25,34 +25,22 @@ const noticiasAll = await db.select().from(News);
 
 const noticias = noticiasAll.filter((noticia) => noticia.userId === 3);
 
-//carrusell
-const modules = import.meta.glob('../../Image/SocInd/FotosSoc/*.{png,jpg,jpeg,gif}', { eager: true });
-
-const images = Object.values(modules)
-  .map(mod => {
-    if (typeof mod === 'string') return { src: mod };
-    if (mod && typeof mod === 'object' && 'default' in mod) return mod.default;
-    if (mod && typeof mod === 'object' && 'src' in mod) return mod;
-    return null;
-  })
-  .filter(Boolean);
-
 ---
 
 <Layout
-  title="SCEII"
+  title="SOCEIG"
   description="Bienvenido a mi aplicación construida con Astro y las mejores prácticas de desarrollo web"
 >
   <!-- Hero Section -->
-  <section class="bg-gradient-to-r from-yellow-200 to-indigo-50 py-5">
+  <section class="bg-gradient-to-r from-green-400 to-indigo-50 py-5">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center">
         <div class="flex justify-between items-center">
           <!-- Logo Izquierdo -->
           <img src="/src/Image/UTO.png" alt="Logo izquierdo" class="w-30 h-auto" />
           <h1 class="text-4xl md:text-4xl font-bold text-gray-900 mb-6">
-            <span style="color:#0000FF"
-              >Sociedad Científica Estudiantil <br /> Ingeniería Industrial</span
+            <span style="color:#0808B4"
+              >Sociedad Científica de Estudiantes <br /> de Ingeniería Geológica</span
             >
           </h1>
           <!-- Logo derecho -->
@@ -60,28 +48,53 @@ const images = Object.values(modules)
         </div>
         <div class="flex gap-8 py-10">
           <div class="w-1/2 flex-none">
-            <h4 class="text-5xl text-[#0000FF] font-bold text-justify px-4 mb-4">
+            <h4 class="text-5xl text-[#0808B4] font-bold text-justify px-4 mb-4">
               Nuestra Historia
             </h4>
-            <p class="text-xl text-[#0000FF] text-justify px-4 leading-relaxed">
-              La Sociedad Científica Estudiantil de Ingeniería Industrial (SCEII-UTO) nace como una respuesta al 
-              interés de los estudiantes por profundizar su formación académica y desarrollar competencias científicas más 
-              allá del aula. Fue oficialmente conformada el 11 de marzo de 2016 en la Facultad Nacional de Ingeniería de la 
-              Universidad Técnica de Oruro (UTO), con el respaldo de autoridades académicas, docentes y estudiantes comprometidos 
-              con el crecimiento de la carrera. <br>
-              Desde su creación, la SCEII ha tenido como finalidad promover la investigación, 
-              la innovación, la participación en eventos científicos y la organización de actividades 
-              formativas como congresos, talleres y seminarios. Su existencia representa una oportunidad para 
-              fortalecer el pensamiento crítico, el liderazgo y el trabajo colaborativo, elevando así el nivel 
-              académico y profesional de los futuros ingenieros industriales. <br>
-              El primer directorio estuvo conformado por jóvenes visionarios que asumieron el reto de dar 
-              forma a este proyecto, estableciendo las bases para una sociedad activa, participativa y comprometida 
-              con el desarrollo de la ingeniería desde una perspectiva científica y humanista
+            <p class="text-xl text-[#0808B4] text-justify px-4 leading-relaxed">
+              La Sociedad Científica de Estudiantes de Ingeniería Geológica (SOCEIG) fue fundada 
+              el 17 de octubre de 2017, con el objetivo de fomentar la investigación científica, 
+              la participación académica y la formación integral de los estudiantes de la carrera de 
+              Ingeniería Geológica.
+            </p>
+            <p class="text-xl text-[#0808B4] text-justify px-4 leading-relaxed">
+              La iniciativa de creación surgió bajo el liderazgo del estudiante Juan Villazón, quien 
+              asumió como primer presidente de la sociedad. Lo acompañaron en la directiva fundadora 
+              Anabel Choque como vicepresidenta y Andrés Cartagena como vocal. Esta primera gestión sentó 
+              las bases organizativas y académicas de la sociedad, promoviendo actividades de investigación y 
+              divulgación científica.
+            </p>
+            <p class="text-xl text-[#0808B4] text-justify px-4 leading-relaxed">
+              El primer tutor académico de SOCEIG fue el Ing. Willy Camargo, quien desempeñó un papel 
+              clave en el asesoramiento y guía de los primeros proyectos científicos impulsados por la sociedad.
+            </p>
+            <p class="text-xl text-[#0808B4] text-justify px-4 leading-relaxed">
+              Entre los miembros fundadores que acompañaron este importante hito se destacan:
+            </p>
+            <p class="text-xl text-[#0808B4] text-justify px-4 leading-relaxed">
+              Wara Arce Checa, Dayana Capriles, Juaquín Ramos, Benjamín Pacolla, quienes contribuyeron activamente 
+              al desarrollo de las primeras iniciativas y al fortalecimiento institucional de la sociedad.
+            </p>
+            <p class="text-xl text-[#0808B4] text-justify px-4 leading-relaxed">
+              Desde su creación hasta el año 2024, SOCEIG ha estado liderada por cuatro presidentes, cada 
+              uno dejando su huella en el crecimiento académico y científico de la organización. Gracias a 
+              sus gestiones, SOCEIG ha consolidado su presencia en congresos estudiantiles, proyectos de 
+              investigación, talleres, conferencias y salidas de campo, posicionándose como un referente 
+              en el ámbito académico de la carrera de Ingeniería Geológica.
+            </p>
+            <p class="text-xl text-[#0808B4] text-justify px-4 leading-relaxed">
+              A lo largo de los años, la sociedad ha mantenido su compromiso con la excelencia, el trabajo 
+              colaborativo y el desarrollo profesional de sus miembros, fortaleciendo los lazos entre la 
+              comunidad estudiantil y el quehacer científico.
+            </p>
+            <p class="text-xl text-[#0808B4] text-justify px-4 leading-relaxed">
+              SOCEIG continúa siendo un espacio dinámico, participativo y formativo para los futuros 
+              profesionales de la geología, con una visión clara: contribuir al desarrollo científico 
+              del país desde la academia.
             </p>
           </div>
           <div class="w-1/2 flex-none">
-            <ImageFocusGallery items={items} textColor="text-[#0000FF]"  columnsPerRow={2}/>
-            <Carousel images={images} /></Carousel>
+            <ImageFocusGallery items={items} textColor="text-[#E20E1C]"  columnsPerRow={2}/>
           </div>
         </div>
       </div>
@@ -101,84 +114,106 @@ const images = Object.values(modules)
         <h2 class="text-3xl font-bold text-gray-900 mb-4">Nuestra Directiva</h2>
         <div class="flex flex-wrap justify-center gap-6">
           <FlipCard
-            name="Univ. Camila Abigail Morales Antonio"
-            role="Presidente de la Sociedad Científica SCEII"
-            email="abigail.150501@gmail.com "
-            phone=""
-            photo="/src/Image/SocInd/Presi.jpeg"
+            name="Univ. Leandro Reynaga Saul"
+            role="Presidente de la Sociedad Científica de SOCEIG"
+            email="saulreynaga4@gmail.com"
+            phone="+591 74148913"
+            photo="/src/Image/SocGeo/Presi.png"
           />
           <FlipCard
-            name="Univ. Argandoña Cruz Giovanni"
-            role="Vicepresidente de la Sociedad Científica SCEII"
-            email="maxigiovi777@gmail.com"
-            phone=""
-            photo=""
+            name="Univ. Colque Colque Ernesto"
+            role="Vicepresidente de la Sociedad Científica SOCEIG"
+            email="Colque1001@gmail.com"
+            phone="+591 75709275"
+            photo="/src/Image/SocGeo/Vice.jpeg"
           />
           <FlipCard
-            name="Univ. Beymar Mallcu Marce"
-            role="Secretario General de la Sociedad Científica SCEII"
-            email="beymarmallcu@gmail.com "
-            phone=""
-            photo="/src/Image/SocInd/General.jpeg"
+            name="Univ. Pacheco Quenta Prudencio Carlos"
+            role="Secretario General de la Sociedad Científica SOCEIG"
+            email="lankpachecoquenta2023@gmail.com"
+            phone="+591 67243332"
+            photo="/src/Image/SocGeo/General.jpeg"
 
           />
           <FlipCard
-            name="Univ. Mamani Alá Sara"
-            role="Secretaria de Finanzas de la Sociedad Científica SCEII"
-            email="saramamaniala417@gmail.com"
-            phone=""
-            photo=""
+            name="Univ. Torrico Flores Paola Angeles"
+            role="Secretaria de Hacienda de la Sociedad Científica SOCEIG"
+            email="ptaola@gmail.com"
+            phone="+591 72475575"
+            photo="/src/Image/SocGeo/Hacienda.jpeg"
 
           />
           <FlipCard
-            name="Univ. Ochoa Calizaya Gonzalo Saul"
-            role="Dirección Científica SCEII"
-            email="gonzalo.saul21@gmail.com"
-            phone=""
-            photo=""
+            name="Univ. Cruz Chura Mel"
+            role="Secretaria de Difusión de la Sociedad Científica SOCEIG"
+            email="cruzmel0504@gmail.com"
+            phone="+591 71850689"
+            photo="/src/Image/SocGeo/Difusion.jpeg"
 
           />
           <FlipCard
-            name="Univ. Quispe Paniagua Andrea Thaiz"
-            role="Dirección de Comunicaciones SCEII"
-            email="thaiz.quispe@gmail.com"
-            phone=""
-            photo=""
+            name="Univ. Padilla Mamani Romina"
+            role="Secretaria de Actas de la Sociedad Científica SOCEIG"
+            email="rominapadilla2002@gmail.com"
+            phone="+591 69571740"
+            photo="/src/Image/SocGeo/Actas.jpeg"
 
           />
           <FlipCard
-            name="Univ. Ayala Morales Gisela Rubi"
-            role="Dirección de Formación Capacitación y Seguimiento SCEII"
-            email="gise23rubi@gmail.com"
-            phone=""
-            photo=""
+            name="Univ. Coria Alegria Lizbet Sarai"
+            role="Secretaria de Investigación de la Sociedad Científica SOCEIG"
+            email="lizbetcoriaalegria@gmail.com"
+            phone="+591 68277416"
+            photo="/src/Image/SocGeo/Investigacion.jpeg"
+          />
+          <FlipCard
+            name="Univ. Heredia Alban Manuel Jefferson"
+            role="Vocal de la Sociedad Científica SOCEIG"
+            email="herediam@gmail.com"
+            phone="+591 78601465"
+            photo="/src/Image/SocGeo/Vocal.jpeg"
           />
         </div>
       </div>
 
       <div class="bg-purple-50 py-16 px-6">
         <div class="max-w-5xl mx-auto text-center">
-          <h2 class="text-4xl font-bold text-purple-900 mb-10">Misión y Visión a la carrera que pertenecemos</h2>
+          <h2 class="text-4xl font-bold text-purple-900 mb-10">Misión, Visión y Objetivos </h2>
           <div class="grid md:grid-cols-2 gap-8">
             
             <!-- Misión -->
             <div class="bg-white p-8 rounded-xl shadow-md border-t-4 border-purple-300">
-              <h3 class="text-2xl font-semibold text-purple-700 mb-4">Misión</h3>
+              <h3 class="text-2xl font-semibold text-purple-700 mb-4">Nuestra Misión</h3>
               <p class="text-gray-700 leading-relaxed text-justify">
-                Formar Ingenieros Industriales idóneos, emprendedores y con valores humanos, 
-                para liderar responsablemente el desarrollo industrial del país
+                Fomentar el intercambio de conocimiento; facilitar la comunicación y el intercambio 
+                de ideas entre estudiantes de la carrera de Ingeniería Geológica para la investigación y 
+                desarrollo de proyectos relacionados a prospección, exploración, hidrogeología, geología 
+                ambiental, entre otros.
               </p>
             </div>
             
             <!-- Visión -->
             <div class="bg-white p-8 rounded-xl shadow-md border-t-4 border-purple-300">
-              <h3 class="text-2xl font-semibold text-purple-700 mb-4">Visión</h3>
+              <h3 class="text-2xl font-semibold text-purple-700 mb-4">Nuestra Visión</h3>
               <p class="text-gray-700 leading-relaxed text-justify">
-                Ser referente en investigación, desarrollo tecnológico e innovación (I+D+I) 
-                y reconocida como líder en la formación de ingenieros industriales
+                Ser un capitulo líder en el ámbito de la investigación y aprendizaje dentro la sociedad 
+                científicas en la facultad nacional de ingeniería para el desarrollo y cooperación dentro y 
+                fuera de la misma, siendo de servicio a la comunidad en el campo de la geología aplicada a la 
+                ingeniería.
               </p>
             </div>
 
+            <!-- Objetivos -->
+            <div class="bg-white p-8 rounded-xl shadow-md border-t-4 border-purple-400 md:col-span-2 max-w-3xl mx-auto">
+            <h3 class="text-3xl font-bold text-purple-700 mb-6 text-center">Nuestros Objetivos</h3>
+            <ul class="list-disc list-outside pl-6 space-y-4 text-gray-800 text-justify leading-relaxed">
+                <li>Fomentar y promover las actividades de investigación científica y tecnológica de los estudiantes de la carrera.</li>
+                <li>Apoyar y organizar la realización de actividades de capacitación de los miembros de la sociedad y los estudiantes.</li>
+                <li>Coordinar y asesorar en la elaboración y ejecución de trabajos de investigación aplicando la metodología científica.</li>
+                <li>Apoyar la realización de actividades de difusión sobre las publicaciones científicas realizadas.</li>
+                <li>Gestar e implementar la organización de talleres, seminarios, debates que apoyen y fortalezcan el desarrollo académico en la investigación científica de los y las estudiantes.</li>
+            </ul>
+            </div>
           </div>
         </div>
       </div>

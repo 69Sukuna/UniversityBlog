@@ -10,14 +10,14 @@ import { db, News, Usuarios } from 'astro:db';
 
 const items = [
   {
-    img: '/src/Image/SocInd/Logo_carrera1.png',
-    text: 'Carrera de Ing. Industrial',
-    text_URL: 'https://industrial.fni.uto.edu.bo/',
+    img: '/src/Image/SocElec/Logo_carrera1.png',
+    text: 'Carrera de Ing. Eléctrica - Ing. Electrónica',
+    text_URL: 'https://www.facebook.com/p/Ingenier%C3%ADa-El%C3%A9ctrica-e-Ingenier%C3%ADa-Electr%C3%B3nica-FNI-UTO-100071822741549/?locale=es_LA',
   },
   {
-    img: '/src/Image/SocInd/Logo_Soc.png',
-    text: 'SCEII',
-    text_URL: 'https://industrial.fni.uto.edu.bo/Sociedad-Cientifica-Estudiantil-de-Ingenieria-Industrial',
+    img: '/src/Image/SocElec/Logo_Soc.png',
+    text: 'S.C.E.I.E.I.E.',
+    text_URL: 'https://www.facebook.com/SCEIEIE/?locale=es_LA',
   },
 ];
 // Obtener noticias de la base de datos
@@ -25,63 +25,61 @@ const noticiasAll = await db.select().from(News);
 
 const noticias = noticiasAll.filter((noticia) => noticia.userId === 3);
 
-//carrusell
-const modules = import.meta.glob('../../Image/SocInd/FotosSoc/*.{png,jpg,jpeg,gif}', { eager: true });
-
-const images = Object.values(modules)
-  .map(mod => {
-    if (typeof mod === 'string') return { src: mod };
-    if (mod && typeof mod === 'object' && 'default' in mod) return mod.default;
-    if (mod && typeof mod === 'object' && 'src' in mod) return mod;
-    return null;
-  })
-  .filter(Boolean);
-
 ---
 
 <Layout
-  title="SCEII"
+  title="S.C.E.I.E.I.E."
   description="Bienvenido a mi aplicación construida con Astro y las mejores prácticas de desarrollo web"
 >
   <!-- Hero Section -->
-  <section class="bg-gradient-to-r from-yellow-200 to-indigo-50 py-5">
+  <section class="bg-gradient-to-r from-blue-900 to-indigo-50 py-5">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center">
         <div class="flex justify-between items-center">
           <!-- Logo Izquierdo -->
           <img src="/src/Image/UTO.png" alt="Logo izquierdo" class="w-30 h-auto" />
-          <h1 class="text-4xl md:text-4xl font-bold text-gray-900 mb-6">
-            <span style="color:#0000FF"
-              >Sociedad Científica Estudiantil <br /> Ingeniería Industrial</span
+          <h1 class="text-4xl md:text-4xl font-bold text-gray-900 mb-6 font-bold drop-shadow-[2px_2px_0px_black]">
+            <span style="color:#FFA600"
+              >Sociedad Científica de <br /> de Ingeniería Eléctrica - Ingeniería Electrónica</span
             >
           </h1>
           <!-- Logo derecho -->
           <img src="/src/Image/FNI.png" alt="Logo derecho" class="w-30 h-auto" />
         </div>
-        <div class="flex gap-8 py-10">
+        <div class="flex gap-8 py-10 ">
           <div class="w-1/2 flex-none">
-            <h4 class="text-5xl text-[#0000FF] font-bold text-justify px-4 mb-4">
+            <h4 class="text-5xl text-[#FFA600] font-bold text-justify px-4 mb-4 font-bold drop-shadow-[2px_2px_0px_black]">
               Nuestra Historia
             </h4>
-            <p class="text-xl text-[#0000FF] text-justify px-4 leading-relaxed">
-              La Sociedad Científica Estudiantil de Ingeniería Industrial (SCEII-UTO) nace como una respuesta al 
-              interés de los estudiantes por profundizar su formación académica y desarrollar competencias científicas más 
-              allá del aula. Fue oficialmente conformada el 11 de marzo de 2016 en la Facultad Nacional de Ingeniería de la 
-              Universidad Técnica de Oruro (UTO), con el respaldo de autoridades académicas, docentes y estudiantes comprometidos 
-              con el crecimiento de la carrera. <br>
-              Desde su creación, la SCEII ha tenido como finalidad promover la investigación, 
-              la innovación, la participación en eventos científicos y la organización de actividades 
-              formativas como congresos, talleres y seminarios. Su existencia representa una oportunidad para 
-              fortalecer el pensamiento crítico, el liderazgo y el trabajo colaborativo, elevando así el nivel 
-              académico y profesional de los futuros ingenieros industriales. <br>
-              El primer directorio estuvo conformado por jóvenes visionarios que asumieron el reto de dar 
-              forma a este proyecto, estableciendo las bases para una sociedad activa, participativa y comprometida 
-              con el desarrollo de la ingeniería desde una perspectiva científica y humanista
+            <p class="text-xl text-[#FFA600] text-justify px-4 leading-relaxed font-bold drop-shadow-[2px_2px_0px_black]">
+              La Sociedad Científica de Estudiantes de Ingeniería Eléctrica e Ingeniería Electrónica fue
+               fundada oficialmente el 14 de agosto de 2017 en la ciudad de Oruro, Bolivia, en instalaciones 
+               de la Carrera de Ingeniería Eléctrica e Ingeniería Electrónica de la Universidad Técnica de Oruro. 
+               La creación de esta sociedad surge como respuesta a la convocatoria de la CEUB y en cumplimiento 
+               del “Reglamento General de Sociedades de Estudiantes” promovido por la Dirección de Investigación, 
+               Ciencia y Tecnología (DICYT), con el fin de consolidar un espacio que promueva la investigación 
+               científica entre los estudiantes.
             </p>
+            <p class="text-xl text-[#FFA600] text-justify px-4 leading-relaxed font-bold drop-shadow-[2px_2px_0px_black]">
+              Durante la reunión de fundación, encabezada por autoridades académicas y estudiantes comprometidos, 
+              se definió el objetivo de fomentar el desarrollo personal y profesional mediante actividades académicas y 
+              de investigación. Asimismo, se acordó la creación de un Consejo Directivo inicial compuesto por cinco 
+              carteras, encargadas de la elaboración del Estatuto Orgánico y del Reglamento Interno, así como de gestionar 
+              la obtención de la personalidad institucional de la sociedad.
+            </p>
+            <p class="text-xl text-[#FFA600] text-justify px-4 leading-relaxed font-bold drop-shadow-[2px_2px_0px_black]">
+              Los socios fundadores que firmaron el acta de constitución fueron: José Mendoza Choqueticlla, 
+              Wilson Iván Gutiérrez Peña, Iván Nelson Vera Condori, Muriel Mollo Choque, Juan Orlando Tito 
+              Gierva, Halain Fernandez Arce, Felipe Gerónimo Luis Martin y Pacolla de la Barra Miguel Alejandro.
+            </p>
+            <p class="text-xl text-[#FFA600] text-justify px-4 leading-relaxed font-bold drop-shadow-[2px_2px_0px_black]">
+              Desde su fundación, la S.C.E.I.E.I.E. se ha consolidado como un pilar académico dentro de la Facultad 
+              Nacional de Ingeniería, promoviendo el conocimiento, la innovación y la colaboración entre sus miembros.
+            </p>
+            
           </div>
           <div class="w-1/2 flex-none">
-            <ImageFocusGallery items={items} textColor="text-[#0000FF]"  columnsPerRow={2}/>
-            <Carousel images={images} /></Carousel>
+            <ImageFocusGallery items={items} textColor="text-[#000000] "  columnsPerRow={2}/>
           </div>
         </div>
       </div>
@@ -97,92 +95,6 @@ const images = Object.values(modules)
         <CardsNotices noticias={noticias} />
       </div>
 
-      <div class="text-center mb-16" id="direc">
-        <h2 class="text-3xl font-bold text-gray-900 mb-4">Nuestra Directiva</h2>
-        <div class="flex flex-wrap justify-center gap-6">
-          <FlipCard
-            name="Univ. Camila Abigail Morales Antonio"
-            role="Presidente de la Sociedad Científica SCEII"
-            email="abigail.150501@gmail.com "
-            phone=""
-            photo="/src/Image/SocInd/Presi.jpeg"
-          />
-          <FlipCard
-            name="Univ. Argandoña Cruz Giovanni"
-            role="Vicepresidente de la Sociedad Científica SCEII"
-            email="maxigiovi777@gmail.com"
-            phone=""
-            photo=""
-          />
-          <FlipCard
-            name="Univ. Beymar Mallcu Marce"
-            role="Secretario General de la Sociedad Científica SCEII"
-            email="beymarmallcu@gmail.com "
-            phone=""
-            photo="/src/Image/SocInd/General.jpeg"
-
-          />
-          <FlipCard
-            name="Univ. Mamani Alá Sara"
-            role="Secretaria de Finanzas de la Sociedad Científica SCEII"
-            email="saramamaniala417@gmail.com"
-            phone=""
-            photo=""
-
-          />
-          <FlipCard
-            name="Univ. Ochoa Calizaya Gonzalo Saul"
-            role="Dirección Científica SCEII"
-            email="gonzalo.saul21@gmail.com"
-            phone=""
-            photo=""
-
-          />
-          <FlipCard
-            name="Univ. Quispe Paniagua Andrea Thaiz"
-            role="Dirección de Comunicaciones SCEII"
-            email="thaiz.quispe@gmail.com"
-            phone=""
-            photo=""
-
-          />
-          <FlipCard
-            name="Univ. Ayala Morales Gisela Rubi"
-            role="Dirección de Formación Capacitación y Seguimiento SCEII"
-            email="gise23rubi@gmail.com"
-            phone=""
-            photo=""
-          />
-        </div>
-      </div>
-
-      <div class="bg-purple-50 py-16 px-6">
-        <div class="max-w-5xl mx-auto text-center">
-          <h2 class="text-4xl font-bold text-purple-900 mb-10">Misión y Visión a la carrera que pertenecemos</h2>
-          <div class="grid md:grid-cols-2 gap-8">
-            
-            <!-- Misión -->
-            <div class="bg-white p-8 rounded-xl shadow-md border-t-4 border-purple-300">
-              <h3 class="text-2xl font-semibold text-purple-700 mb-4">Misión</h3>
-              <p class="text-gray-700 leading-relaxed text-justify">
-                Formar Ingenieros Industriales idóneos, emprendedores y con valores humanos, 
-                para liderar responsablemente el desarrollo industrial del país
-              </p>
-            </div>
-            
-            <!-- Visión -->
-            <div class="bg-white p-8 rounded-xl shadow-md border-t-4 border-purple-300">
-              <h3 class="text-2xl font-semibold text-purple-700 mb-4">Visión</h3>
-              <p class="text-gray-700 leading-relaxed text-justify">
-                Ser referente en investigación, desarrollo tecnológico e innovación (I+D+I) 
-                y reconocida como líder en la formación de ingenieros industriales
-              </p>
-            </div>
-
-          </div>
-        </div>
-      </div>
-      
       <div class="text-center">
         <h2 class="text-3xl font-bold text-gray-900 mb-4">¿Cómo ser parte?</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
