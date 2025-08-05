@@ -6,7 +6,7 @@ import Button from '../../../../components/ui/Button.astro';
 import Alert from '../../../../components/ui/Alert.astro';
 import { getUserFromRequest } from '../../../../utils/session';
 import { requireRole } from '../../../../utils/auth';
-import { db, Usuarios, eq } from 'astro:db';
+import { db, Usuarios, eq , Soces} from 'astro:db';
 
 const user = getUserFromRequest(Astro.request);
 
@@ -23,6 +23,8 @@ if (!userId) {
 
 // Obtener usuario a editar
 const usuarios = await db.select().from(Usuarios).where(eq(Usuarios.id, userId));
+// obtener las Soces
+const soces = await db.select().from(Soces);
 
 if (usuarios.length === 0) {
   return Astro.redirect('/admin/users?error=not_found');
@@ -119,6 +121,30 @@ const error = urlParams.get('error');
                   label="Confirmar Nueva Contraseña"
                   placeholder="Solo si cambias la contraseña"
                 />
+
+                <div>
+                  <label for="socesId" class="block text-sm font-medium text-gray-700 mb-1">
+                    Sociedad a la que pertenece <span class="text-red-500">*</span>
+                  </label>
+                  <select
+                    id="socesId"
+                    name="socesId"
+                    required
+                    class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  >
+                    {soces.map((soc) => (
+                      <option
+                        value={String(soc.id)}
+                        selected={usuarioEdit.socesId === soc.id}
+                      >
+                        {soc.nombre}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+
+
               </div>
 
               <div class="mt-8 flex justify-end space-x-3">

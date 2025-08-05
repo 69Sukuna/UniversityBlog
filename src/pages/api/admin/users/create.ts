@@ -53,6 +53,7 @@ export const POST: APIRoute = async ({ request, redirect }) => {
       correo,
       role,
       password: hashedPassword,
+      socesId: parseInt(formData.get('socesId')?.toString() || '0'),
     });
 
     return redirect('/admin/users?message=created');

@@ -22,6 +22,7 @@ export const POST: APIRoute = async ({ request, redirect }) => {
     const role = formData.get('role')?.toString();
     const password = formData.get('password')?.toString();
     const confirmPassword = formData.get('confirmPassword')?.toString();
+    const socesId = parseInt(formData.get('socesId')?.toString() || '0');
 
     if (!userId || !nombre || !userName || !correo || !role) {
       return redirect(`/admin/users/${userId}/edit?error=validation`);
@@ -64,6 +65,10 @@ export const POST: APIRoute = async ({ request, redirect }) => {
     // Solo actualizar contraseña si se proporciona
     if (password) {
       updateData.password = await AuthService.hashPassword(password);
+    }
+    
+    if (socesId) {
+      updateData.socesId = socesId;
     }
 
     // Actualizar usuario

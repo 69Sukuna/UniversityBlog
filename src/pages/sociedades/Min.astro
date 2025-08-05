@@ -10,14 +10,14 @@ import { db, News, Usuarios } from 'astro:db';
 
 const items = [
   {
-    img: '/src/Image/SocMetMat/Logo_carrera1.png',
-    text: 'Carrera de Ing. de Mertalurgia y Materiales',
-    text_URL: 'https://www.facebook.com/metalurgia.materiales.uto.fni/',
+    img: '/src/Image/SocMin/Logo_carrera1.png',
+    text: 'Carrera de Ingeniería de Minas, Petróleo y Geotecnia',
+    text_URL: 'https://www.fni.uto.edu.bo/index.php/ing-minas',
   },
   {
-    img: '/src/Image/SocMetMat/Logo_Soc.jpg',
-    text: 'SOCE MET MAT',
-    text_URL: '',
+    img: '/src/Image/SocMin/Logo_Soc.png',
+    text: 'SoCEIMIN',
+    text_URL: 'https://www.facebook.com/profile.php?id=100084975262112#',
   },
 ];
 // Obtener noticias de la base de datos
@@ -28,30 +28,43 @@ const noticias = noticiasAll.filter((noticia) => noticia.userId === 3);
 ---
 
 <Layout
-  title="SOCE MET MAT"
+  title="SoCEIMIN"
   description="Bienvenido a mi aplicación construida con Astro y las mejores prácticas de desarrollo web"
 >
   <!-- Hero Section -->
-  <section class="bg-gradient-to-r from-red-600 to-indigo-50 py-5">
+  <section class="bg-gradient-to-r from-[#115464] to-indigo-50 py-5">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center">
         <div class="flex justify-between items-center">
           <!-- Logo Izquierdo -->
           <img src="/src/Image/UTO.png" alt="Logo izquierdo" class="w-30 h-auto" />
           <h1 class="text-4xl md:text-4xl font-bold text-gray-900 mb-6">
-            <span style="color:#000000"
-              >Sociedad Científica de <br /> Ingeniería de Metalurgia y Materiales</span
-            >
+            <span style="color:#000000" class="font-bold">
+              Sociedad Científica de Esudiantes <br /> de Ingeniería de Minas
+            </span>
           </h1>
           <!-- Logo derecho -->
           <img src="/src/Image/FNI.png" alt="Logo derecho" class="w-30 h-auto" />
         </div>
-        <div class="flex gap-8 py-10">
-          
-          <div class="w-full flex-none">
-            <ImageFocusGallery items={items} textColor="text-[#000000]"  columnsPerRow={2}/>
+        <div class="flex gap-8 py-10 text-xl text-[#177DA6] text-justify px-4 leading-relaxed">
+          <div class="w-1/2 flex-none space-y-6">
+                <h4 class="text-5xl text-[#000000] font-bold text-justify px-4 mb-4">
+                    Nuestra Historia
+                </h4>
+                <p class="text-xl text-[#000000] text-justify px-4 leading-relaxed ">
+                    La SOCEIMIN es una organización académica estudiantil de la Facultad Nacional de 
+                    Ingeniería de la Universidad Técnica de Oruro. Fue fundada el 23 de agosto de 2017 con 
+                    el objetivo de promover y difundir la investigación científica en el área de la minería 
+                    y el medio ambiente. Además, busca ser un espacio de formación académica y debate, al 
+                    servicio de la comunidad orureña y boliviana.
+                </p>
+            </div>
+
+          <div class="w-1/2 flex-none">
+            <ImageFocusGallery items={items} textColor="text-[#000000]" columnsPerRow={2}/>            
           </div>
         </div>
+      </div>
       </div>
     </div>
   </section>
@@ -64,9 +77,35 @@ const noticias = noticiasAll.filter((noticia) => noticia.userId === 3);
         <!-- Mostrar noticias de SisInf -->
         <CardsNotices noticias={noticias} />
       </div>
+      <div class="bg-purple-50 py-16 px-6">
+        <div class="max-w-5xl mx-auto text-center">
+          <h2 class="text-4xl font-bold text-purple-900 mb-10">Misión y Visión</h2>
+          <div class="grid md:grid-cols-2 gap-8">
+            
+            <!-- Misión -->
+            <div class="bg-white p-8 rounded-xl shadow-md border-t-4 border-purple-300">
+              <h3 class="text-2xl font-semibold text-purple-700 mb-4">Nuestra Misión</h3>
+              <p class="text-gray-700 leading-relaxed text-justify">
+                Fomentar la investigación tecnológica y científica, impulsando actividades 
+                académicas dentro de la carrera de Ingeniería de Minas, Petróleo y Geotecnia, 
+                con participación activa de los estudiantes en el proceso de enseñanza-aprendizaje.
+              </p>
+            </div>
+            
+            <!-- Visión -->
+            <div class="bg-white p-8 rounded-xl shadow-md border-t-4 border-purple-300">
+              <h3 class="text-2xl font-semibold text-purple-700 mb-4">Nuestra Visión</h3>
+              <p class="text-gray-700 leading-relaxed text-justify">
+                Convertirse en una institución referente en investigación y formación, comprometida 
+                socialmente y promotora de ideas innovadoras, fortaleciendo el desarrollo profesional de 
+                sus miembros dentro del área de minas, petróleo y geotecnia. 
+              </p>
+            </div>
 
-      
-      
+          </div>
+        </div>
+      </div>
+
       <div class="text-center">
         <h2 class="text-3xl font-bold text-gray-900 mb-4">¿Cómo ser parte?</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">

@@ -4,35 +4,69 @@ const pathname = Astro.url.pathname;
 const navItems = [
   { name: 'Inicio', href: '/' },
   { 
-    name: 'Sociedades Científicas', 
+    name: 'Sociedades Científicas Parte 1', 
     href: '/',
     children: [
       { 
-        name: 'Soc. Científica de Ing. Mecánica Electromecánica Mecatrónica', 
+        name: 'So.C.E. Ing. Minas', 
+        href: '/sociedades/Min' 
+      },
+      { 
+        name: 'So.C.E. Ing. Civil', 
+        href: '/sociedades/Civ' 
+      },
+      { 
+        name: 'So.C.E. Ing. Metalurgia y Materiales', 
+        href: '/sociedades/MetMat' 
+      },
+      { 
+        name: 'So.C.E. Ing. Mecánica Electromecánica Mecatrónica', 
         href: '/',
         children: [
-          { name: 'Soc. Científica SCEIMEM', href: '/sociedades/Mec' },
+          { name: 'So.C.E. SCEIMEM', href: '/sociedades/Mec' },
           { name: 'Sub-sociedad COM', href: '/sociedades/COM' },
           { name: 'Sub-sociedad SIDDFAC', href: '/sociedades/SIDDFAC' }
         ]
       },
-      { name: 'Soc. Científica de Geología', href: '/sociedades/geologia' },
-      { name: 'Soc. Científica de Geología', href: '/sociedades/geologia' },
-      { name: 'Soc. Científica de Sistemas e Informática', href: '/sociedades/SISinf' }
+      { 
+        name: 'So.C.E. Ing. Eléctrica - Ing. Electrónica', 
+        href: '/sociedades/Elec' 
+      },
+      { 
+        name: 'So.C.E. Ing. Química e Ing. de Alimentos', 
+        href: '/sociedades/Quim' 
+      },
     ]
   },
-  { 
-    name: 'Noticias',
-    href: '#noticias',
+  {
+    name: 'Sociedades Científicas Parte 2',
+    href: '/',
+    children: [
+      { 
+        name: 'So.C.E. Ing. Geológica', 
+        href: '/sociedades/Geo' 
+      },
+      { 
+        name: 'So.C.E. Ing. de Sistemas e Ing. Informática', 
+        href: '/sociedades/SISinf' 
+      },
+      { 
+        name: 'So.C.E. Ing. Industrial', 
+        href: '/sociedades/Ind' 
+      },
+      { 
+        name: 'So.C.E. del Departamento de Física de Ciclo Básico', 
+        href: '/sociedades/Fis' 
+      },
+      { 
+        name: 'So.C.E. del Departamento de Química', 
+        href: '/sociedades/Cons' 
+      },
+    ]
   },
-  { 
-    name: 'Autoridades - Directiva',
-    href: '#direc',
-  },
-  { 
-    name: 'Enlaces',
-    href: '#enlaces',
-  }
+  { name: 'Noticias', href: '#noticias' },
+  { name: 'Autoridades - Directiva', href: '#direc' },
+  { name: 'Enlaces', href: '#enlaces' }
 ];
 ---
 

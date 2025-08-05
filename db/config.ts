@@ -1,5 +1,12 @@
 import { defineDb, defineTable, column } from 'astro:db';
 
+const Soces = defineTable({
+  columns: {
+    id: column.number({ primaryKey: true }),
+    nombre: column.text(),
+  },
+});
+
 const Usuarios = defineTable({
   columns: {
     id: column.number({ primaryKey: true }),
@@ -8,14 +15,11 @@ const Usuarios = defineTable({
     correo: column.text(),
     password: column.text(),
     role: column.text(),
+    socesId: column.number({ references: () => Soces.columns.id }),
   },
 });
 
-const Soces = defineTable({
-  columns: {
-    id: column.number({ primaryKey: true }),
-    nombre: column.text(),},
-});
+
 
 const News = defineTable({
   columns: {
