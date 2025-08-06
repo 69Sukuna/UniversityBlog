@@ -1,0 +1,455 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Button from '../../components/ui/Button.astro';
+import { getUserFromRequest } from '../../utils/session';
+import { requireRole } from '../../utils/auth';
+import { db, Usuarios, News, Soces } from 'astro:db';
+
+const user = getUserFromRequest(Astro.request);
+
+if (!user || !requireRole(user, ['admin'])) {
+  return Astro.redirect('/login');
+}
+
+const usuarios = await db.select().from(Usuarios);
+const noticias = await db.select().from(News);
+const soces = await db.select().from(Soces);
+
+const totalUsuarios = usuarios.length;
+const totalNoticias = noticias.length;
+const totalSoces = soces.length;
+
+// Crear maps para mejor rendimiento
+const socesMap = new Map(soces.map(s => [s.id, s.nombre]));
+const usuariosMap = new Map(usuarios.map(u => [u.id, u]));
+
+// Contar noticias por sociedad con detalles de usuarios
+const socesConDetalle = [];
+
+for (let i = 0; i < soces.length; i++) {
+  const soc = soces[i];
+  const noticiasDeEstaSoce = [];
+  
+  // Filtrar noticias de esta sociedad
+  for (let j = 0; j < noticias.length; j++) {
+    if (noticias[j].socesId === soc.id) {
+      noticiasDeEstaSoce.push(noticias[j]);
+    }
+  }
+  
+  // Agrupar noticias por usuario
+  const usuariosConNoticias = new Map();
+  for (let k = 0; k < noticiasDeEstaSoce.length; k++) {
+    const noticia = noticiasDeEstaSoce[k];
+    const usuario = usuariosMap.get(noticia.userId);
+    if (usuario) {
+      if (!usuariosConNoticias.has(usuario.id)) {
+        usuariosConNoticias.set(usuario.id, {
+          usuario: usuario,
+          noticias: []
+        });
+      }
+      usuariosConNoticias.get(usuario.id).noticias.push(noticia);
+    }
+  }
+
+  // Crear array de usuarios activos
+  const usuariosActivosArray = [];
+  for (const [userId, usuarioData] of usuariosConNoticias) {
+    const ultimasNoticias = usuarioData.noticias.slice(-3);
+    const usuarioCompleto = {
+      usuario: usuarioData.usuario,
+      noticias: usuarioData.noticias,
+      noticia1: ultimasNoticias[0] ? ultimasNoticias[0].titulo : '',
+      noticia2: ultimasNoticias[1] ? ultimasNoticias[1].titulo : '',
+      noticia3: ultimasNoticias[2] ? ultimasNoticias[2].titulo : ''
+    };
+    usuariosActivosArray.push(usuarioCompleto);
+  }
+
+  const socData = {
+    id: soc.id,
+    nombre: soc.nombre,
+    noticias_count: noticiasDeEstaSoce.length,
+    usuarios_activos: usuariosActivosArray
+  };
+  
+  socesConDetalle.push(socData);
+}
+
+// Ordenar por cantidad de noticias
+socesConDetalle.sort(function(a, b) {
+  return b.noticias_count - a.noticias_count;
+});
+
+// Estadísticas generales
+const usuariosActivos = new Set(noticias.map(n => n.userId)).size;
+const usuariosInactivos = totalUsuarios - usuariosActivos;
+
+// Top usuarios más activos
+const usuariosActividad = usuarios.map(usuario => {
+  const noticiasUsuario = noticias.filter(n => n.userId === usuario.id);
+  return {
+    ...usuario,
+    noticias_count: noticiasUsuario.length,
+    sociedad: socesMap.get(usuario.socesId) || 'No asignado'
+  };
+}).filter(u => u.noticias_count > 0)
+  .sort((a, b) => b.noticias_count - a.noticias_count)
+  .slice(0, 10); // Top 10
+
+// Actividad por mes (últimos 6 meses) - VERSION BASICA
+const hoy = new Date();
+const hace6Meses = new Date(hoy.getFullYear(), hoy.getMonth() - 6, 1);
+
+// Filtrar noticias recientes
+const noticiasRecientes = [];
+for (let i = 0; i < noticias.length; i++) {
+  const n = noticias[i];
+  if (n.fecha) {
+    const fechaNoticia = new Date(n.fecha);
+    if (!isNaN(fechaNoticia.getTime()) && fechaNoticia >= hace6Meses) {
+      noticiasRecientes.push(n);
+    }
+  }
+}
+
+// Crear actividad por mes
+const mesesData = [];
+
+for (let i = 5; i >= 0; i--) {
+  const fecha = new Date(hoy.getFullYear(), hoy.getMonth() - i, 1);
+  const mes = fecha.toLocaleDateString('es-ES', { month: 'long', year: 'numeric' });
+  
+  let cantidad = 0;
+  for (let j = 0; j < noticiasRecientes.length; j++) {
+    const noticia = noticiasRecientes[j];
+    if (noticia.fecha) {
+      const fechaNoticia = new Date(noticia.fecha);
+      if (!isNaN(fechaNoticia.getTime())) {
+        if (fechaNoticia.getMonth() === fecha.getMonth() && 
+            fechaNoticia.getFullYear() === fecha.getFullYear()) {
+          cantidad = cantidad + 1;
+        }
+      }
+    }
+  }
+  
+  const mesData = {
+    mes: mes,
+    cantidad: cantidad
+  };
+  mesesData.push(mesData);
+}
+
+// Calcular máximo
+let maxActividad = 1;
+for (let i = 0; i < mesesData.length; i++) {
+  if (mesesData[i].cantidad > maxActividad) {
+    maxActividad = mesesData[i].cantidad;
+  }
+}
+
+// Agregar porcentajes
+const actividadConPorcentajes = [];
+for (let i = 0; i < mesesData.length; i++) {
+  const data = mesesData[i];
+  const porcentaje = maxActividad > 0 ? (data.cantidad / maxActividad) * 100 : 0;
+  const dataConPorcentaje = {
+    mes: data.mes,
+    cantidad: data.cantidad,
+    porcentaje: porcentaje
+  };
+  actividadConPorcentajes.push(dataConPorcentaje);
+}
+---
+
+<Layout title="Reportes - Admin">
+  <div class="min-h-screen bg-gray-50">
+    <!-- Header -->
+    <div class="bg-white shadow">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center py-6">
+          <div>
+            <h1 class="text-3xl font-bold text-gray-900">Reportes y Estadísticas</h1>
+            <p class="mt-2 text-sm text-gray-600">Análisis detallado de la actividad del sistema</p>
+          </div>
+          <div class="flex space-x-3">
+            <Button href="/admin" variant="secondary">← Volver al Panel</Button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+      <div class="px-4 py-6 sm:px-0 space-y-8">
+
+        <!-- Resumen General -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+          <div class="bg-white overflow-hidden shadow rounded-lg">
+            <div class="p-5">
+              <div class="flex items-center">
+                <div class="flex-shrink-0">
+                  <svg class="h-6 w-6 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
+                  </svg>
+                </div>
+                <div class="ml-5 w-0 flex-1">
+                  <dl>
+                    <dt class="text-sm font-medium text-gray-500 truncate">Total Usuarios</dt>
+                    <dd class="text-lg font-medium text-gray-900">{totalUsuarios}</dd>
+                  </dl>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white overflow-hidden shadow rounded-lg">
+            <div class="p-5">
+              <div class="flex items-center">
+                <div class="flex-shrink-0">
+                  <svg class="h-6 w-6 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                  </svg>
+                </div>
+                <div class="ml-5 w-0 flex-1">
+                  <dl>
+                    <dt class="text-sm font-medium text-gray-500 truncate">Usuarios Activos</dt>
+                    <dd class="text-lg font-medium text-gray-900">{usuariosActivos}</dd>
+                  </dl>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white overflow-hidden shadow rounded-lg">
+            <div class="p-5">
+              <div class="flex items-center">
+                <div class="flex-shrink-0">
+                  <svg class="h-6 w-6 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+                  </svg>
+                </div>
+                <div class="ml-5 w-0 flex-1">
+                  <dl>
+                    <dt class="text-sm font-medium text-gray-500 truncate">Total Noticias</dt>
+                    <dd class="text-lg font-medium text-gray-900">{totalNoticias}</dd>
+                  </dl>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white overflow-hidden shadow rounded-lg">
+            <div class="p-5">
+              <div class="flex items-center">
+                <div class="flex-shrink-0">
+                  <svg class="h-6 w-6 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                  </svg>
+                </div>
+                <div class="ml-5 w-0 flex-1">
+                  <dl>
+                    <dt class="text-sm font-medium text-gray-500 truncate">Sociedades</dt>
+                    <dd class="text-lg font-medium text-gray-900">{totalSoces}</dd>
+                  </dl>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Actividad por Sociedad (Desplegable) -->
+        <div class="bg-white shadow rounded-lg">
+          <div class="px-6 py-4 border-b border-gray-200">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">
+              Actividad por Sociedad
+            </h3>
+            <p class="mt-1 text-sm text-gray-500">
+              Haz clic en una sociedad para ver qué usuarios han publicado noticias
+            </p>
+          </div>
+          <div class="p-6">
+            <div class="space-y-4">
+              {socesConDetalle.map((soc) => (
+                <div class="border border-gray-200 rounded-lg">
+                  <button 
+                    class="w-full px-4 py-3 text-left hover:bg-gray-50 focus:outline-none focus:bg-gray-50 rounded-t-lg"
+                    onclick={`toggleSociedad('sociedad-${soc.id}')`}
+                  >
+                    <div class="flex justify-between items-center">
+                      <div class="flex items-center space-x-3">
+                        <svg class="h-5 w-5 text-gray-400 transform transition-transform" id={`icon-${soc.id}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                        <span class="font-medium text-gray-900 truncate max-w-md" title={soc.nombre}>
+                          {soc.nombre}
+                        </span>
+                      </div>
+                      <div class="flex items-center space-x-4">
+                        <span class="text-sm text-gray-500">
+                          {soc.usuarios_activos.length} usuarios activos
+                        </span>
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                          {soc.noticias_count} noticias
+                        </span>
+                      </div>
+                    </div>
+                  </button>
+                  
+                  <div id={`sociedad-${soc.id}`} class="hidden border-t border-gray-200 bg-gray-50">
+                    {soc.usuarios_activos.length > 0 ? (
+                      <div class="p-4 space-y-3">
+                        {soc.usuarios_activos.map((usuarioData) => (
+                          <div class="bg-white rounded-lg p-3 shadow-sm">
+                            <div class="flex items-center justify-between">
+                              <div class="flex items-center space-x-3">
+                                <div class="h-8 w-8 rounded-full bg-gray-300 flex items-center justify-center">
+                                  <span class="text-xs font-medium text-gray-700 uppercase">
+                                    {usuarioData.usuario.nombre.charAt(0)}
+                                  </span>
+                                </div>
+                                <div>
+                                  <p class="text-sm font-medium text-gray-900">
+                                    {usuarioData.usuario.nombre}
+                                  </p>
+                                  <p class="text-xs text-gray-500">
+                                    @{usuarioData.usuario.userName}
+                                  </p>
+                                </div>
+                              </div>
+                              <div class="text-right">
+                                <p class="text-sm font-semibold text-blue-600">
+                                  {usuarioData.noticias.length} noticias
+                                </p>
+                                <p class="text-xs text-gray-500">
+                                  Última: {new Date(usuarioData.noticias[usuarioData.noticias.length - 1].fecha).toLocaleDateString('es-ES')}
+                                </p>
+                              </div>
+                            </div>
+                            
+                            <div class="mt-3 space-y-1">
+                              <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">
+                                Últimas noticias:
+                              </p>
+                              {usuarioData.noticia1 && (
+                                <div class="text-xs text-gray-600 truncate" title={usuarioData.noticia1}>
+                                  • {usuarioData.noticia1}
+                                </div>
+                              )}
+                              {usuarioData.noticia2 && (
+                                <div class="text-xs text-gray-600 truncate" title={usuarioData.noticia2}>
+                                  • {usuarioData.noticia2}
+                                </div>
+                              )}
+                              {usuarioData.noticia3 && (
+                                <div class="text-xs text-gray-600 truncate" title={usuarioData.noticia3}>
+                                  • {usuarioData.noticia3}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div class="p-4 text-center text-gray-500">
+                        <p class="text-sm">No hay usuarios activos en esta sociedad</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <!-- Top Usuarios Más Activos -->
+        <div class="bg-white shadow rounded-lg">
+          <div class="px-6 py-4 border-b border-gray-200">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">
+              Top 10 Usuarios Más Activos
+            </h3>
+          </div>
+          <div class="p-6">
+            <div class="space-y-3">
+              {usuariosActividad.map((usuario, index) => (
+                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                  <div class="flex items-center space-x-3">
+                    <span class={`flex items-center justify-center h-6 w-6 rounded-full text-xs font-bold text-white ${
+                      index === 0 ? 'bg-yellow-500' : 
+                      index === 1 ? 'bg-gray-400' : 
+                      index === 2 ? 'bg-yellow-600' : 'bg-blue-500'
+                    }`}>
+                      {index + 1}
+                    </span>
+                    <div class="h-8 w-8 rounded-full bg-gray-300 flex items-center justify-center">
+                      <span class="text-xs font-medium text-gray-700 uppercase">
+                        {usuario.nombre.charAt(0)}
+                      </span>
+                    </div>
+                    <div>
+                      <p class="text-sm font-medium text-gray-900">{usuario.nombre}</p>
+                      <p class="text-xs text-gray-500">{usuario.sociedad}</p>
+                    </div>
+                  </div>
+                  <div class="text-right">
+                    <p class="text-sm font-semibold text-blue-600">
+                      {usuario.noticias_count} noticias
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <!-- Actividad por Mes -->
+        <div class="bg-white shadow rounded-lg">
+          <div class="px-6 py-4 border-b border-gray-200">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">
+              Actividad por Mes (Últimos 6 meses)
+            </h3>
+          </div>
+          <div class="p-6">
+            <div class="space-y-4">
+              {actividadConPorcentajes.map((item) => (
+                <div class="flex items-center justify-between">
+                  <span class="text-sm font-medium text-gray-900 capitalize">{item.mes}</span>
+                  <div class="flex items-center space-x-3">
+                    <div class="w-32 bg-gray-200 rounded-full h-2">
+                      <div 
+                        class="bg-blue-600 h-2 rounded-full transition-all duration-500"
+                        style={`width: ${item.porcentaje}%`}
+                      ></div>
+                    </div>
+                    <span class="text-sm font-semibold text-blue-600 w-8 text-right">
+                      {item.cantidad}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Script para expandir/contraer sociedades -->
+  <script is:inline>
+    function toggleSociedad(id) {
+      const elemento = document.getElementById(id);
+      const icono = document.getElementById('icon-' + id.split('-')[1]);
+      
+      if (elemento.classList.contains('hidden')) {
+        elemento.classList.remove('hidden');
+        icono.style.transform = 'rotate(90deg)';
+      } else {
+        elemento.classList.add('hidden');
+        icono.style.transform = 'rotate(0deg)';
+      }
+    }
+  </script>
+</Layout>

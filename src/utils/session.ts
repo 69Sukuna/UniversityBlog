@@ -5,6 +5,7 @@ export function createSessionCookie(user: any): string {
     nombre: user.nombre,
     userName: user.userName,
     role: user.role,
+    socesId: user.socesId,    // <-- AÑADIR ESTA LÍNEA
   };
 
   return `session=${encodeURIComponent(JSON.stringify(sessionData))}; Path=/; HttpOnly; SameSite=Strict; Max-Age=86400`;

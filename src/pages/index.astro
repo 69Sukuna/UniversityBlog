@@ -27,11 +27,11 @@ const images = Object.values(modules)
 
 
 <Layout
-  title="Inicio - Mi App Astro"
+  title="OSCES - FNI"
   description="Bienvenido a mi aplicación construida con Astro y las mejores prácticas de desarrollo web"
 >
   <!-- Hero Section -->
-  <section class="bg-gradient-to-r from-blue-200 to-indigo-50 py-20">
+  <section class="bg-gradient-to-r from-blue-200 to-indigo-50 py-5">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center">
         <div class="flex justify-between items-center ">
@@ -58,12 +58,7 @@ const images = Object.values(modules)
              <Carousel images={images} /></Carousel>
           </div> 
         </div>
-
-
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <Button href="/about" variant="primary" size="lg"> Conocer más </Button>
-          <Button href="/blog" variant="secondary" size="lg"> Ver blog </Button>
-        </div>
+        
       </div>
     </div>
   </section>
@@ -77,7 +72,7 @@ const images = Object.values(modules)
           Construida con tecnologías modernas y siguiendo las mejores prácticas
         </p>
       </div>
-      <div class="text-center mb-16">
+      <div class="text-center mb-16" id="direc">
         <h2 class="text-3xl font-bold text-gray-900 mb-4">Nuestras Autoridades</h2>
         <div class="flex flex-wrap justify-center gap-6">
           <FlipCard 
@@ -110,10 +105,15 @@ const images = Object.values(modules)
           <FlipCard 
             name="Ph.D. Ing. Amilkar Ernesto Ilaya Ayza"
             role="Director de Dirección de Postgradi e Investigación Científica F.N.I. (DPIC - FNI)"
-            biografia=""
+            biografia={[
+                  "El Dr.Ing. Amilkar Ernesto Ilaya Ayza es ingeniero civil de la Facultad Nacional de Ingeniería de la Universidad Técnica de Oruro y Doctor en Ingeniería del Agua y Medioambiental de la Universidad Politécnica de Valencia (España), donde su tesis doctoral fue distinguida con la calificación máxima: sobresaliente, “Cum Laude”. Su formación incluye además tres maestrías relacionadas con la gestión del agua, hidráulica y tecnologías de protección ambiental. También posee una especialidad en sistemas de posicionamiento por satélite (GPS), realizada en la Universidad Politécnica de Madrid, y diplomados en Sistemas de Información Geográfica (SIG) y en Administración Pedagógica del Aula en Educación Superior.",
+                  "Es autor de varios artículos científicos publicados en revistas científicas de alto impacto, contribuyendo al avance del conocimiento en áreas como el diseño de redes hidráulicas, el suministro intermitente de agua y la optimización de sistemas de distribución. Ha presentado sus investigaciones en congresos internacionales realizados en España, Francia, México, Brasil, Cuba y Perú, y participa como revisor en prestigiosas revistas científicas internacionales.",
+                  "Ha trabajado en el diseño, construcción, supervisión y fiscalización de obras hidráulicas, sistemas de agua potable, alcantarillado y riego, principalmente. Asimismo, formó parte del personal técnico del Servicio Local de Acueductos y Alcantarillado de Oruro. ",
+                  "Tiene una participación activa en el desarrollo de normas técnicas y en la formación de profesionales en ingeniería civil. Fue docente en la Universidad Mayor de San Andrés (La Paz) y la Universidad Católica Boliviana San Pablo (La Paz). Actualmente es profesor de postgrado y docente de la Carrera de Ingeniería Civil y del Departamento de Matemáticas de la Facultad Nacional de Ingeniería de la Universidad Técnica de Oruro.",
+            ]}
             email=""
             phone=""
-            photo=""
+            photo="src/Image/Im_Inicio/Depic.jpeg"
 
           />
           <FlipCard 
@@ -129,7 +129,7 @@ const images = Object.values(modules)
 
         
       </div>
-      <div class="text-center mb-16">
+      <div class="text-center mb-16" id="noticias">
         <h2 class="text-3xl font-bold text-gray-900 mb-4">Noticias</h2>
         <!-- Mostrar noticias de SisInf -->
         <CardsNotices noticias={noticiasSisInf} />

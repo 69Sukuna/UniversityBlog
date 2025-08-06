@@ -1,0 +1,342 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Button from '../../components/ui/Button.astro';
+import { BRAND } from 'astro:schema';
+import Carousel from '../../components/ui/Carousel.astro';
+import FlipCard from '../../components/ui/Target.astro';
+import ImageFocusGallery from '../../components/ui/ImageFocusGallery.astro';
+import CardsNotices from '../../components/ui/CardsNotices.astro';
+import { db, News, Usuarios } from 'astro:db';
+
+const items = [
+  {
+    img: '/src/Image/SocGeo/Logo_carrera1.png',
+    text: 'Carrera de Ing. Geológica',
+    text_URL: 'https://geologia.fni.uto.edu.bo/',
+  },
+  {
+    img: '/src/Image/SocGeo/Logo_Soc.png',
+    text: 'SOCEIG',
+    text_URL: 'https://www.facebook.com/share/14Dkzyq7NAP/',
+  },
+];
+// Obtener noticias de la base de datos
+const noticiasAll = await db.select().from(News);
+
+const noticias = noticiasAll.filter((noticia) => noticia.userId === 3);
+
+---
+
+<Layout
+  title="SOCEIG"
+  description="Bienvenido a mi aplicación construida con Astro y las mejores prácticas de desarrollo web"
+>
+  <!-- Hero Section -->
+  <section class="bg-gradient-to-r from-green-400 to-indigo-50 py-5">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center">
+        <div class="flex justify-between items-center">
+          <!-- Logo Izquierdo -->
+          <img src="/src/Image/UTO.png" alt="Logo izquierdo" class="w-30 h-auto" />
+          <h1 class="text-4xl md:text-4xl font-bold text-gray-900 mb-6">
+            <span style="color:#0808B4"
+              >Sociedad Científica de Estudiantes <br /> de Ingeniería Geológica</span
+            >
+          </h1>
+          <!-- Logo derecho -->
+          <img src="/src/Image/FNI.png" alt="Logo derecho" class="w-30 h-auto" />
+        </div>
+        <div class="flex gap-8 py-10">
+          <div class="w-1/2 flex-none">
+            <h4 class="text-5xl text-[#0808B4] font-bold text-justify px-4 mb-4">
+              Nuestra Historia
+            </h4>
+            <p class="text-xl text-[#0808B4] text-justify px-4 leading-relaxed">
+              La Sociedad Científica de Estudiantes de Ingeniería Geológica (SOCEIG) fue fundada 
+              el 17 de octubre de 2017, con el objetivo de fomentar la investigación científica, 
+              la participación académica y la formación integral de los estudiantes de la carrera de 
+              Ingeniería Geológica.
+            </p>
+            <p class="text-xl text-[#0808B4] text-justify px-4 leading-relaxed">
+              La iniciativa de creación surgió bajo el liderazgo del estudiante Juan Villazón, quien 
+              asumió como primer presidente de la sociedad. Lo acompañaron en la directiva fundadora 
+              Anabel Choque como vicepresidenta y Andrés Cartagena como vocal. Esta primera gestión sentó 
+              las bases organizativas y académicas de la sociedad, promoviendo actividades de investigación y 
+              divulgación científica.
+            </p>
+            <p class="text-xl text-[#0808B4] text-justify px-4 leading-relaxed">
+              El primer tutor académico de SOCEIG fue el Ing. Willy Camargo, quien desempeñó un papel 
+              clave en el asesoramiento y guía de los primeros proyectos científicos impulsados por la sociedad.
+            </p>
+            <p class="text-xl text-[#0808B4] text-justify px-4 leading-relaxed">
+              Entre los miembros fundadores que acompañaron este importante hito se destacan:
+            </p>
+            <p class="text-xl text-[#0808B4] text-justify px-4 leading-relaxed">
+              Wara Arce Checa, Dayana Capriles, Juaquín Ramos, Benjamín Pacolla, quienes contribuyeron activamente 
+              al desarrollo de las primeras iniciativas y al fortalecimiento institucional de la sociedad.
+            </p>
+            <p class="text-xl text-[#0808B4] text-justify px-4 leading-relaxed">
+              Desde su creación hasta el año 2024, SOCEIG ha estado liderada por cuatro presidentes, cada 
+              uno dejando su huella en el crecimiento académico y científico de la organización. Gracias a 
+              sus gestiones, SOCEIG ha consolidado su presencia en congresos estudiantiles, proyectos de 
+              investigación, talleres, conferencias y salidas de campo, posicionándose como un referente 
+              en el ámbito académico de la carrera de Ingeniería Geológica.
+            </p>
+            <p class="text-xl text-[#0808B4] text-justify px-4 leading-relaxed">
+              A lo largo de los años, la sociedad ha mantenido su compromiso con la excelencia, el trabajo 
+              colaborativo y el desarrollo profesional de sus miembros, fortaleciendo los lazos entre la 
+              comunidad estudiantil y el quehacer científico.
+            </p>
+            <p class="text-xl text-[#0808B4] text-justify px-4 leading-relaxed">
+              SOCEIG continúa siendo un espacio dinámico, participativo y formativo para los futuros 
+              profesionales de la geología, con una visión clara: contribuir al desarrollo científico 
+              del país desde la academia.
+            </p>
+          </div>
+          <div class="w-1/2 flex-none">
+            <ImageFocusGallery items={items} textColor="text-[#E20E1C]"  columnsPerRow={2}/>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="py-20 bg-white">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8" id="noticias">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">Noticias</h2>
+        <!-- Mostrar noticias de SisInf -->
+        <CardsNotices noticias={noticias} />
+      </div>
+
+      <div class="text-center mb-16" id="direc">
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">Nuestra Directiva</h2>
+        <div class="flex flex-wrap justify-center gap-6">
+          <FlipCard
+            name="Univ. Leandro Reynaga Saul"
+            role="Presidente de la Sociedad Científica de SOCEIG"
+            email="saulreynaga4@gmail.com"
+            phone="+591 74148913"
+            photo="/src/Image/SocGeo/Presi.png"
+          />
+          <FlipCard
+            name="Univ. Colque Colque Ernesto"
+            role="Vicepresidente de la Sociedad Científica SOCEIG"
+            email="Colque1001@gmail.com"
+            phone="+591 75709275"
+            photo="/src/Image/SocGeo/Vice.jpeg"
+          />
+          <FlipCard
+            name="Univ. Pacheco Quenta Prudencio Carlos"
+            role="Secretario General de la Sociedad Científica SOCEIG"
+            email="lankpachecoquenta2023@gmail.com"
+            phone="+591 67243332"
+            photo="/src/Image/SocGeo/General.jpeg"
+
+          />
+          <FlipCard
+            name="Univ. Torrico Flores Paola Angeles"
+            role="Secretaria de Hacienda de la Sociedad Científica SOCEIG"
+            email="ptaola@gmail.com"
+            phone="+591 72475575"
+            photo="/src/Image/SocGeo/Hacienda.jpeg"
+
+          />
+          <FlipCard
+            name="Univ. Cruz Chura Mel"
+            role="Secretaria de Difusión de la Sociedad Científica SOCEIG"
+            email="cruzmel0504@gmail.com"
+            phone="+591 71850689"
+            photo="/src/Image/SocGeo/Difusion.jpeg"
+
+          />
+          <FlipCard
+            name="Univ. Padilla Mamani Romina"
+            role="Secretaria de Actas de la Sociedad Científica SOCEIG"
+            email="rominapadilla2002@gmail.com"
+            phone="+591 69571740"
+            photo="/src/Image/SocGeo/Actas.jpeg"
+
+          />
+          <FlipCard
+            name="Univ. Coria Alegria Lizbet Sarai"
+            role="Secretaria de Investigación de la Sociedad Científica SOCEIG"
+            email="lizbetcoriaalegria@gmail.com"
+            phone="+591 68277416"
+            photo="/src/Image/SocGeo/Investigacion.jpeg"
+          />
+          <FlipCard
+            name="Univ. Heredia Alban Manuel Jefferson"
+            role="Vocal de la Sociedad Científica SOCEIG"
+            email="herediam@gmail.com"
+            phone="+591 78601465"
+            photo="/src/Image/SocGeo/Vocal.jpeg"
+          />
+        </div>
+      </div>
+
+      <div class="bg-purple-50 py-16 px-6">
+        <div class="max-w-5xl mx-auto text-center">
+          <h2 class="text-4xl font-bold text-purple-900 mb-10">Misión, Visión y Objetivos </h2>
+          <div class="grid md:grid-cols-2 gap-8">
+            
+            <!-- Misión -->
+            <div class="bg-white p-8 rounded-xl shadow-md border-t-4 border-purple-300">
+              <h3 class="text-2xl font-semibold text-purple-700 mb-4">Nuestra Misión</h3>
+              <p class="text-gray-700 leading-relaxed text-justify">
+                Fomentar el intercambio de conocimiento; facilitar la comunicación y el intercambio 
+                de ideas entre estudiantes de la carrera de Ingeniería Geológica para la investigación y 
+                desarrollo de proyectos relacionados a prospección, exploración, hidrogeología, geología 
+                ambiental, entre otros.
+              </p>
+            </div>
+            
+            <!-- Visión -->
+            <div class="bg-white p-8 rounded-xl shadow-md border-t-4 border-purple-300">
+              <h3 class="text-2xl font-semibold text-purple-700 mb-4">Nuestra Visión</h3>
+              <p class="text-gray-700 leading-relaxed text-justify">
+                Ser un capitulo líder en el ámbito de la investigación y aprendizaje dentro la sociedad 
+                científicas en la facultad nacional de ingeniería para el desarrollo y cooperación dentro y 
+                fuera de la misma, siendo de servicio a la comunidad en el campo de la geología aplicada a la 
+                ingeniería.
+              </p>
+            </div>
+
+            <!-- Objetivos -->
+            <div class="bg-white p-8 rounded-xl shadow-md border-t-4 border-purple-400 md:col-span-2 max-w-3xl mx-auto">
+            <h3 class="text-3xl font-bold text-purple-700 mb-6 text-center">Nuestros Objetivos</h3>
+            <ul class="list-disc list-outside pl-6 space-y-4 text-gray-800 text-justify leading-relaxed">
+                <li>Fomentar y promover las actividades de investigación científica y tecnológica de los estudiantes de la carrera.</li>
+                <li>Apoyar y organizar la realización de actividades de capacitación de los miembros de la sociedad y los estudiantes.</li>
+                <li>Coordinar y asesorar en la elaboración y ejecución de trabajos de investigación aplicando la metodología científica.</li>
+                <li>Apoyar la realización de actividades de difusión sobre las publicaciones científicas realizadas.</li>
+                <li>Gestar e implementar la organización de talleres, seminarios, debates que apoyen y fortalezcan el desarrollo académico en la investigación científica de los y las estudiantes.</li>
+            </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="text-center">
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">¿Cómo ser parte?</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="text-center p-6">
+            <div
+              class="w-12 h-12 bg-blue-100 rounded-lg mx-auto mb-4 flex items-center justify-center"
+            >
+              <svg
+                class="w-12 h-12 text-blue-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+                ></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 3v6h6"
+                ></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6"
+                ></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17h6"
+                ></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 mb-2">Matricula Universitaria</h3>
+            <p class="text-gray-600">
+              Presenta tu matricula del semestre actual, la cual se puede descargar de:
+              <br /><a class="text-blue-600 hover:underline" href="https://matricula.uto.edu.bo/">
+                Consulta Matricula U.T.O.</a
+              >
+            </p>
+          </div>
+
+          <div class="text-center p-6">
+            <div
+              class="w-12 h-12 bg-green-100 rounded-lg mx-auto mb-4 flex items-center justify-center"
+            >
+              <svg
+                class="w-12 h-12 text-blue-600"
+                fill="none"
+                viewBox="0 0 64 64"
+                stroke="currentColor"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <!-- Borde del carnet -->
+                <rect
+                  x="4"
+                  y="8"
+                  width="56"
+                  height="48"
+                  rx="4"
+                  stroke-width="2"
+                  stroke="currentColor"
+                  fill="none"></rect>
+                <!-- Silueta del usuario -->
+                <circle cx="20" cy="28" r="6" stroke-width="2" stroke="currentColor" fill="none"
+                ></circle>
+                <path
+                  d="M14 40c0-4 4-6 6-6s6 2 6 6"
+                  stroke-width="2"
+                  stroke="currentColor"
+                  fill="none"></path>
+                <!-- Líneas de texto -->
+                <line x1="34" y1="22" x2="50" y2="22" stroke-width="2" stroke="currentColor"></line>
+                <line x1="34" y1="30" x2="50" y2="30" stroke-width="2" stroke="currentColor"></line>
+                <line x1="34" y1="38" x2="50" y2="38" stroke-width="2" stroke="currentColor"></line>
+              </svg>
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </div>
+              <h3 class="text-xl font-semibold text-gray-900 mb-2">
+                Carnet de Identidad <br /> o <br />Carnet Universitario
+              </h3>
+              <p class="text-gray-600">
+                Cualquiera de los documento para poder identificarte junto con la matricula
+              </p>           
+          </div>
+            <div class="text-center p-6">
+              <div
+                class="w-12 h-12 bg-purple-100 rounded-lg mx-auto mb-4 flex items-center justify-center"
+              >
+                <svg
+                  class="w-12 h-12 text-blue-600"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <rect
+                    x="3"
+                    y="3"
+                    width="18"
+                    height="18"
+                    rx="2"
+                    stroke-width="2"
+                    stroke="currentColor"
+                    fill="none"></rect>
+                  <line x1="7" y1="8" x2="17" y2="8" stroke-width="2" stroke="currentColor"></line>
+                  <line x1="7" y1="12" x2="17" y2="12" stroke-width="2" stroke="currentColor"></line>
+                  <line x1="7" y1="16" x2="13" y2="16" stroke-width="2" stroke="currentColor"></line>
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold text-gray-900 mb-2">Formulario de Inscripcion</h3>
+              <p class="text-gray-600">
+                Formulario de no participación de alguna entidad políitica y/o partidaria de algun
+                centro facultativo o de carrera
+                <br /><a class="text-blue-600 hover:underline" href="https://docs.google.com/spreadsheets/d/1FtsuWQa7_OlWuXJzL_LDw1zUMV1zT7FC/edit?usp=drive_link&ouid=104725137215055273039&rtpof=true&sd=true">
+                  Formulario de Inscripcion</a
+                >
+              </p>
+            </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

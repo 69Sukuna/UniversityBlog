@@ -12,18 +12,18 @@ const items = [
   {
     img: '/src/Image/SocCiv/Logo_carrera1.png',
     text: 'Carrera de Ing. Civil',
-    text_URL: 'https://portal2.sistemas.edu.bo/',
+    text_URL: 'https://www.facebook.com/p/Ingenier%C3%ADa-Civil-FNI-Oficial-61555386868039/',
   },
   {
     img: '/src/Image/SocCiv/Logo_Soc.png',
     text: 'So.C.E.I.C.',
-    text_URL: 'https://portal2.sistemas.edu.bo/',
+    text_URL: 'https://www.facebook.com/profile.php?id=61564625678940',
   },
 ];
 // Obtener noticias de SisInf desde la base de datos
 const noticiasAll = await db.select().from(News);
 
-const noticiasSisInf = noticiasAll.filter((noticia) => noticia.userId === 3);
+const noticias = noticiasAll.filter((noticia) => noticia.userId === 3);
 
 ---
 
@@ -32,7 +32,7 @@ const noticiasSisInf = noticiasAll.filter((noticia) => noticia.userId === 3);
   description="Bienvenido a mi aplicación construida con Astro y las mejores prácticas de desarrollo web"
 >
   <!-- Hero Section -->
-  <section class="bg-gradient-to-r from-blue-600 to-indigo-50 py-20">
+  <section class="bg-gradient-to-r from-blue-600 to-indigo-50 py-5">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center">
         <div class="flex justify-between items-center">
@@ -67,14 +67,14 @@ const noticiasSisInf = noticiasAll.filter((noticia) => noticia.userId === 3);
 
   <!-- Features Section -->
   <section class="py-20 bg-white">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8" id="noticias">
       <div class="text-center mb-16">
         <h2 class="text-3xl font-bold text-gray-900 mb-4">Noticias</h2>
         <!-- Mostrar noticias de SisInf -->
-        <CardsNotices noticias={noticiasSisInf} />
+        <CardsNotices noticias={noticias} />
       </div>
 
-      <div class="text-center mb-16">
+      <div class="text-center mb-16" id="direc">
         <h2 class="text-3xl font-bold text-gray-900 mb-4">Nuestra Directiva</h2>
         <div class="flex flex-wrap justify-center gap-6">
           <FlipCard

@@ -22,7 +22,7 @@ const items = [
   {
     img: '/src/Image/SocMec/Logo_Soc2.png',
     text: 'SIDDFAC',
-    text_URL: '/sociedades/SISinf',
+    text_URL: '/sociedades/SIDDFAC',
   },
   {
     img: '/src/Image/SocMec/Logo_Soc3.png',
@@ -33,7 +33,7 @@ const items = [
 // Obtener noticias de la base de datos
 const noticiasAll = await db.select().from(News);
 
-const noticiasSisInf = noticiasAll.filter((noticia) => noticia.userId === 3);
+const noticias = noticiasAll.filter((noticia) => noticia.userId === 3);
 
 
 //carrusell
@@ -54,7 +54,7 @@ const images = Object.values(modules)
   description="Bienvenido a mi aplicación construida con Astro y las mejores prácticas de desarrollo web"
 >
   <!-- Hero Section -->
-  <section class="bg-gradient-to-r from-red-500 to-indigo-50 py-20">
+  <section class="bg-gradient-to-r from-red-500 to-indigo-50 py-5">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center">
         <div class="flex justify-between items-center">
@@ -62,7 +62,7 @@ const images = Object.values(modules)
           <img src="/src/Image/UTO.png" alt="Logo izquierdo" class="w-30 h-auto" />
           <h1 class="text-4xl md:text-4xl font-bold text-gray-900 mb-6">
             <span style="color:#000000"
-              >Sociedad Científica de Estudiantes de<br /> Ingeniería Mecánica Electromecanica Mecatrónica</span
+              >Sociedad Científica de Estudiantes de<br /> Ingeniería Mecánica Electromecánica Mecatrónica</span
             >
           </h1>
           <!-- Logo derecho -->
@@ -130,19 +130,31 @@ const images = Object.values(modules)
 
   <!-- Features Section -->
   <section class="py-20 bg-white">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8" id="noticias">
       <div class="text-center mb-16">
         <h2 class="text-3xl font-bold text-gray-900 mb-4">Noticias</h2>
         <!-- Mostrar noticias de SisInf -->
-        <CardsNotices noticias={noticiasSisInf} />
+        <CardsNotices noticias={noticias} />
       </div>
 
-      <div class="text-center mb-16">
+      <div class="text-center mb-16" id="direc">
         <h2 class="text-3xl font-bold text-gray-900 mb-4">Nuestra Directiva</h2>
         <div class="flex flex-wrap justify-center gap-6">
           <FlipCard
             name="Univ. Amanda Lorena Main Hurtado"
             role="Presidente de la Sociedad Científica SCEIMEM"
+            biografia={[
+              "Estudiante de la carrera de Ingeniería Electromecánica en la FNI, y Mecánica Industrial en el Instituto Tecnológico IAI.",
+              "Técnico Medio en Programación y tiene título en provisión nacional en técnico superior en Análisis de Sistemas.",
+              "Actualmente trabaja de diseñador gráfico independiente y videografo.",
+              "Anteriormente trabajo en producción audiovisual y camarógrafo en el programa 'El carnavalero'.",
+              "Ha sido parte de diferentes grupos de investigación científica y voluntariado como entre ellos el Planetario Max Schreier de La Paz, Grupo Armstrong's Quarks, Astro Chaska UMSS.",
+              "Ha sido socio fundador de la Sociedad Científica Estudiantil de Ingeniería de Sistemas e Ingeniería Informática SOCIEISII.",
+              "También fundador principal junto al Univ. Osmar David Paredes Mamani de la Sociedad de Investigación Científica Estudiantil del Instituto Tecnológico IAI SOCITEC-IAI.",
+              "Tiene experiencia como presidente del Club Oruro Mecatrónica COM, Sociedad de Investigación en Ingeniería Energética SIIE, Sociedad Científica Estudiantil de Ingeniería Mecánica Electromecanica Mecatrónica SCEIMEM.",
+              "También como Secretaria de Proyectos en la Organización de Sociedades Científicas Estudiantiles de la FNI OSCE-FNI y recientemente fue invitada a ser parte de la Asociación de Sociedades Científicas Estudiantiles de la UTO ASCE-UTO como Secretaria de Proyectos.",
+              "Cómo actividades extracurriculares ha sido parte de la Orquesta Filarmónica de Oruro, el Coro Polifónico de la UTO, Cold Land Power Metal Sinfónico, Laboratorio Audiovisual de Cine, Elenco Teatral Carpediem Oruro y Conjunto Universitario SURI UTO."
+            ]}
             email=""
             phone=""
             photo="/src/Image/SocMec/Presi.jpg"
@@ -166,7 +178,14 @@ const images = Object.values(modules)
           <FlipCard
             name="Univ. Osmar David Paredes Mamani"
             role="Secretario Académico de la Sociedad Científica SCEIMEM"
-            
+            biografia={[
+              "Estudiante de la carrera de Ingeniería Mecánica ",
+              "Técnico Superior en Mecánica ",
+              "Tiene experiencia como soldador y es músico multi instrumentista de música rock y subgéneros.",
+              "Tiene experiencia como Secretario de Proyectos en la Sociedad de Investigación en Ingeniería Energética SIIE, Secretario Académico en la Sociedad Científica Estudiantil de Ingeniería Mecánica Electromecanica Mecatrónica SCEIMEM, Vicepresidente de la Organización de Sociedades Científicas Estudiantiles de la FNI OSCE-FNI y actualmente fue invitado a ser parte de la Asociación de Sociedades Científicas Estudiantiles de la UTO ASCE-UTO como Secretario de Producción Industrial.",
+              "Ha sido fundador principal junto a la Univ. Amanda Lorena Main Hurtado en la Sociedad de Investigación Científica Estudiantil del Instituto Tecnológico IAI.",
+              "Actualmente trabaja de forma independiente como organizador de eventos de música rock."
+            ]}
             email=""
             phone=""
             photo="/src/Image/SocMec/Academico.jpg"
@@ -175,6 +194,17 @@ const images = Object.values(modules)
           <FlipCard
             name="Univ. Jorge Luis Helguero Velasquez"
             role="Secretario de Hacienda de la Sociedad Científica SCEIMEM"
+            biografia={[
+              "Trayectoria:",
+              "-Bachiller Colegio Nacional Simon Bolivar 2018",
+              "-Secretario General de la Sociedad Científica Estudiantil del Departamento de Física de Ciclo Básico (SCEDFCB) 2023-2024",
+              "-Secretario de Hacienda de la Organización de Sociedades Científicas Estudiantiles de la FNI (OSCE-FNI) 2023-2025",
+              "-Secretario de Hacienda de la Sociedad Científica Estudiantil de Ingenieria Mecánica Electromecánica Mecatrónica (SCEIMEM) 2024-2025",
+              "-Auxiliar invitado en la asignatura Mecánica de Fluidos II MEC 2249   gestion 2/2023",
+              "Actualmente ocupa:",
+              "-Secretario de Hacienda de la Organización de Sociedades Científicas Estudiantiles de la FNI (OSCE-FNI) 2023-2025",
+              "-Secretario de Hacienda de la Sociedad Científica Estudiantil de Ingenieria Mecánica Electromecánica Mecatrónica (SCEIMEM) 2024-2025"
+            ]}
             email="jorgehelguero410@gmail.com "
             phone="+591 62764787"
             photo="/src/Image/SocMec/Hacienda.jpeg"

@@ -1,38 +1,123 @@
 ---
-const { name, role, biografia, email, phone, photo, } = Astro.props;
+const { name, role, biografia, email, phone, photo } = Astro.props;
+const tieneBio = Array.isArray(biografia) ? biografia.length > 0 : !!biografia;
 ---
-
-<div class="w-[300px] h-[400px] perspective cursor-pointer">
-  <div class="relative w-full h-full transition-transform duration-700 transform-style-preserve-3d hover:rotate-y-180">
-    <!-- Frente -->
-    <div class="absolute w-full h-full backface-hidden bg-[#B8D9FF] rounded-xl shadow-lg p-4 flex flex-col items-center justify-center">
-      {photo ? (
-        <img src={photo} class="w-50 h-50 rounded-full mb-4 object-cover" />
-      ) : (
-        <div class="w-50 h-50 rounded-full mb-4 bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white text-2xl font-bold">
-          <svg class="avatar" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" fill="#ccc">
-            <circle cx="32" cy="20" r="12"/>
-            <path d="M32 36c-12 0-22 6-22 14v6h44v-6c0-8-10-14-22-14z"/>
-          </svg>
-        </div>
-      )}
-      <h2 class="text-xl font-bold">{name}</h2>
-      <p class="text-sm text-gray-500">{role}</p>
+<div
+  class={`relative group cursor-pointer transition-all duration-500`}
+>
+  <div
+    class={`${tieneBio ? 'w-[300px] h-[400px] group-hover:w-[400px] group-hover:h-[500px]' : 'w-[300px] h-[400px]'} perspective transition-all duration-500`}
+  >
+    <div
+      class={`relative w-full h-full transition-transform duration-700 transform-style-preserve-3d group-hover:rotate-y-180 rounded-xl`}
+    >
+      <!-- Frente -->
+      <div
+        class={`absolute w-full h-full backface-hidden rounded-xl shadow-lg p-4 flex flex-col items-center justify-center transition-colors duration-500 bg-[#B8D9FF]`}
+      >
+        {photo ? (
+          <img
+            src={photo}
+            class="w-50 h-50 rounded-full mb-4 object-cover transition-transform duration-500"
+          />
+        ) : (
+          <div class="w-24 h-24 rounded-full mb-4 bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white text-2xl font-bold">
+            <svg
+              class="avatar w-12 h-12"
+              viewBox="0 0 64 64"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="#ccc"
+            >
+              <circle cx="32" cy="20" r="12" />
+              <path
+                d="M32 36c-12 0-22 6-22 14v6h44v-6c0-8-10-14-22-14z"
+              />
+            </svg>
+          </div>
+        )}
+        <h2 class="text-xl font-bold text-center">{name}</h2>
+        <p class="text-sm text-gray-500 text-center">{role}</p>
+      </div>
+      
+      <!-- Reverso -->
+      <div class="absolute w-full h-full backface-hidden bg-[#023059] text-white rounded-xl shadow-lg p-3 transform rotate-y-180 flex flex-col justify-start">
+        {tieneBio ? (
+          <div class="flex flex-col h-full">
+            <!-- Header con foto y nombre -->
+            <div class="flex items-center gap-4 mb-6 pb-4 border-b border-white/20">
+              {photo ? (
+                <img
+                  src={photo}
+                  class="w-20 h-20 rounded-full object-cover"
+                />
+              ) : (
+                <div class="w-20 h-20 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white text-lg font-bold">
+                  <svg
+                    class="avatar w-10 h-10"
+                    viewBox="0 0 64 64"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="#ccc"
+                  >
+                    <circle cx="32" cy="20" r="12" />
+                    <path
+                      d="M32 36c-12 0-22 6-22 14v6h44v-6c0-8-10-14-22-14z"
+                    />
+                  </svg>
+                </div>
+              )}
+              <div>
+                <h3 class="text-xl font-bold">{name}</h3>
+                <p class="text-base text-blue-200">{role}</p>
+              </div>
+            </div>
+            
+            <!-- Biografía -->
+            <div class="flex-1 overflow-y-auto pr-2">
+              {(Array.isArray(biografia) ? biografia : [biografia]).map((texto) => (
+                <p class="mb-4 text-base text-justify leading-relaxed">{texto}</p>
+              ))}
+            </div>
+            
+            <!-- Contacto -->
+            <div class="mt-6 pt-4 border-t border-white/20">
+              {email? <p class="text-base">✉️ {email}</p> : ''}
+              {phone? <p class="text-base">📞 {phone}</p> : ''}
+            </div>
+          </div>
+        ) : (
+          <div class="flex flex-col justify-center items-center h-full">
+             {photo ? (
+                <img
+                  src={photo}
+                  class="w-20 h-20 rounded-full object-cover"
+                />
+              ) : (
+                <div class="w-20 h-20 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white text-lg font-bold">
+                  <svg
+                    class="avatar w-10 h-10"
+                    viewBox="0 0 64 64"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="#ccc"
+                  >
+                    <circle cx="32" cy="20" r="12" />
+                    <path
+                      d="M32 36c-12 0-22 6-22 14v6h44v-6c0-8-10-14-22-14z"
+                    />
+                  </svg>
+                </div>
+              )}
+            <div class="text-center mb-6">
+              <h3 class="text-xl font-bold mb-2">{name}</h3>
+              <p class="text-blue-200">{role}</p>
+            </div>
+            <div class="space-y-3">
+              {email? <p class="text-base">✉️ {email}</p> : ''}
+              {phone? <p class="text-base">📞 {phone}</p> : ''}
+            </div>
+          </div>
+        )}
+      </div>
     </div>
-
-    <!-- Reverso -->
-<div class="absolute w-full h-full backface-hidden bg-[#023059] text-white rounded-xl shadow-lg p-4 transform rotate-y-180 flex flex-col justify-center items-center">
-  {biografia && (
-    <p class="mb-2 text-justify">{biografia}</p>
-  )}
-  {email && (
-    <p class="mb-2">✉️ Correo Electrónico: {email}</p>
-  )}
-
-  {phone && (
-    <p class="mb-2">📞 Celular: {phone}</p>
-  )}
-</div>
   </div>
 </div>
 

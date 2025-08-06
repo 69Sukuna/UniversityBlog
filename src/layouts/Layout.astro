@@ -61,6 +61,15 @@ import Footer from '../components/layout/Footer.astro';
     <main class="flex-1">
       <slot />
     </main>
-    <Footer />
+    
+    <!-- Footer con ID para scroll -->
+    <div id="enlaces" class="scroll-section">
+      <Footer />
+    </div>
+    
+    <!-- Sección adicional si necesitas un footer separado -->
+    <div id="footer" class="scroll-section">
+      <!-- Aquí puedes poner contenido adicional de contacto si lo necesitas -->
+    </div>
   </body>
 </html>
