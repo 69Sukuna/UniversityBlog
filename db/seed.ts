@@ -26,7 +26,7 @@ export default async function () {
   // SEGUNDO: Insertar los usuarios (ahora que las sociedades existen)
   await db.insert(Usuarios).values([
     {
-      nombre: 'Jose',
+      nombre: 'Jose Daniel',
       correo: 'a@a.com',
       userName: 'Admin',
       password: hashedAdmin,
@@ -58,18 +58,27 @@ export default async function () {
       titulo: 'Noticia 1',
       contenido: 'Contenido de la noticia 1',
       link: '',
-      linkFacebook: 'https://facebook.com/',
+      link2: 'https://facebook.com/',
       fecha: new Date('2023-01-01'),
-      socesId: 1, // OSCE
+      socesId: 2, 
     },
     {
       userId: 2, // Maria
       titulo: 'Noticia 2',
       contenido: 'Contenido de la noticia 2',
       link: 'https://ejemplo.com',
-      linkFacebook: 'https://facebook.com/',
+      link2: 'https://facebook.com/',
       fecha: new Date('2023-02-01'),
       socesId: 2, // So.C.E. Ing. Minas
+    },
+    {
+      userId: 3, // Prueba
+      titulo: 'Noticia 3',
+      contenido: 'Contenido de la noticia 3',
+      link: 'https://ejemplo.com',
+      link2: 'https://facebook.com/',
+      fecha: new Date('2023-02-01'),
+      socesId: 11, // So.C.E. Ing. de Sistemas e Ing. Informática
     },
   ]);
 }

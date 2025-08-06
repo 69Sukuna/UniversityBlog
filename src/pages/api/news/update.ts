@@ -19,6 +19,7 @@ export const POST: APIRoute = async ({ request, redirect }) => {
     const titulo = formData.get('titulo')?.toString();
     const contenido = formData.get('contenido')?.toString();
     const link = formData.get('link')?.toString() || '';
+    const link2 = formData.get('link2')?.toString() || '';
 
     if (!newsId || !titulo || !contenido) {
       return redirect(`/admin/news/${newsId}/edit?error=validation`);
@@ -28,6 +29,7 @@ export const POST: APIRoute = async ({ request, redirect }) => {
       titulo,
       contenido,
       link,
+      link2,
     };
 
     await db.update(News).set(updateData).where(eq(News.id, newsId));

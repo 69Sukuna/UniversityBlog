@@ -7,6 +7,7 @@ export interface User {
   userName: string;
   correo: string;
   role: string;
+  socesId: number; // Añadido para incluir socesId
 }
 
 export interface LoginCredentials {
@@ -45,6 +46,7 @@ export class AuthService {
         userName: user.userName,
         correo: user.correo,
         role: user.role,
+        socesId: user.socesId, // Aseguramos que socesId también se retorne
       };
     } catch (error) {
       console.error('Error validating user:', error);

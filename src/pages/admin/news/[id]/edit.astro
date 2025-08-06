@@ -62,6 +62,13 @@ const error = urlParams.get('error');
           value={noticiaEdit.titulo}
           required={true}
         />
+        
+        <TextArea
+          name="contenido"
+          label="Contenido"
+          value={noticiaEdit.contenido}
+          required={true}
+        />
 
         <Input
           name="link"
@@ -71,11 +78,12 @@ const error = urlParams.get('error');
           required={false}
         />
 
-        <TextArea
-          name="contenido"
-          label="Contenido"
-          value={noticiaEdit.contenido}
-          required={true}
+        <Input
+          name="link2"
+          type="text"
+          label="Enlace Relacionado (opcional)"
+          value={noticiaEdit.link2 || ''}
+          required={false}
         />
 
         <div class="mt-6 flex justify-end space-x-3">
