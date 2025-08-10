@@ -25,26 +25,26 @@ const formatearFecha = (fecha: Date | string) => {
 const extractGoogleDriveId = (url: string): string | null => {
   try {
     const cleanUrl = url.trim();
-    console.log('Extrayendo ID de Google Drive de:', cleanUrl);
+    //console.log('Extrayendo ID de Google Drive de:', cleanUrl);
     
     // Método 1: /file/d/ID/view, /file/d/ID/edit, etc.
     const fileMatch = cleanUrl.match(/\/file\/d\/([a-zA-Z0-9_-]{25,})/);
     if (fileMatch && fileMatch[1]) {
-      console.log('ID encontrado (método 1):', fileMatch[1]);
+     // console.log('ID encontrado (método 1):', fileMatch[1]);
       return fileMatch[1];
     }
     
     // Método 2: /open?id=ID
     const openMatch = cleanUrl.match(/\/open\?id=([a-zA-Z0-9_-]{25,})/);
     if (openMatch && openMatch[1]) {
-      console.log('ID encontrado (método 2):', openMatch[1]);
+      //console.log('ID encontrado (método 2):', openMatch[1]);
       return openMatch[1];
     }
     
     // Método 3: id=ID en cualquier lugar de la URL
     const idMatch = cleanUrl.match(/[?&]id=([a-zA-Z0-9_-]{25,})/);
     if (idMatch && idMatch[1]) {
-      console.log('ID encontrado (método 3):', idMatch[1]);
+     //console.log('ID encontrado (método 3):', idMatch[1]);
       return idMatch[1];
     }
     
@@ -53,25 +53,25 @@ const extractGoogleDriveId = (url: string): string | null => {
       const urlObj = new URL(cleanUrl);
       const idParam = urlObj.searchParams.get('id');
       if (idParam && idParam.length >= 25) {
-        console.log('ID encontrado (método 4):', idParam);
+        //console.log('ID encontrado (método 4):', idParam);
         return idParam;
       }
     } catch (e) {
-      console.log('Error parseando URL con new URL():', e);
+      //console.log('Error parseando URL con new URL():', e);
     }
     
     // Método 5: Para URLs de compartir: https://drive.google.com/file/d/ID/view?usp=sharing
     const shareMatch = cleanUrl.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]{25,})/);
     if (shareMatch && shareMatch[1]) {
-      console.log('ID encontrado (método 5):', shareMatch[1]);
+      //console.log('ID encontrado (método 5):', shareMatch[1]);
       return shareMatch[1];
     }
-    
-    console.log('No se pudo extraer ID de Google Drive');
+
+    //console.log('No se pudo extraer ID de Google Drive');
     return null;
     
   } catch (error) {
-    console.error('Error en extractGoogleDriveId:', error);
+    //console.error('Error en extractGoogleDriveId:', error);
     return null;
   }
 };
@@ -82,14 +82,14 @@ const analizarEnlace = (url: string) => {
 
   try {
     const cleanUrl = url.trim();
-    console.log('Analizando URL:', cleanUrl);
+   //console.log('Analizando URL:', cleanUrl);
     
     const urlObj = new URL(cleanUrl);
     const hostname = urlObj.hostname.toLowerCase();
 
     // Google Drive (MEJORADO)
     if (hostname === 'drive.google.com' || hostname.includes('drive.google.com')) {
-      console.log('URL de Google Drive detectada');
+     // console.log('URL de Google Drive detectada');
       const fileId = extractGoogleDriveId(cleanUrl);
       
       if (fileId) {
@@ -97,13 +97,13 @@ const analizarEnlace = (url: string) => {
         const directUrl = `https://drive.google.com/uc?export=view&id=${fileId}`;
         const thumbnailUrl = `https://drive.google.com/thumbnail?id=${fileId}&sz=w1000`;
         const alternativeUrl = `https://lh3.googleusercontent.com/d/${fileId}`;
-        
-        console.log('URLs de Google Drive generadas:', {
-          directUrl,
-          thumbnailUrl,
-          alternativeUrl,
-          fileId
-        });
+
+       // console.log('URLs de Google Drive generadas:', {
+       //   directUrl,
+       //   thumbnailUrl,
+       //   alternativeUrl,
+       //   fileId
+       // });
         
         return {
           tipo: 'imagen',

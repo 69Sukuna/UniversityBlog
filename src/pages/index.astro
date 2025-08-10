@@ -5,12 +5,15 @@ import { BRAND } from 'astro:schema';
 import Carousel from '../components/ui/Carousel.astro';
 import CardsNotices from '../components/ui/CardsNotices.astro';
 import FlipCard from '../components/ui/Target.astro';
-import { db, News, Usuarios } from 'astro:db';
+import { db, News, eq } from 'astro:db';
 
-// Obtener noticias de SisInf desde la base de datos
-const noticiasAll = await db.select().from(News);
+// Obtener noticias de la Soce con id = 1
+const noticias = await db
+  .select()
+  .from(News)
+  .where(eq(News.socesId, 1));
 
-const noticias = noticiasAll.filter((noticia) => noticia.userId === 1);
+
 
 //carrusell
 const modules = import.meta.glob('../Image/FilArt/*.{png,jpg,jpeg,gif}', { eager: true });
@@ -31,7 +34,7 @@ const images = Object.values(modules)
   description="Bienvenido a mi aplicación construida con Astro y las mejores prácticas de desarrollo web"
 >
   <!-- ======================= PRESENTACIÓN ======================= -->
-  <section class="bg-gradient-to-r from-blue-200 to-indigo-50 py-5">
+  <section class="bg-gradient-to-r from-blue-300 to-indigo-50 py-5">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center">
         <div class="flex justify-between items-center ">
@@ -47,7 +50,7 @@ const images = Object.values(modules)
 
         <div class="flex gap-6 items-center py-5">
           <div class="w-3/5 flex-none">
-            <p class="text-xl text-gray-600 text-justify px-4">
+            <p class="text-xl text-gray-800 text-justify px-4">
               Las sociedades científicas contribuyen al desarrollo estudiantil y al desarrollo profesional
               forjando jóvenes con ganas de aprender y que tengan la valentía de sobresalir entre todos los demás.
               <br><br>Por ello, la Facultad Nacional de Ingeniería de la Universidad Técnica de Oruro comprende con 11 
@@ -151,61 +154,18 @@ const images = Object.values(modules)
   </section>
 
   <!-- ======================= NOTICIAS ======================= -->
-<section class="bg-white py-10 px-4 sm:px-6 lg:px-8" id="noticias">
-  <div class="flex flex-wrap gap-6 items-start">
-    <h2 class="w-full text-center text-3xl font-bold text-gray-900 mb-4">
-      Noticias 1
-    </h2>
-    <!-- Mostrar noticias OSCE -->
-    <CardsNotices noticias={noticias} />
-  </div>
-</section>
 
-<!-- OPCIÓN 2: Contenedor centrado con máximo ancho -->
-<section class="bg-white py-10" id="noticias">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex flex-wrap gap-6 items-start">
-      <h2 class="w-full text-center text-3xl font-bold text-gray-900 mb-4">
-        Noticias 2
-      </h2>
-      <!-- Mostrar noticias OSCE -->
-      <CardsNotices noticias={noticias} />
-    </div>
-  </div>
-</section>
-
-<!-- OPCIÓN 3: Espaciado más generoso -->
 <section class="bg-white py-10 px-6 sm:px-12 lg:px-16" id="noticias">
   <div class="flex flex-wrap gap-6 items-start">
     <h2 class="w-full text-center text-3xl font-bold text-gray-900 mb-4">
-      Noticias 3
+      Noticias 
     </h2>
     <!-- Mostrar noticias OSCE -->
     <CardsNotices noticias={noticias} />
   </div>
 </section>
 
-<!-- OPCIÓN 4: Contenedor centrado con ancho específico -->
-<section class="bg-white py-10" id="noticias">
-  <div class="container mx-auto px-4">
-    <div class="flex flex-wrap gap-6 items-start">
-      <h2 class="w-full text-center text-3xl font-bold text-gray-900 mb-4">
-        Noticias 4
-      </h2>
-      <!-- Mostrar noticias OSCE -->
-      <CardsNotices noticias={noticias} />
-    </div>
-  </div>
-</section>
 
-<!-- OPCIÓN 5: Con bordes laterales visibles -->
-<section class="bg-white py-10 mx-4 border-l-4 border-r-4 border-gray-200 px-6" id="noticias">
-  <div class="flex flex-wrap gap-6 items-start">
-    <h2 class="w-full text-center text-3xl font-bold text-gray-900 mb-4">
-      Noticias 5
-    </h2>
-    <!-- Mostrar noticias OSCE -->
-    <CardsNotices noticias={noticias} />
-  </div>
-</section>
+
+
 </Layout>

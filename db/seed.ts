@@ -69,7 +69,7 @@ export default async function () {
       link: 'https://www.youtube.com/watch?v=hmlEPAKo0sY',
       link2: 'https://www.youtube.com/watch?v=hmlEPAKo0sY',
       fecha: new Date('2023-02-01'),
-      socesId: 1, // So.C.E. Ing. Minas
+      socesId: 1, 
     },
     {
       userId: 1, // Maria
@@ -78,16 +78,16 @@ export default async function () {
       link: 'https://drive.google.com/file/d/1Ge_7lHnqxX6n9hRHFoYz40LveDCUfRxt/view?usp=drive_link',
       link2: 'https://drive.google.com/file/d/1Ge_7lHnqxX6n9hRHFoYz40LveDCUfRxt/view?usp=drive_link',
       fecha: new Date('2023-02-01'),
-      socesId: 1, // So.C.E. Ing. Minas
+      socesId: 1, 
     },
     {
       userId: 3, // Prueba
-      titulo: 'Noticia 3',
+      titulo: 'minas',
       contenido: 'Contenido de la noticia 3',
       link: 'https://ejemplo.com',
       link2: 'https://facebook.com/',
       fecha: new Date('2023-02-01'),
-      socesId: 11, // So.C.E. Ing. de Sistemas e Ing. Informática
+      socesId: 2, 
     },
   ]);
 }

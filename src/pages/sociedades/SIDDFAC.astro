@@ -6,7 +6,13 @@ import Carousel from '../../components/ui/Carousel.astro';
 import FlipCard from '../../components/ui/Target.astro';
 import ImageFocusGallery from '../../components/ui/ImageFocusGallery.astro';
 import CardsNotices from '../../components/ui/CardsNotices.astro';
-import { db, News, Usuarios } from 'astro:db';
+import { db, News, eq } from 'astro:db';
+
+// Obtener noticias de la Soce con id = 1
+const noticias = await db
+  .select()
+  .from(News)
+  .where(eq(News.socesId, 7));
 
 // Galería de imágenes
 const items = [
@@ -21,11 +27,6 @@ const items = [
     text_URL: 'https://www.facebook.com/profile.php?id=61558676906051',
   },
 ];
-
-// Noticias desde la base de datos
-const noticiasAll = await db.select().from(News);
-
-const noticias = noticiasAll.filter((noticia) => noticia.userId === 3);
 
 
 ---
