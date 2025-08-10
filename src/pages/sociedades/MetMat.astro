@@ -17,7 +17,7 @@ const items = [
   {
     img: '/src/Image/SocMetMat/Logo_Soc.jpg',
     text: 'SOCE MET MAT',
-    text_URL: '',
+    text_URL: 'https://www.facebook.com/share/1DmkWMq78A/',
   },
 ];
 // Obtener noticias de la base de datos
@@ -31,7 +31,7 @@ const noticias = noticiasAll.filter((noticia) => noticia.userId === 3);
   title="SOCE MET MAT"
   description="Bienvenido a mi aplicación construida con Astro y las mejores prácticas de desarrollo web"
 >
-  <!-- Hero Section -->
+  <!-- ======================= PRESENTACIÓN ======================= -->
   <section class="bg-gradient-to-r from-red-600 to-indigo-50 py-5">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center">
@@ -56,17 +56,113 @@ const noticias = noticiasAll.filter((noticia) => noticia.userId === 3);
     </div>
   </section>
 
-  <!-- Features Section -->
-  <section class="py-20 bg-white">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8" id="noticias">
+  <!-- ======================= NOTICIAS ======================= -->
+  <section class="py-10 bg-white" id="noticias">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8" >
       <div class="text-center mb-16">
         <h2 class="text-3xl font-bold text-gray-900 mb-4">Noticias</h2>
         <!-- Mostrar noticias de SisInf -->
         <CardsNotices noticias={noticias} />
       </div>
+  </section>
+  
+  <!-- ======================= DIRECTIVA ======================= -->
+  <section class="py-10 bg-white" id="direc">
+    <div class="text-center mb-16" >
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">Nuestras Autoridades</h2>
+        <div class="flex flex-wrap justify-center gap-6">
+          <FlipCard 
+            name="M.Sc. Ing. Pedro Román Vallejos Mamani"
+            role="Director de la Dirección de Investigación Científica y Tecnolófica U.T.O. (DICyT)"
+            biografia=""
+            email=""
+            phone="+591 72462547"
+            photo="src/Image/Im_Inicio/Dicyt.jpg"
 
-      
-      
+          />
+          <FlipCard 
+            name="M.Sc. Ing. Ramiro Franz Aliendre García"
+            role="Decano de la Facultad Nacional de Ingeniería"
+            biografia="Especialista en control automatico de procesos y automatizacion industrial. Participó en pasantias de investigación en la Universidade Federal de Santa Catarina, Florianópolis, Brasil y la Technical University of Delft, Delft, Holanda. Disertante en varias universidades e industrias del extranjero. Consultor internacional en Control Automatico y Automatización Industrial. Par evaluador internacional de carreras de ingeniería."
+            email=""
+            phone=""
+            photo="src/Image/Im_Inicio/Decano.jpg"
+
+          /> 
+          <FlipCard 
+            name="M.Sc. Ing. Miguel Alejandro Ruíz"
+            role="Vicedecano de la Facultad Nacional de Ingeniería"
+            biografia=""
+            email=""
+            phone=""
+            photo="src/Image/Im_Inicio/Vicedecano.jpg"
+
+          />  
+          <FlipCard 
+            name="Ph.D. Ing. Amilkar Ernesto Ilaya Ayza"
+            role="Director de Dirección de Postgradi e Investigación Científica F.N.I. (DPIC - FNI)"
+            biografia={[
+                  "El Dr.Ing. Amilkar Ernesto Ilaya Ayza es ingeniero civil de la Facultad Nacional de Ingeniería de la Universidad Técnica de Oruro y Doctor en Ingeniería del Agua y Medioambiental de la Universidad Politécnica de Valencia (España), donde su tesis doctoral fue distinguida con la calificación máxima: sobresaliente, “Cum Laude”. Su formación incluye además tres maestrías relacionadas con la gestión del agua, hidráulica y tecnologías de protección ambiental. También posee una especialidad en sistemas de posicionamiento por satélite (GPS), realizada en la Universidad Politécnica de Madrid, y diplomados en Sistemas de Información Geográfica (SIG) y en Administración Pedagógica del Aula en Educación Superior.",
+                  "Es autor de varios artículos científicos publicados en revistas científicas de alto impacto, contribuyendo al avance del conocimiento en áreas como el diseño de redes hidráulicas, el suministro intermitente de agua y la optimización de sistemas de distribución. Ha presentado sus investigaciones en congresos internacionales realizados en España, Francia, México, Brasil, Cuba y Perú, y participa como revisor en prestigiosas revistas científicas internacionales.",
+                  "Ha trabajado en el diseño, construcción, supervisión y fiscalización de obras hidráulicas, sistemas de agua potable, alcantarillado y riego, principalmente. Asimismo, formó parte del personal técnico del Servicio Local de Acueductos y Alcantarillado de Oruro. ",
+                  "Tiene una participación activa en el desarrollo de normas técnicas y en la formación de profesionales en ingeniería civil. Fue docente en la Universidad Mayor de San Andrés (La Paz) y la Universidad Católica Boliviana San Pablo (La Paz). Actualmente es profesor de postgrado y docente de la Carrera de Ingeniería Civil y del Departamento de Matemáticas de la Facultad Nacional de Ingeniería de la Universidad Técnica de Oruro.",
+            ]}
+            email=""
+            phone=""
+            photo="src/Image/Im_Inicio/Depic.jpeg"
+
+          />
+          <FlipCard 
+            name="Univ. Rodrigo Ledezma"
+            role="Presidente de la Organización de Sociedades Científicas de la F.N.I. (O.S.C.E. - FNI)"
+            biografia=""
+            email=""
+            phone="+591 71857038"
+            photo=""
+
+          />                     
+        </div>
+        
+      </div>
+  </section>
+
+
+   <!-- Misión y Visión -->
+  <section class=" bg-white">
+    <div class="bg-purple-50 py-16 px-6">
+        <div class="max-w-5xl mx-auto text-center">
+          <h2 class="text-4xl font-bold text-purple-900 mb-10">Misión y Visión</h2>
+          <div class="grid md:grid-cols-2 gap-8">
+            
+            <!-- Misión -->
+            <div class="bg-white p-8 rounded-xl shadow-md border-t-4 border-purple-300">
+              <h3 class="text-2xl font-semibold text-purple-700 mb-4">Nuestra Misión</h3>
+              <p class="text-gray-700 leading-relaxed text-justify">
+                Promover el desarrollo científico, tecnológico y académico de los estudiantes de 
+                la carrera de Ingeniería Metalúrgica y Ciencia de Materiales, mediante la investigación, 
+                la divulgación del conocimiento con el entorno productivo y la formación integral, 
+                contribuyendo en el avance de la ciencia y progreso del país.
+              </p>
+            </div>
+            
+            <!-- Visión -->
+            <div class="bg-white p-8 rounded-xl shadow-md border-t-4 border-purple-300">
+              <h3 class="text-2xl font-semibold text-purple-700 mb-4">Nuestra Visión</h3>
+              <p class="text-gray-700 leading-relaxed text-justify">
+                Ser una sociedad científica estudiantil activa y comprometida, que fomente 
+                la participación estudiantil en actividades de investigación, capacitación y difusión 
+                del conocimiento en el área de la Metalurgia y Ciencia de Materiales, fortaleciendo la 
+                formación profesional y contribuyendo gradualmente al desarrollo de la carrera y la facultad 
+                de ingeniería.
+              </p>
+            </div>
+
+          </div>
+        </div>
+  </section>
+
+   <!-- Referencias -->
+    <section class="py-10 bg-white">
       <div class="text-center">
         <h2 class="text-3xl font-bold text-gray-900 mb-4">¿Cómo ser parte?</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">

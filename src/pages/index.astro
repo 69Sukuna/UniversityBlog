@@ -10,7 +10,7 @@ import { db, News, Usuarios } from 'astro:db';
 // Obtener noticias de SisInf desde la base de datos
 const noticiasAll = await db.select().from(News);
 
-const noticiasSisInf = noticiasAll.filter((noticia) => noticia.userId === 3);
+const noticias = noticiasAll.filter((noticia) => noticia.userId === 1);
 
 //carrusell
 const modules = import.meta.glob('../Image/FilArt/*.{png,jpg,jpeg,gif}', { eager: true });
@@ -30,7 +30,7 @@ const images = Object.values(modules)
   title="OSCES - FNI"
   description="Bienvenido a mi aplicación construida con Astro y las mejores prácticas de desarrollo web"
 >
-  <!-- Hero Section -->
+  <!-- ======================= PRESENTACIÓN ======================= -->
   <section class="bg-gradient-to-r from-blue-200 to-indigo-50 py-5">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center">
@@ -63,15 +63,33 @@ const images = Object.values(modules)
     </div>
   </section>
 
-  <!-- Features Section -->
-  <section class="py-20 bg-white">
+  <!-- ======================= HISTORIA ======================= -->
+  <section class="py-5 bg-white">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-16">
+      <div class="text-center mb-16 py-4">
         <h2 class="text-3xl font-bold text-gray-900 mb-4">Historia</h2>
-        <p class="text-gray-600 max-w-2xl mx-auto">
-          Construida con tecnologías modernas y siguiendo las mejores prácticas
+        <p class="text-2xl  text-gray-600 text-justify mx-auto py-4 ">
+          La Organización de Sociedades Científicas Estudiantiles (OSCE-FNI) fue creada hace 
+          algunos años con el propósito de unificar y coordinar todas las sociedades científicas 
+          pertenecientes a la Facultad Nacional de Ingeniería (FNI). Su objetivo principal es modernizar 
+          y reestructurar el enfoque tradicional, muchas veces fragmentado y desactualizado, que existía 
+          en la gestión y funcionamiento de estas sociedades.
+        </p>
+        <p class="text-2xl text-gray-600  text-justify mx-auto">
+          A través de OSCE-FNI, se busca fomentar la colaboración entre las diferentes sociedades, 
+          potenciar el desarrollo académico y científico de los estudiantes, así como promover actividades 
+          conjuntas que enriquezcan la formación integral dentro de la facultad. Esta organización actúa como 
+          un ente rector que facilita la comunicación, planificación y ejecución de proyectos que beneficien 
+          a toda la comunidad estudiantil de la FNI, promoviendo un sentido de pertenencia, innovación y trabajo 
+          en equipo.
         </p>
       </div>
+    </div>
+  </section>
+
+  <!-- ======================= AUTORIDADES ======================= -->
+  <section class=" bg-white">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">      
       <div class="text-center mb-16" id="direc">
         <h2 class="text-3xl font-bold text-gray-900 mb-4">Nuestras Autoridades</h2>
         <div class="flex flex-wrap justify-center gap-6">
@@ -129,11 +147,65 @@ const images = Object.values(modules)
 
         
       </div>
-      <div class="text-center mb-16" id="noticias">
-        <h2 class="text-3xl font-bold text-gray-900 mb-4">Noticias</h2>
-        <!-- Mostrar noticias de SisInf -->
-        <CardsNotices noticias={noticiasSisInf} />
-      </div>
-    </div>
+
   </section>
+
+  <!-- ======================= NOTICIAS ======================= -->
+<section class="bg-white py-10 px-4 sm:px-6 lg:px-8" id="noticias">
+  <div class="flex flex-wrap gap-6 items-start">
+    <h2 class="w-full text-center text-3xl font-bold text-gray-900 mb-4">
+      Noticias 1
+    </h2>
+    <!-- Mostrar noticias OSCE -->
+    <CardsNotices noticias={noticias} />
+  </div>
+</section>
+
+<!-- OPCIÓN 2: Contenedor centrado con máximo ancho -->
+<section class="bg-white py-10" id="noticias">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-wrap gap-6 items-start">
+      <h2 class="w-full text-center text-3xl font-bold text-gray-900 mb-4">
+        Noticias 2
+      </h2>
+      <!-- Mostrar noticias OSCE -->
+      <CardsNotices noticias={noticias} />
+    </div>
+  </div>
+</section>
+
+<!-- OPCIÓN 3: Espaciado más generoso -->
+<section class="bg-white py-10 px-6 sm:px-12 lg:px-16" id="noticias">
+  <div class="flex flex-wrap gap-6 items-start">
+    <h2 class="w-full text-center text-3xl font-bold text-gray-900 mb-4">
+      Noticias 3
+    </h2>
+    <!-- Mostrar noticias OSCE -->
+    <CardsNotices noticias={noticias} />
+  </div>
+</section>
+
+<!-- OPCIÓN 4: Contenedor centrado con ancho específico -->
+<section class="bg-white py-10" id="noticias">
+  <div class="container mx-auto px-4">
+    <div class="flex flex-wrap gap-6 items-start">
+      <h2 class="w-full text-center text-3xl font-bold text-gray-900 mb-4">
+        Noticias 4
+      </h2>
+      <!-- Mostrar noticias OSCE -->
+      <CardsNotices noticias={noticias} />
+    </div>
+  </div>
+</section>
+
+<!-- OPCIÓN 5: Con bordes laterales visibles -->
+<section class="bg-white py-10 mx-4 border-l-4 border-r-4 border-gray-200 px-6" id="noticias">
+  <div class="flex flex-wrap gap-6 items-start">
+    <h2 class="w-full text-center text-3xl font-bold text-gray-900 mb-4">
+      Noticias 5
+    </h2>
+    <!-- Mostrar noticias OSCE -->
+    <CardsNotices noticias={noticias} />
+  </div>
+</section>
 </Layout>
