@@ -6,13 +6,14 @@ import Carousel from '../../components/ui/Carousel.astro';
 import FlipCard from '../../components/ui/Target.astro';
 import ImageFocusGallery from '../../components/ui/ImageFocusGallery.astro';
 import CardsNotices from '../../components/ui/CardsNotices.astro';
-import { db, News, eq } from 'astro:db';
+import { db, News, eq , desc} from 'astro:db';
 
 // Obtener noticias de la Soce con id = 1
 const noticias = await db
   .select()
   .from(News)
-  .where(eq(News.socesId, 4));
+  .where(eq(News.socesId, 4))
+  .orderBy(desc(News.fecha)); // Ordenar por fecha (más reciente primero)
 
 const items = [
   {
@@ -62,7 +63,7 @@ const items = [
   <section class="bg-white py-10 px-6 sm:px-12 lg:px-16" id="noticias">
     <div class="flex flex-wrap gap-6 items-start">
       <h2 class="w-full text-center text-3xl font-bold text-gray-900 mb-4">
-        Noticias 3
+        Noticias 
       </h2>
         <!-- Mostrar noticias -->
         <CardsNotices noticias={noticias} />

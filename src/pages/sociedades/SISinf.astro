@@ -6,13 +6,14 @@ import Carousel from '../../components/ui/Carousel.astro';
 import FlipCard from '../../components/ui/Target.astro';
 import ImageFocusGallery from '../../components/ui/ImageFocusGallery.astro';
 import CardsNotices from '../../components/ui/CardsNotices.astro';
-import { db, News, eq } from 'astro:db';
+import { db, News, eq , desc } from 'astro:db';
 
 // Obtener noticias de la Soce con id = 1
 const noticias = await db
   .select()
   .from(News)
-  .where(eq(News.socesId, 11));
+  .where(eq(News.socesId, 11))
+  .orderBy(desc(News.fecha)); // Ordenar por fecha (más reciente primero)
 
 const items = [
   {

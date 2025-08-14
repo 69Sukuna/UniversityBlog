@@ -5,15 +5,19 @@ import { BRAND } from 'astro:schema';
 import Carousel from '../components/ui/Carousel.astro';
 import CardsNotices from '../components/ui/CardsNotices.astro';
 import FlipCard from '../components/ui/Target.astro';
-import { db, News, eq } from 'astro:db';
+import { db, News, Convocatorias, eq, desc } from 'astro:db';
 
-// Obtener noticias de la Soce con id = 1
+// Obtener noticias de la Soce con id = 1, ordenadas por fecha (más reciente primero)
 const noticias = await db
   .select()
   .from(News)
-  .where(eq(News.socesId, 1));
+  .where(eq(News.socesId, 1))
+  .orderBy(desc(News.fecha)); // Ordenar por fecha (más reciente primero)
 
-
+const convocatorias = await db
+  .select()
+  .from(Convocatorias)
+  .orderBy(desc(Convocatorias.fecha)); // Ordenar por fecha (más reciente primero)
 
 //carrusell
 const modules = import.meta.glob('../Image/FilArt/*.{png,jpg,jpeg,gif}', { eager: true });
@@ -152,6 +156,18 @@ const images = Object.values(modules)
       </div>
 
   </section>
+
+  <!-- ======================= CONVOCATORIAS ======================= -->
+
+<section class="bg-white py-10 px-6 sm:px-12 lg:px-16" id="convocatorias">
+  <div class="flex flex-wrap gap-6 items-start">
+    <h2 class="w-full text-center text-3xl font-bold text-gray-900 mb-4">
+      Convocatorias
+    </h2>
+    <!-- Mostrar convocatorias -->
+    <CardsNotices noticias={convocatorias} />
+  </div>
+</section>
 
   <!-- ======================= NOTICIAS ======================= -->
 

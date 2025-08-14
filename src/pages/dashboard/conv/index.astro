@@ -1,0 +1,859 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import Button from '../../../components/ui/Button.astro';
+import Alert from '../../../components/ui/Alert.astro';
+import { getUserFromRequest } from '../../../utils/session';
+import { requireRole } from '../../../utils/auth';
+import { db, Usuarios, Convocatorias, Soces, eq, and } from 'astro:db';
+
+const user = getUserFromRequest(Astro.request);
+
+if (!user || !requireRole(user, ['user'])) {
+  return Astro.redirect('/login');
+}
+
+// Verificar que el usuario tenga socesId = 1
+if (user.socesId !== 1) {
+  return Astro.redirect('/dashboard?error=no_access');
+}
+
+// Obtener solo las convocatorias del usuario actual con socesId = 1
+const convocatorias = await db.select().from(Convocatorias).where(
+  and(
+    eq(Convocatorias.userId, user.id),
+    eq(Convocatorias.socesId, 1)
+  )
+);
+const totalConvocatorias = convocatorias.length;
+
+// Función para formatear fecha
+const formatDate = (fecha: Date) => {
+  return new Intl.DateTimeFormat('es-BO', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  }).format(fecha);
+};
+
+// Función para truncar texto
+const truncateText = (text: string, maxLength: number = 150) => {
+  if (!text || text.length <= maxLength) return text;
+  return text.substring(0, maxLength) + '...';
+};
+
+// Función para obtener color del avatar basado en el título
+const getAvatarColor = (titulo: string) => {
+  const colors = [
+    'bg-purple-500', 'bg-indigo-500', 'bg-blue-500', 'bg-teal-500', 
+    'bg-green-500', 'bg-yellow-500', 'bg-orange-500', 'bg-red-500'
+  ];
+  if (!titulo || typeof titulo !== 'string') return colors[0];
+  const index = titulo.charCodeAt(0) % colors.length;
+  return colors[index];
+};
+
+// Función para obtener iniciales del título
+const getInitials = (titulo: string) => {
+  if (!titulo || typeof titulo !== 'string') return '?';
+  return titulo.trim().split(' ').slice(0, 2).map(word => word.charAt(0)).join('').toUpperCase() || '?';
+};
+---
+
+<Layout title="Convocatorias - Portal">
+  <div class="min-h-screen bg-gray-50">
+    <!-- Header -->
+    <div class="bg-white shadow">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center py-6">
+          <div>
+            <h1 class="text-3xl font-bold text-gray-900">📢 Mis Convocatorias</h1>
+            <p class="mt-2 text-sm text-gray-600">Gestiona y consulta tus convocatorias publicadas</p>
+          </div>
+          <div class="flex space-x-3">
+            <Button href="/dashboard" variant="secondary">← Volver al Inicio</Button>
+            <Button href="/dashboard/conv/create" variant="primary">+ Nueva Convocatoria</Button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+      <div class="px-4 py-6 sm:px-0">
+
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <!-- Total Convocatorias -->
+          <div class="bg-white overflow-hidden shadow rounded-lg border-l-4 border-purple-500">
+            <div class="p-5">
+              <div class="flex items-center">
+                <div class="flex-shrink-0">
+                  <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
+                    <svg class="w-5 h-5 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
+                    </svg>
+                  </div>
+                </div>
+                <div class="ml-5 w-0 flex-1">
+                  <dl>
+                    <dt class="text-sm font-medium text-gray-500 truncate">Mis Convocatorias</dt>
+                    <dd class="text-2xl font-bold text-gray-900">{totalConvocatorias}</dd>
+                  </dl>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Convocatorias Recientes -->
+          <div class="bg-white overflow-hidden shadow rounded-lg border-l-4 border-green-500">
+            <div class="p-5">
+              <div class="flex items-center">
+                <div class="flex-shrink-0">
+                  <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                    <svg class="w-5 h-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                </div>
+                <div class="ml-5 w-0 flex-1">
+                  <dl>
+                    <dt class="text-sm font-medium text-gray-500 truncate">Este Mes</dt>
+                    <dd class="text-2xl font-bold text-gray-900">
+                      {convocatorias.filter(c => {
+                        const now = new Date();
+                        const convocatoriaMes = new Date(c.fecha);
+                        return convocatoriaMes.getMonth() === now.getMonth() && 
+                               convocatoriaMes.getFullYear() === now.getFullYear();
+                      }).length}
+                    </dd>
+                  </dl>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Controles de filtrado y búsqueda -->
+        <div class="bg-white p-6 rounded-lg shadow mb-6">
+          <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0 lg:space-x-4">
+            <!-- Búsqueda -->
+            <div class="flex-1 max-w-lg">
+              <label for="busqueda" class="block text-sm font-medium text-gray-700 mb-2">🔍 Buscar en mis convocatorias</label>
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                </div>
+                <input
+                  id="busqueda"
+                  type="text"
+                  placeholder="Buscar por título o contenido..."
+                  class="pl-10 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm"
+                />
+              </div>
+            </div>
+
+            <!-- Filtros -->
+            <div class="flex space-x-4">
+              <div>
+                <label for="filtro-fecha" class="block text-sm font-medium text-gray-700 mb-2">Filtrar por fecha</label>
+                <select id="filtro-fecha" class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm">
+                  <option value="">Todas las fechas</option>
+                  <option value="hoy">Hoy</option>
+                  <option value="semana">Esta semana</option>
+                  <option value="mes">Este mes</option>
+                  <option value="año">Este año</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Vista de convocatorias -->
+        <div class="bg-white shadow overflow-hidden sm:rounded-md">
+          <div class="px-4 py-5 sm:px-6 border-b border-gray-200 flex justify-between items-center">
+            <div>
+              <h3 class="text-lg leading-6 font-medium text-gray-900">
+                📢 Mis Convocatorias Publicadas
+              </h3>
+              <p class="mt-1 text-sm text-gray-500">
+                <span id="convocatorias-mostradas">{totalConvocatorias}</span> de {totalConvocatorias} convocatorias
+              </p>
+            </div>
+            
+            <!-- Toggle de vista -->
+            <div class="flex items-center space-x-2">
+              <span class="text-sm text-gray-500">Vista:</span>
+              <button id="vista-lista" class="p-2 rounded-md bg-purple-100 text-purple-600">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+                </svg>
+              </button>
+              <button id="vista-tarjetas" class="p-2 rounded-md text-gray-400 hover:bg-gray-100">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          {convocatorias.length === 0 ? (
+            <div class="text-center py-12">
+              <svg
+                class="mx-auto h-12 w-12 text-gray-400"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"
+                />
+              </svg>
+              <h3 class="mt-2 text-sm font-medium text-gray-900">No tienes convocatorias</h3>
+              <p class="mt-1 text-sm text-gray-500">Comienza creando tu primera convocatoria.</p>
+              <div class="mt-6">
+                <Button href="/dashboard/conv/create" variant="primary">+ Crear Mi Primera Convocatoria</Button>
+              </div>
+            </div>
+          ) : (
+            <>
+              <!-- Vista de Lista -->
+              <ul class="divide-y divide-gray-200" id="lista-convocatorias">
+                {convocatorias.map((convocatoria) => (
+                  <li class="convocatoria-item px-4 py-6 hover:bg-gray-50 transition-colors duration-150" 
+                      data-fecha={convocatoria.fecha.toISOString()}>
+                    <div class="flex items-start justify-between">
+                      <div class="flex items-start space-x-4 flex-1">
+                        <!-- Avatar de la convocatoria -->
+                        <div class="flex-shrink-0">
+                          <div class={`h-14 w-14 rounded-lg ${getAvatarColor(convocatoria.titulo)} flex items-center justify-center text-white font-semibold text-sm shadow-md`}>
+                            {getInitials(convocatoria.titulo)}
+                          </div>
+                        </div>
+                        
+                        <!-- Información de la convocatoria -->
+                        <div class="flex-1 min-w-0">
+                          <div class="flex items-start justify-between mb-2">
+                            <h3 class="text-xl font-semibold text-gray-900 line-clamp-2 flex-1">
+                              {convocatoria.titulo}
+                            </h3>
+                            <span class="ml-4 inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800 flex-shrink-0">
+                              📢 Mi Convocatoria
+                            </span>
+                          </div>
+                          
+                          <p class="text-gray-700 mb-4 line-clamp-3 text-base leading-relaxed">
+                            {truncateText(convocatoria.contenido, 200)}
+                          </p>
+                          
+                          <div class="flex items-center space-x-4 text-sm text-gray-600 mb-4">
+                            <div class="flex items-center">
+                              <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                              </svg>
+                              <span class="truncate">Publicado el {formatDate(convocatoria.fecha)}</span>
+                            </div>
+                          </div>
+
+                          <!-- Enlaces -->
+                          {(convocatoria.link || convocatoria.link2) && (
+                            <div class="flex flex-wrap gap-3 mb-4">
+                              {convocatoria.link && (
+                                <a href={convocatoria.link} target="_blank" rel="noopener noreferrer" 
+                                   class="inline-flex items-center px-4 py-2 bg-purple-50 text-purple-700 rounded-lg hover:bg-purple-100 transition-colors duration-150">
+                                  <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                  </svg>
+                                   Ver más información
+                                </a>
+                              )}
+                              {convocatoria.link2 && (
+                                <a href={convocatoria.link2} target="_blank" rel="noopener noreferrer" 
+                                   class="inline-flex items-center px-4 py-2 bg-green-50 text-green-700 rounded-lg hover:bg-green-100 transition-colors duration-150">
+                                  <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                  </svg>
+                                   Enlace adicional
+                                </a>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                      
+                      <!-- Acciones del usuario -->
+                      <div class="flex items-center space-x-3 ml-4">
+                        <Button href={`../dashboard/conv/${convocatoria.id}/edit`} variant="outline" size="sm">
+                          <svg class="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                          </svg>
+                           Editar
+                        </Button>
+                        <form action="/dashboard/api/conv/delete" method="POST" class="inline">
+                          <input type="hidden" name="convocatoriaId" value={convocatoria.id} />
+                          <button
+                            type="submit"
+                            onclick="return confirm('¿Estás seguro de eliminar esta convocatoria? Esta acción no se puede deshacer.')"
+                            class="inline-flex items-center px-3 py-2 border border-red-300 text-sm leading-4 font-medium rounded-md text-red-700 bg-white hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-150"
+                          >
+                            <svg class="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                             Eliminar
+                          </button>
+                        </form>
+                      </div>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+
+              <!-- Vista de Tarjetas (inicialmente oculta) -->
+              <div class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6" id="tarjetas-convocatorias">
+                {convocatorias.map((convocatoria) => (
+                  <div class="convocatoria-card bg-white border border-gray-200 rounded-xl p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+                       data-fecha={convocatoria.fecha.toISOString()}>
+                    <!-- Header de la tarjeta -->
+                    <div class="flex items-start space-x-4 mb-4">
+                      <div class={`h-16 w-16 rounded-xl ${getAvatarColor(convocatoria.titulo)} flex items-center justify-center text-white font-bold text-lg shadow-lg flex-shrink-0`}>
+                        {getInitials(convocatoria.titulo)}
+                      </div>
+                      <div class="flex-1 min-w-0">
+                        <div class="flex items-start justify-between mb-2">
+                          <h3 class="text-lg font-semibold text-gray-900 line-clamp-2 flex-1">{convocatoria.titulo}</h3>
+                        </div>
+                        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                          📢 Mi Convocatoria
+                        </span>
+                      </div>
+                    </div>
+
+                    <!-- Contenido -->
+                    <div class="mb-6">
+                      <p class="text-gray-700 line-clamp-4 leading-relaxed">
+                        {truncateText(convocatoria.contenido, 140)}
+                      </p>
+                    </div>
+
+                    <!-- Información adicional -->
+                    <div class="space-y-3 mb-6">
+                      <div class="flex items-center text-sm text-gray-600">
+                        <svg class="w-4 h-4 mr-3 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                        <span>Publicado el {formatDate(convocatoria.fecha)}</span>
+                      </div>
+                    </div>
+
+                    <!-- Enlaces en tarjeta -->
+                    {(convocatoria.link || convocatoria.link2) && (
+                      <div class="flex flex-col space-y-2 mb-4">
+                        {convocatoria.link && (
+                          <a href={convocatoria.link} target="_blank" rel="noopener noreferrer" 
+                             class="inline-flex items-center justify-center px-4 py-2 bg-purple-50 text-purple-700 rounded-lg hover:bg-purple-100 transition-colors duration-150 text-sm font-medium">
+                            <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                            </svg>
+                             Ver más información
+                          </a>
+                        )}
+                        {convocatoria.link2 && (
+                          <a href={convocatoria.link2} target="_blank" rel="noopener noreferrer" 
+                             class="inline-flex items-center justify-center px-4 py-2 bg-green-50 text-green-700 rounded-lg hover:bg-green-100 transition-colors duration-150 text-sm font-medium">
+                            <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                            </svg>
+                             Enlace adicional
+                          </a>
+                        )}
+                      </div>
+                    )}
+
+                    <!-- Acciones en tarjeta -->
+                    <div class="flex space-x-2">
+                      <Button href={`../dashboard/conv/${convocatoria.id}/edit`} variant="outline" size="sm" class="flex-1">
+                        ✏️ Editar
+                      </Button>
+                      <form action="/dashboard/api/conv/delete" method="POST" class="inline">
+                        <input type="hidden" name="convocatoriaId" value={convocatoria.id} />
+                        <button
+                          type="submit"
+                          onclick="return confirm('¿Estás seguro de eliminar esta convocatoria?')"
+                          class="px-2 py-1 border border-red-300 text-xs font-medium rounded text-red-700 bg-white hover:bg-red-50 focus:outline-none focus:ring-1 focus:ring-red-500"
+                        >
+                          🗑️
+                        </button>
+                      </form>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
+        </div>
+
+        <!-- Paginación simplificada -->
+        <div class="bg-white px-4 py-3 flex items-center justify-center border-t border-gray-200 sm:px-6 mt-6 rounded-lg shadow">
+          <div class="flex justify-center">
+            <p class="text-sm text-gray-700">
+              Mostrando <span class="font-medium" id="convocatorias-mostradas-footer">{totalConvocatorias}</span> convocatorias
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Script para funcionalidad interactiva -->
+  <script type="module" is:inline>
+    const busqueda = document.getElementById('busqueda');
+    const filtroFecha = document.getElementById('filtro-fecha');
+    const listaConvocatorias = document.getElementById('lista-convocatorias');
+    const tarjetasConvocatorias = document.getElementById('tarjetas-convocatorias');
+    const vistaLista = document.getElementById('vista-lista');
+    const vistaTarjetas = document.getElementById('vista-tarjetas');
+    const convocatoriasMostradas = document.getElementById('convocatorias-mostradas');
+    const convocatoriasFooter = document.getElementById('convocatorias-mostradas-footer');
+
+    let vistaActual = 'lista';
+
+    // Función para comprobar si una fecha coincide con el filtro
+    function coincideFecha(fechaConvocatoria, filtro) {
+      const ahora = new Date();
+      const fecha = new Date(fechaConvocatoria);
+      
+      switch(filtro) {
+        case 'hoy':
+          return fecha.toDateString() === ahora.toDateString();
+        case 'semana':
+          const inicioSemana = new Date(ahora);
+          inicioSemana.setDate(ahora.getDate() - ahora.getDay());
+          return fecha >= inicioSemana;
+        case 'mes':
+          return fecha.getMonth() === ahora.getMonth() && 
+                 fecha.getFullYear() === ahora.getFullYear();
+        case 'año':
+          return fecha.getFullYear() === ahora.getFullYear();
+        default:
+          return true;
+      }
+    }
+
+    // Función para aplicar todos los filtros
+    function aplicarFiltros() {
+      const textoBusqueda = busqueda.value.toLowerCase();
+      const fechaSeleccionada = filtroFecha.value;
+
+      const contenedorActual = vistaActual === 'lista' ? listaConvocatorias : tarjetasConvocatorias;
+      const items = contenedorActual.querySelectorAll(vistaActual === 'lista' ? '.convocatoria-item' : '.convocatoria-card');
+      
+      let contadorVisible = 0;
+
+      items.forEach(item => {
+        const textoCompleto = item.textContent.toLowerCase();
+        const fecha = item.dataset.fecha;
+
+        const coincideBusqueda = textoCompleto.includes(textoBusqueda);
+        const coincideFechaItem = !fechaSeleccionada || coincideFecha(fecha, fechaSeleccionada);
+
+        const visible = coincideBusqueda && coincideFechaItem;
+        
+        item.style.display = visible ? '' : 'none';
+        if (visible) contadorVisible++;
+      });
+
+      if (convocatoriasMostradas) convocatoriasMostradas.textContent = contadorVisible;
+      if (convocatoriasFooter) convocatoriasFooter.textContent = contadorVisible;
+    }
+
+    // Función para cambiar vista
+    function cambiarVista(nuevaVista) {
+      if (nuevaVista === vistaActual) return;
+
+      vistaActual = nuevaVista;
+
+      if (nuevaVista === 'lista') {
+        listaConvocatorias.classList.remove('hidden');
+        tarjetasConvocatorias.classList.add('hidden');
+        vistaLista.classList.add('bg-purple-100', 'text-purple-600');
+        vistaLista.classList.remove('text-gray-400', 'hover:bg-gray-100');
+        vistaTarjetas.classList.remove('bg-purple-100', 'text-purple-600');
+        vistaTarjetas.classList.add('text-gray-400', 'hover:bg-gray-100');
+      } else {
+        listaConvocatorias.classList.add('hidden');
+        tarjetasConvocatorias.classList.remove('hidden');
+        tarjetasConvocatorias.classList.add('grid');
+        vistaTarjetas.classList.add('bg-purple-100', 'text-purple-600');
+        vistaTarjetas.classList.remove('text-gray-400', 'hover:bg-gray-100');
+        vistaLista.classList.remove('bg-purple-100', 'text-purple-600');
+        vistaLista.classList.add('text-gray-400', 'hover:bg-gray-100');
+      }
+
+      aplicarFiltros();
+    }
+
+    // Función para ordenar convocatorias
+    function ordenarConvocatorias(criterio) {
+      const contenedorActual = vistaActual === 'lista' ? listaConvocatorias : tarjetasConvocatorias;
+      const items = Array.from(contenedorActual.querySelectorAll(vistaActual === 'lista' ? '.convocatoria-item' : '.convocatoria-card'));
+      
+      items.sort((a, b) => {
+        switch(criterio) {
+          case 'fecha-desc':
+            return new Date(b.dataset.fecha) - new Date(a.dataset.fecha);
+          case 'fecha-asc':
+            return new Date(a.dataset.fecha) - new Date(b.dataset.fecha);
+          case 'titulo':
+            return a.querySelector('h3').textContent.localeCompare(b.querySelector('h3').textContent);
+          default:
+            return 0;
+        }
+      });
+
+      // Reordenar elementos en el DOM
+      items.forEach(item => contenedorActual.appendChild(item));
+    }
+
+    // Event listeners
+    busqueda?.addEventListener('input', aplicarFiltros);
+    filtroFecha?.addEventListener('change', aplicarFiltros);
+    
+    vistaLista?.addEventListener('click', () => cambiarVista('lista'));
+    vistaTarjetas?.addEventListener('click', () => cambiarVista('tarjetas'));
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', function(e) {
+      // Ctrl/Cmd + K para enfocar búsqueda
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        busqueda?.focus();
+      }
+      
+      // Ctrl/Cmd + 1/2 para cambiar vista
+      if ((e.ctrlKey || e.metaKey) && e.key === '1') {
+        e.preventDefault();
+        cambiarVista('lista');
+      }
+      if ((e.ctrlKey || e.metaKey) && e.key === '2') {
+        e.preventDefault();
+        cambiarVista('tarjetas');
+      }
+    });
+
+    // Añadir ordenamiento
+    const headerControls = document.querySelector('.px-4.py-5.sm\\:px-6.border-b .flex.justify-between');
+    if (headerControls) {
+      const sortContainer = document.createElement('div');
+      sortContainer.className = 'flex items-center space-x-2 mr-4';
+      
+      const sortLabel = document.createElement('span');
+      sortLabel.textContent = 'Ordenar:';
+      sortLabel.className = 'text-sm text-gray-500';
+      
+      const sortButton = document.createElement('select');
+      sortButton.className = 'text-sm border border-gray-300 rounded-md px-2 py-1';
+      sortButton.innerHTML = `
+        <option value="">Por defecto</option>
+        <option value="fecha-desc">Más recientes</option>
+        <option value="fecha-asc">Más antiguos</option>
+        <option value="titulo">Título (A-Z)</option>
+      `;
+      sortButton.addEventListener('change', (e) => {
+        if (e.target.value) {
+          ordenarConvocatorias(e.target.value);
+        }
+      });
+      
+      sortContainer.appendChild(sortLabel);
+      sortContainer.appendChild(sortButton);
+      
+      const viewToggle = headerControls.querySelector('.flex.items-center.space-x-2');
+      if (viewToggle) {
+        viewToggle.parentNode.insertBefore(sortContainer, viewToggle);
+      }
+    }
+
+    // Animación de entrada para las convocatorias
+    function animarEntrada() {
+      const items = document.querySelectorAll('.convocatoria-item, .convocatoria-card');
+      items.forEach((item, index) => {
+        item.style.opacity = '0';
+        item.style.transform = 'translateY(20px)';
+        setTimeout(() => {
+          item.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+          item.style.opacity = '1';
+          item.style.transform = 'translateY(0)';
+        }, index * 100);
+      });
+    }
+
+    // Ejecutar animación al cargar
+    document.addEventListener('DOMContentLoaded', animarEntrada);
+
+    // Mejorar la experiencia de enlaces externos
+    document.querySelectorAll('a[target="_blank"]').forEach(link => {
+      link.addEventListener('click', function(e) {
+        // Opcional: agregar analytics o tracking aquí
+        console.log('Enlace externo clickeado:', this.href);
+      });
+    });
+
+    // Función para resaltar términos de búsqueda
+    function resaltarBusqueda(texto, termino) {
+      if (!termino.trim()) return texto;
+      const regex = new RegExp(`(${termino.trim()})`, 'gi');
+      return texto.replace(regex, '<mark class="bg-yellow-200 px-1 rounded">$1</mark>');
+    }
+
+    // Función de búsqueda mejorada con resaltado
+    function aplicarFiltrosBusquedaMejorada() {
+      const textoBusqueda = busqueda.value.toLowerCase().trim();
+      const fechaSeleccionada = filtroFecha.value;
+
+      const contenedorActual = vistaActual === 'lista' ? listaConvocatorias : tarjetasConvocatorias;
+      const items = contenedorActual.querySelectorAll(vistaActual === 'lista' ? '.convocatoria-item' : '.convocatoria-card');
+      
+      let contadorVisible = 0;
+
+      items.forEach(item => {
+        const titulo = item.querySelector('h3');
+        const contenido = item.querySelector('p');
+        const fecha = item.dataset.fecha;
+
+        // Restaurar texto original antes de aplicar resaltado
+        if (titulo.dataset.originalText) {
+          titulo.innerHTML = titulo.dataset.originalText;
+        } else {
+          titulo.dataset.originalText = titulo.textContent;
+        }
+        
+        if (contenido.dataset.originalText) {
+          contenido.innerHTML = contenido.dataset.originalText;
+        } else {
+          contenido.dataset.originalText = contenido.textContent;
+        }
+
+        const textoCompleto = item.textContent.toLowerCase();
+        const coincideBusqueda = !textoBusqueda || textoCompleto.includes(textoBusqueda);
+        const coincideFechaItem = !fechaSeleccionada || coincideFecha(fecha, fechaSeleccionada);
+
+        const visible = coincideBusqueda && coincideFechaItem;
+        
+        if (visible && textoBusqueda) {
+          // Aplicar resaltado si hay término de búsqueda
+          titulo.innerHTML = resaltarBusqueda(titulo.dataset.originalText, textoBusqueda);
+          contenido.innerHTML = resaltarBusqueda(contenido.dataset.originalText, textoBusqueda);
+        }
+        
+        item.style.display = visible ? '' : 'none';
+        if (visible) contadorVisible++;
+      });
+
+      if (convocatoriasMostradas) convocatoriasMostradas.textContent = contadorVisible;
+      if (convocatoriasFooter) convocatoriasFooter.textContent = contadorVisible;
+    }
+
+    // Reemplazar el event listener de búsqueda
+    busqueda?.removeEventListener('input', aplicarFiltros);
+    busqueda?.addEventListener('input', aplicarFiltrosBusquedaMejorada);
+
+    // Mostrar atajos de teclado en consola
+    console.log('🔍 Atajos de teclado disponibles:');
+    console.log('Ctrl/Cmd + K: Enfocar búsqueda');
+    console.log('Ctrl/Cmd + 1: Vista de lista');
+    console.log('Ctrl/Cmd + 2: Vista de tarjetas');
+
+    // Mensaje de bienvenida
+    console.log('📢 Portal de Convocatorias cargado correctamente');
+  </script>
+
+  <!-- Estilos adicionales -->
+  <style>
+    .convocatoria-item {
+      transition: all 0.3s ease;
+    }
+    
+    .convocatoria-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+      background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    }
+    
+    .convocatoria-card {
+      transition: all 0.3s ease;
+      border: 1px solid #e2e8f0;
+    }
+    
+    .convocatoria-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      border-color: #cbd5e1;
+    }
+
+    /* Animación para el avatar */
+    .convocatoria-item .rounded-lg,
+    .convocatoria-card .rounded-xl {
+      transition: transform 0.3s ease;
+    }
+    
+    .convocatoria-item:hover .rounded-lg,
+    .convocatoria-card:hover .rounded-xl {
+      transform: scale(1.05) rotate(2deg);
+    }
+
+    /* Mejorar el focus de los inputs */
+    input:focus, select:focus {
+      box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.1);
+      border-color: #9333ea;
+    }
+
+    /* Limitar líneas de texto */
+    .line-clamp-2 {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .line-clamp-3 {
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .line-clamp-4 {
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* Mejoras visuales para enlaces */
+    .convocatoria-item a:hover,
+    .convocatoria-card a:hover {
+      text-decoration: none;
+      transform: translateY(-1px);
+    }
+
+    /* Animaciones suaves para cambios de vista */
+    #lista-convocatorias,
+    #tarjetas-convocatorias {
+      transition: opacity 0.3s ease-in-out;
+    }
+
+    /* Mejoras responsive */
+    @media (max-width: 768px) {
+      #tarjetas-convocatorias {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+      
+      .convocatoria-item {
+        padding: 1rem;
+      }
+      
+      .convocatoria-item .flex.items-start {
+        flex-direction: column;
+        space-x: 0;
+      }
+      
+      .convocatoria-item .flex-shrink-0 {
+        margin-bottom: 1rem;
+        align-self: center;
+      }
+    }
+
+    /* Estilo para elementos destacados */
+    .bg-purple-50 {
+      background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
+    }
+    
+    .bg-green-50 {
+      background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+    }
+
+    /* Estilo para elementos ocultos */
+    .hidden {
+      display: none !important;
+    }
+
+    /* Efectos de resaltado de búsqueda */
+    mark {
+      animation: highlight 0.5s ease-in-out;
+    }
+
+    @keyframes highlight {
+      0% { background-color: transparent; }
+      50% { background-color: #fef08a; }
+      100% { background-color: #fef3c7; }
+    }
+
+    /* Mejoras para las tarjetas de estadísticas */
+    .bg-white.overflow-hidden.shadow.rounded-lg {
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .bg-white.overflow-hidden.shadow.rounded-lg:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Efectos para botones */
+    button, .button-like {
+      transition: all 0.2s ease;
+    }
+    
+    button:hover, .button-like:hover {
+      transform: translateY(-1px);
+    }
+
+    /* Scrollbar personalizada */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+
+    /* Colores específicos para convocatorias (tema púrpura) */
+    .border-purple-500 {
+      border-color: #8b5cf6;
+    }
+    
+    .bg-purple-100 {
+      background-color: #ede9fe;
+    }
+    
+    .text-purple-600 {
+      color: #7c3aed;
+    }
+    
+    .text-purple-800 {
+      color: #5b21b6;
+    }
+    
+    .text-purple-700 {
+      color: #6d28d9;
+    }
+    
+    .hover\\:bg-purple-100:hover {
+      background-color: #ede9fe;
+    }
+  </style>
+</Layout>
