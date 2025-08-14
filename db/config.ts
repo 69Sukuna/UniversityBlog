@@ -34,19 +34,6 @@ const News = defineTable({
   },
 });
 
-const Convocatorias = defineTable({
-  columns: {
-    id: column.number({ primaryKey: true }),
-    userId: column.number({ references: () => Usuarios.columns.id }),
-    titulo: column.text(),
-    contenido: column.text(),
-    link: column.text(),
-    link2: column.text(),
-    fecha: column.date(),
-    socesId: column.number({ references: () => Soces.columns.id }),
-  },
-});
-
 export default defineDb({
-  tables: { Usuarios, News, Soces, Convocatorias },
+  tables: { Usuarios, News, Soces },
 });

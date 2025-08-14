@@ -1,7 +1,7 @@
 ---
 const pathname = Astro.url.pathname;
 
-const baseNavItems = [
+const navItems = [
   { name: 'Inicio', href: '/' },
   { 
     name: 'Sociedades Científicas Parte 1', 
@@ -68,15 +68,6 @@ const baseNavItems = [
   { name: 'Autoridades - Directiva', href: '#direc' },
   { name: 'Enlaces', href: '#enlaces' }
 ];
-
-// Agregar "Convocatorias" solo si estamos en la página de inicio
-const navItems = pathname === '/' 
-  ? [
-      ...baseNavItems.slice(0, 3),
-      { name: 'Convocatorias', href: '#convocatorias' },
-      ...baseNavItems.slice(3)
-    ]
-  : baseNavItems;
 ---
 
 <nav class="hidden md:flex flex-col space-y-2">
@@ -86,19 +77,11 @@ const navItems = pathname === '/'
         <a
           href={item.href}
           class={`block px-4 py-2 rounded-md text-base font-medium transition-colors duration-200 ${
-            item.name === 'Convocatorias'
-              ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white hover:from-orange-600 hover:to-red-600 font-semibold shadow-lg hover:shadow-xl'
-              : pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href))
-                ? 'text-blue-600 bg-blue-50'
-                : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'
+            pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href))
+              ? 'text-blue-600 bg-blue-50'
+              : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'
           }`}
-          onclick={item.href && item.href.startsWith('#') ? `document.getElementById('${item.href.substring(1)}')?.scrollIntoView({behavior: 'smooth', block: 'start'}); return true;` : ''}
         >
-          {item.name === 'Convocatorias' && (
-            <svg class="inline-block mr-2 w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-              <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
-            </svg>
-          )}
           {item.name}
           {item.children && (
             <svg 
@@ -124,7 +107,7 @@ const navItems = pathname === '/'
                         ? 'text-blue-600 bg-blue-50'
                         : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'
                     }`}
-                    onclick={child.href && child.href.startsWith('#') ? `document.getElementById('${child.href.substring(1)}')?.scrollIntoView({behavior: 'smooth', block: 'start'}); return true;` : ''}
+                    onclick={child.href.startsWith('#') ? `document.getElementById('${child.href.substring(1)}')?.scrollIntoView({behavior: 'smooth', block: 'start'}); return true;` : ''}
                   >
                     <span>{child.name}</span>
                     {child.children && (
@@ -171,7 +154,7 @@ const navItems = pathname === '/'
   }
 </nav>
 
-<!-- CSS mejorado pero simplificado -->
+<!-- CSS puro para submenu anidado -->
 <style>
   html {
     scroll-behavior: smooth;
@@ -180,20 +163,6 @@ const navItems = pathname === '/'
   .scroll-section {
     scroll-margin-top: 100px;
     padding-top: 20px;
-  }
-  
-  /* Animación para el botón Convocatorias */
-  .nav-item a[class*="bg-gradient-to-r from-orange"] {
-    animation: pulse-glow 2s ease-in-out infinite;
-  }
-  
-  @keyframes pulse-glow {
-    0%, 100% {
-      box-shadow: 0 4px 6px -1px rgba(251, 146, 60, 0.2);
-    }
-    50% {
-      box-shadow: 0 10px 15px -3px rgba(251, 146, 60, 0.4);
-    }
   }
   
   /* Submenu nivel 1 */
@@ -252,7 +221,7 @@ const navItems = pathname === '/'
     visibility: visible;
   }
   
-  
+  /* Prevenir que se cierre al mover entre elementos */
   .nav-item:hover .submenu-level-1,
   .submenu-level-1:hover {
     opacity: 1;
@@ -268,21 +237,21 @@ const navItems = pathname === '/'
   }
 </style>
 
-
+<!-- Script simple solo para debug -->
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    console.log('=== DEBUG NAVEGACIÓN ===');
+    console.log('=== DEBUG SCROLL ===');
     console.log('Elemento #enlaces existe:', !!document.getElementById('enlaces'));
-    console.log('Elemento #convocatorias existe:', !!document.getElementById('convocatorias'));
-    console.log('Elemento #noticias existe:', !!document.getElementById('noticias'));
-    console.log('Elemento #direc existe:', !!document.getElementById('direc'));
+    console.log('Elemento #services existe:', !!document.getElementById('services'));
+    console.log('Elemento #footer existe:', !!document.getElementById('footer'));
+    console.log('Elemento #location existe:', !!document.getElementById('location'));
     
     const elementsWithId = document.querySelectorAll('[id]');
     console.log('Todos los elementos con ID:');
     elementsWithId.forEach(el => {
       console.log(`- ${el.id}: ${el.tagName}`);
     });
-
+    
+    console.log('Submenu configurado con CSS puro - no requiere JavaScript');
   });
-
 </script>

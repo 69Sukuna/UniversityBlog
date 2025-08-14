@@ -5,19 +5,12 @@ import { BRAND } from 'astro:schema';
 import Carousel from '../components/ui/Carousel.astro';
 import CardsNotices from '../components/ui/CardsNotices.astro';
 import FlipCard from '../components/ui/Target.astro';
-import { db, News, Convocatorias, eq, desc } from 'astro:db';
+import { db, News, Usuarios } from 'astro:db';
 
-// Obtener noticias de la Soce con id = 1, ordenadas por fecha (más reciente primero)
-const noticias = await db
-  .select()
-  .from(News)
-  .where(eq(News.socesId, 1))
-  .orderBy(desc(News.fecha)); // Ordenar por fecha (más reciente primero)
+// Obtener noticias de SisInf desde la base de datos
+const noticiasAll = await db.select().from(News);
 
-const convocatorias = await db
-  .select()
-  .from(Convocatorias)
-  .orderBy(desc(Convocatorias.fecha)); // Ordenar por fecha (más reciente primero)
+const noticiasSisInf = noticiasAll.filter((noticia) => noticia.userId === 3);
 
 //carrusell
 const modules = import.meta.glob('../Image/FilArt/*.{png,jpg,jpeg,gif}', { eager: true });
@@ -37,8 +30,8 @@ const images = Object.values(modules)
   title="OSCES - FNI"
   description="Bienvenido a mi aplicación construida con Astro y las mejores prácticas de desarrollo web"
 >
-  <!-- ======================= PRESENTACIÓN ======================= -->
-  <section class="bg-gradient-to-r from-blue-300 to-indigo-50 py-5">
+  <!-- Hero Section -->
+  <section class="bg-gradient-to-r from-blue-200 to-indigo-50 py-5">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center">
         <div class="flex justify-between items-center ">
@@ -54,7 +47,7 @@ const images = Object.values(modules)
 
         <div class="flex gap-6 items-center py-5">
           <div class="w-3/5 flex-none">
-            <p class="text-xl text-gray-800 text-justify px-4">
+            <p class="text-xl text-gray-600 text-justify px-4">
               Las sociedades científicas contribuyen al desarrollo estudiantil y al desarrollo profesional
               forjando jóvenes con ganas de aprender y que tengan la valentía de sobresalir entre todos los demás.
               <br><br>Por ello, la Facultad Nacional de Ingeniería de la Universidad Técnica de Oruro comprende con 11 
@@ -70,33 +63,15 @@ const images = Object.values(modules)
     </div>
   </section>
 
-  <!-- ======================= HISTORIA ======================= -->
-  <section class="py-5 bg-white">
+  <!-- Features Section -->
+  <section class="py-20 bg-white">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-16 py-4">
+      <div class="text-center mb-16">
         <h2 class="text-3xl font-bold text-gray-900 mb-4">Historia</h2>
-        <p class="text-2xl  text-gray-600 text-justify mx-auto py-4 ">
-          La Organización de Sociedades Científicas Estudiantiles (OSCE-FNI) fue creada hace 
-          algunos años con el propósito de unificar y coordinar todas las sociedades científicas 
-          pertenecientes a la Facultad Nacional de Ingeniería (FNI). Su objetivo principal es modernizar 
-          y reestructurar el enfoque tradicional, muchas veces fragmentado y desactualizado, que existía 
-          en la gestión y funcionamiento de estas sociedades.
-        </p>
-        <p class="text-2xl text-gray-600  text-justify mx-auto">
-          A través de OSCE-FNI, se busca fomentar la colaboración entre las diferentes sociedades, 
-          potenciar el desarrollo académico y científico de los estudiantes, así como promover actividades 
-          conjuntas que enriquezcan la formación integral dentro de la facultad. Esta organización actúa como 
-          un ente rector que facilita la comunicación, planificación y ejecución de proyectos que beneficien 
-          a toda la comunidad estudiantil de la FNI, promoviendo un sentido de pertenencia, innovación y trabajo 
-          en equipo.
+        <p class="text-gray-600 max-w-2xl mx-auto">
+          Construida con tecnologías modernas y siguiendo las mejores prácticas
         </p>
       </div>
-    </div>
-  </section>
-
-  <!-- ======================= AUTORIDADES ======================= -->
-  <section class=" bg-white">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8">      
       <div class="text-center mb-16" id="direc">
         <h2 class="text-3xl font-bold text-gray-900 mb-4">Nuestras Autoridades</h2>
         <div class="flex flex-wrap justify-center gap-6">
@@ -154,34 +129,11 @@ const images = Object.values(modules)
 
         
       </div>
-
+      <div class="text-center mb-16" id="noticias">
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">Noticias</h2>
+        <!-- Mostrar noticias de SisInf -->
+        <CardsNotices noticias={noticiasSisInf} />
+      </div>
+    </div>
   </section>
-
-  <!-- ======================= CONVOCATORIAS ======================= -->
-
-<section class="bg-white py-10 px-6 sm:px-12 lg:px-16" id="convocatorias">
-  <div class="flex flex-wrap gap-6 items-start">
-    <h2 class="w-full text-center text-3xl font-bold text-gray-900 mb-4">
-      Convocatorias
-    </h2>
-    <!-- Mostrar convocatorias -->
-    <CardsNotices noticias={convocatorias} />
-  </div>
-</section>
-
-  <!-- ======================= NOTICIAS ======================= -->
-
-<section class="bg-white py-10 px-6 sm:px-12 lg:px-16" id="noticias">
-  <div class="flex flex-wrap gap-6 items-start">
-    <h2 class="w-full text-center text-3xl font-bold text-gray-900 mb-4">
-      Noticias 
-    </h2>
-    <!-- Mostrar noticias OSCE -->
-    <CardsNotices noticias={noticias} />
-  </div>
-</section>
-
-
-
-
 </Layout>

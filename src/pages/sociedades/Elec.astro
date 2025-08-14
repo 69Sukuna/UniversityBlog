@@ -6,14 +6,7 @@ import Carousel from '../../components/ui/Carousel.astro';
 import FlipCard from '../../components/ui/Target.astro';
 import ImageFocusGallery from '../../components/ui/ImageFocusGallery.astro';
 import CardsNotices from '../../components/ui/CardsNotices.astro';
-import { db, News, eq , desc} from 'astro:db';
-
-// Obtener noticias de la Soce con id = 1
-const noticias = await db
-  .select()
-  .from(News)
-  .where(eq(News.socesId, 8))
-  .orderBy(desc(News.fecha)); // Ordenar por fecha (más reciente primero)
+import { db, News, Usuarios } from 'astro:db';
 
 const items = [
   {
@@ -27,13 +20,18 @@ const items = [
     text_URL: 'https://www.facebook.com/SCEIEIE/?locale=es_LA',
   },
 ];
+// Obtener noticias de la base de datos
+const noticiasAll = await db.select().from(News);
+
+const noticias = noticiasAll.filter((noticia) => noticia.userId === 3);
+
 ---
 
 <Layout
   title="S.C.E.I.E.I.E."
   description="Bienvenido a mi aplicación construida con Astro y las mejores prácticas de desarrollo web"
 >
-  <!-- ======================= PRESENTACIÓN ======================= -->
+  <!-- Hero Section -->
   <section class="bg-gradient-to-r from-blue-900 to-indigo-50 py-5">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center">
@@ -88,20 +86,15 @@ const items = [
     </div>
   </section>
 
-  <!-- ======================= NOTICIAS ======================= -->
-  <section class="bg-white py-10 px-6 sm:px-12 lg:px-16" id="noticias">
-    <div class="flex flex-wrap gap-6 items-start">
-      <h2 class="w-full text-center text-3xl font-bold text-gray-900 mb-4">
-        Noticias
-      </h2>
-      <!-- Mostrar noticias -->
-      <CardsNotices noticias={noticias} />
-    </div>
-  </section>
-
-  <!-- ======================= REFERENCIAS / REQUISITOS ======================= -->
+  <!-- Features Section -->
   <section class="py-20 bg-white">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8" >
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8" id="noticias">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">Noticias</h2>
+        <!-- Mostrar noticias de SisInf -->
+        <CardsNotices noticias={noticias} />
+      </div>
+
       <div class="text-center">
         <h2 class="text-3xl font-bold text-gray-900 mb-4">¿Cómo ser parte?</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
