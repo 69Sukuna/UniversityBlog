@@ -6,15 +6,7 @@ import Carousel from '../../components/ui/Carousel.astro';
 import FlipCard from '../../components/ui/Target.astro';
 import ImageFocusGallery from '../../components/ui/ImageFocusGallery.astro';
 import CardsNotices from '../../components/ui/CardsNotices.astro';
-import { db, News, eq , desc} from 'astro:db';
-
-// Obtener noticias de la Soce con id = 1
-const noticias = await db
-  .select()
-  .from(News)
-  .where(eq(News.socesId, 6))
-  .orderBy(desc(News.fecha)); // Ordenar por fecha (más reciente primero)
-
+import { db, News, Usuarios } from 'astro:db';
 
 const items = [
   {
@@ -28,7 +20,10 @@ const items = [
     text_URL: '/sociedades/COM',
   },
 ];
+// Obtener noticias de la base de datos
+const noticiasAll = await db.select().from(News);
 
+const noticias = noticiasAll.filter((noticia) => noticia.userId === 3);
 
 //carrusell
 const modules = import.meta.glob('../../Image/SocMec/COM/FotosSoc/*.{png,jpg,jpeg,gif}', { eager: true });
@@ -48,7 +43,7 @@ const images = Object.values(modules)
   title="SCEIMEM - COM"
   description="Bienvenido a mi aplicación construida con Astro y las mejores prácticas de desarrollo web"
 >
-  <!-- ======================= PRESENTACIÓN ======================= -->
+  <!-- Hero Section -->
   <section class="bg-gradient-to-r from-red-500 to-indigo-50 py-5">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center">
@@ -100,21 +95,15 @@ const images = Object.values(modules)
     </div>
   </section>
 
-  <!-- ======================= NOTICIAS ======================= -->
-  <section class="bg-white py-10 px-6 sm:px-12 lg:px-16" id="noticias">
-    <div class="flex flex-wrap gap-6 items-start">
-      <h2 class="w-full text-center text-3xl font-bold text-gray-900 mb-4">
-        Noticias
-      </h2>
-      <!-- Mostrar noticias-->
-      <CardsNotices noticias={noticias} />
-    </div>
-  </section>
-
-  <!-- ======================= DIRECTIVA ======================= -->
-  <section class="py-5 bg-white" id="direc">
+  <!-- Features Section -->
+  <section class="py-20 bg-white">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-16">
+      <div class="text-center mb-16" id="noticias">
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">Noticias</h2>
+        <CardsNotices noticias={noticias} />
+      </div>
+
+      <div class="text-center mb-16" id="direc">
         <h2 class="text-3xl font-bold text-gray-900 mb-4">Nuestra Directiva</h2>
         <div class="flex flex-wrap justify-center gap-6">
           <FlipCard
@@ -157,11 +146,63 @@ const images = Object.values(modules)
           />
         </div>
       </div>
-    </div>
-  </section>
 
-  <section class="py-5 bg-white">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8"></div>
+      <div class="bg-purple-50 py-16 px-6">
+        <div class="max-w-5xl mx-auto text-center">
+          <h2 class="text-4xl font-bold text-purple-900 mb-10">Misión y Visión</h2>
+          <div class="grid md:grid-cols-2 gap-8">
+            
+            <!-- Misión -->
+            <div class="bg-white p-8 rounded-xl shadow-md border-t-4 border-purple-300">
+              <h3 class="text-2xl font-semibold text-purple-700 mb-4">Nuestra Misión</h3>
+              <p class="text-gray-700 leading-relaxed text-justify">
+                Impulsar el desarrollo de proyectos de investigación científica y tecnológica en 
+                las áreas de Ingeniería Mecánica, Electromecánica y Mecatrónica, fomentando la 
+                participación activa de estudiantes en la generación de conocimiento y soluciones 
+                aplicadas.
+              </p>
+              <p class="text-gray-700 leading-relaxed text-justify">
+                La SCEIMEM es una sociedad científica estudiantil activa e independiente que no 
+                solo administra, sino que genera y ejecuta actividades y proyectos propios, con o 
+                sin la participación de sus subgrupos. Sirve como una plataforma abierta para la creación y 
+                articulación de diversos subgrupos de investigación, los cuales funcionan como unidades 
+                complementarias y temáticas.
+              </p>
+              <p class="text-gray-700 leading-relaxed text-justify">
+                Todos los integrantes de los subgrupos deben ser miembros activos de la SCEIMEM, aunque no 
+                todos los socios de la SCEIMEM pertenezcan necesariamente a un subgrupo específico.
+              </p>
+              <p class="text-gray-700 leading-relaxed text-justify">
+                La sociedad se rige bajo el cumplimiento riguroso de las normas y requisitos establecidos por 
+                la DICyT, DPIC y otras instancias institucionales, garantizando la legalidad, la calidad y la 
+                responsabilidad de sus actividades y producciones científicas.
+              </p>
+            </div>
+            
+            <!-- Visión -->
+            <div class="bg-white p-8 rounded-xl shadow-md border-t-4 border-purple-300">
+              <h3 class="text-2xl font-semibold text-purple-700 mb-4">Nuestra Visión</h3>
+              <p class="text-gray-700 leading-relaxed text-justify">
+                Consolidarse como una sociedad científica líder y dinámica, reconocida por su excelencia 
+                en la investigación estudiantil, su capacidad organizativa, su independencia operativa y su 
+                impacto en la comunidad universitaria y la sociedad.
+              </p>
+              <p class="text-gray-700 leading-relaxed text-justify">
+                La SCEIMEM busca albergar y fortalecer múltiples líneas de investigación a través de subgrupos 
+                bien estructurados, sin perder su capacidad de generar iniciativas propias como sociedad activa.
+              </p>
+              <p class="text-gray-700 leading-relaxed text-justify">
+                Su modelo organizativo fomenta la innovación, el trabajo colaborativo y la formación integral de 
+                futuros profesionales comprometidos con la ciencia, la tecnología y el desarrollo del país. A 
+                través de esta estructura, la SCEIMEM aspira a ser un referente institucional, capaz de gestionar y 
+                ejecutar proyectos de alto nivel, tanto en coordinación con subgrupos como de forma autónoma.
+              </p>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      
       <div class="text-center">
         <h2 class="text-3xl font-bold text-gray-900 mb-4">¿Cómo ser parte?</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
