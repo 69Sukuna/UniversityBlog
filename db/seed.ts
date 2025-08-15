@@ -2,8 +2,8 @@ import { db, Usuarios, News, Soces, Convocatorias } from 'astro:db';
 import { AuthService } from '../src/utils/auth';
 
 export default async function () {
-  const hashedAdmin = await AuthService.hashPassword('1234');
-  const hashedUser = await AuthService.hashPassword('1234');
+  const hashedAdmin = await AuthService.hashPassword('OSCE2025osce');
+  const hashedUser = await AuthService.hashPassword('SOCES2025soces');
 
   // PRIMERO: Insertar las sociedades (Soces)
   await db.insert(Soces).values([
@@ -26,130 +26,122 @@ export default async function () {
   // SEGUNDO: Insertar los usuarios (ahora que las sociedades existen)
   await db.insert(Usuarios).values([
     {
-      nombre: 'Jose Daniel',
-      correo: 'a@a.com',
-      userName: 'Admin',
+      nombre: 'Osce Admin',
+      correo: 'OsceAdmin@a.com',
+      userName: 'AdminOsce',
       password: hashedAdmin,
       role: 'admin',
       socesId: 1, // OSCE existe
     },
     {
-      nombre: 'Maria',
-      correo: 'maria@a.com', // Email diferente para evitar duplicados
-      userName: 'User',
+      nombre: 'Soces User',
+      correo: 'SocesUser@a.com', // Email diferente para evitar duplicados
+      userName: 'UserSoces',
       password: hashedUser,
       role: 'user',
-      socesId: 2, // So.C.E. Ing. Minas existe
-    },
-    {
-      nombre: 'Prueba',
-      correo: 'prueba@a.com',
-      userName: 'SisInf',
-      password: hashedUser,
-      role: 'user',
-      socesId: 11, // So.C.E. Ing. de Sistemas e Ing. Informática existe (era 10 antes, pero no existía)
+      socesId: 1, // So.C.E. Ing. Minas existe
     },    
     {
     nombre: 'OSCE',
     correo: 'osce@a.com',
     userName: 'OSCE',
-    password: hashedUser,
+    password: 'Osce1234567',
     role: 'user',
     socesId: 1,
   },
   {
-    nombre: 'Minas',
+    nombre: 'Sociedad Científica de Minas',
     correo: 'minas@a.com',
-    userName: 'SisInf',
-    password: hashedUser,
+    userName: 'SocMinas',
+    password: 'SocMinas2025',
     role: 'user',
     socesId: 2,
   },
   {
-    nombre: 'Civil',
+    nombre: 'Sociedad Científica de Civil',
     correo: 'civil@a.com',
-    userName: 'Civil',
-    password: hashedUser,
+    userName: 'SocCivil',
+    password: 'Civil2025',
     role: 'user',
     socesId: 3,
   },
   {
-    nombre: 'MetMat',
+    nombre: 'Sociedad Científica MetMat',
     correo: 'metalurgia@a.com',
-    userName: 'Metal',
-    password: hashedUser,
+    userName: 'SocMetMat',
+    password: 'MetMat2025',
     role: 'user',
     socesId: 4,
   },
   {
-    nombre: 'SCEIMEM',
+    nombre: 'Sociedad Científica de SCEIMEM',
     correo: 'sceimem@a.com',
     userName: 'SCEIMEM',
-    password: hashedUser,
+    password: 'SCEIMEM2025',
     role: 'user',
     socesId: 5,
   },
   {
-    nombre: 'COM',
+    nombre: 'Sociedad Científica COM',
     correo: 'com@a.com',
-    userName: 'COM',
-    password: hashedUser,
+    userName: 'SocCOM',
+    password: 'COM2025',
     role: 'user',
     socesId: 6,
   },
   {
-    nombre: 'SIDDFAC',
+    nombre: 'Sociedad Científica SIDDFAC',
     correo: 'sidfac@a.com',
     userName: 'SIDDFAC',
-    password: hashedUser,
+    password: 'SIDDFAC2025',
     role: 'user',
     socesId: 7,
   },
   {
-    nombre: 'Elec',
+    nombre: 'Sociedad Científica de Electrica',
     correo: 'electrica@a.com',
-    userName: 'Elec',
-    password: hashedUser,
+    userName: 'SocElectrica',
+    password: 'Electrica2025',
     role: 'user',
     socesId: 8,
   },
   {
-    nombre: 'Quim',
+    nombre: 'Sociedad Científica de Química',
     correo: 'quimica@a.com',
-    userName: 'QuimAlim',
-    password: hashedUser,
+    userName: 'SocQuimica',
+    password: 'Quimica2025',
     role: 'user',
     socesId: 9,
   },
   {
-    nombre: 'Geo',
+    nombre: 'Sociedad Científica de Geología',
     correo: 'geologica@a.com',
-    userName: 'Geo',
-    password: hashedUser,
+    userName: 'SocGeo',
+    password: 'Geo2025',
     role: 'user',
     socesId: 10,
   },
   {
-    nombre: 'SISinf',
+    nombre: 'Sociedad Científica de Sistemas-Informática',
     correo: 'sistemas@a.com',
-    userName: 'SisInf',
-    password: hashedUser,
+    userName: 'SocSisInf',
+    password: 'SisInf2025',
     role: 'user',
     socesId: 11,
   },
   {
-    nombre: 'Ind',
+    nombre: 'Sociedad Científica de Industrial',
     correo: 'industrial@a.com',
-    userName: 'Indus',
-    password: hashedUser,
+    userName: 'SocInd',
+    password: 'Indus2025',
     role: 'user',
     socesId: 12,
   },
   {
-    nombre: 'Fis',
+    nombre: 'Sociedad Científica de Física',
     correo: 'fisica@a.com',
-    userName: 'Fisica',
-    password: hashedUser,
+    userName: 'SocFisica',
+    password: 'Fisica2025',
     role: 'user',
     socesId: 13,
   },
@@ -158,7 +150,7 @@ export default async function () {
   ]);
 
   // TERCERO: Insertar las noticias (ahora que usuarios y sociedades existen)
-  await db.insert(News).values([
+  /*await db.insert(News).values([
     {
       userId: 1, // Maria (segunda usuaria insertada)
       titulo: 'Noticia 1',
@@ -208,5 +200,6 @@ export default async function () {
       fecha: new Date('2023-01-01'),
       socesId: 1, 
     },
-  ]);
+  ]);*/
 }
+
