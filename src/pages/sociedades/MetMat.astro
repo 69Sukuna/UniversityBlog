@@ -6,7 +6,14 @@ import Carousel from '../../components/ui/Carousel.astro';
 import FlipCard from '../../components/ui/Target.astro';
 import ImageFocusGallery from '../../components/ui/ImageFocusGallery.astro';
 import CardsNotices from '../../components/ui/CardsNotices.astro';
-import { db, News, Usuarios } from 'astro:db';
+import { db, News, eq , desc} from 'astro:db';
+
+// Obtener noticias de la Soce con id = 1
+const noticias = await db
+  .select()
+  .from(News)
+  .where(eq(News.socesId, 4))
+  .orderBy(desc(News.fecha)); // Ordenar por fecha (más reciente primero)
 
 const items = [
   {
@@ -16,22 +23,18 @@ const items = [
   },
   {
     img: '/src/Image/SocMetMat/Logo_Soc.jpg',
-    text: 'SOCE MET MAT',
-    text_URL: '',
+    text: 'SOCEI MET-MAT',
+    text_URL: 'https://www.facebook.com/share/1DmkWMq78A/',
   },
 ];
-// Obtener noticias de la base de datos
-const noticiasAll = await db.select().from(News);
-
-const noticias = noticiasAll.filter((noticia) => noticia.userId === 3);
 
 ---
 
 <Layout
-  title="SOCE MET MAT"
+  title="SOCEI MET-MAT"
   description="Bienvenido a mi aplicación construida con Astro y las mejores prácticas de desarrollo web"
 >
-  <!-- Hero Section -->
+  <!-- ======================= PRESENTACIÓN ======================= -->
   <section class="bg-gradient-to-r from-red-600 to-indigo-50 py-5">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center">
@@ -56,17 +59,118 @@ const noticias = noticiasAll.filter((noticia) => noticia.userId === 3);
     </div>
   </section>
 
-  <!-- Features Section -->
-  <section class="py-20 bg-white">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8" id="noticias">
-      <div class="text-center mb-16">
-        <h2 class="text-3xl font-bold text-gray-900 mb-4">Noticias</h2>
-        <!-- Mostrar noticias de SisInf -->
+  <!-- ======================= NOTICIAS ======================= -->
+  <section class="bg-white py-10 px-6 sm:px-12 lg:px-16" id="noticias">
+    <div class="flex flex-wrap gap-6 items-start">
+      <h2 class="w-full text-center text-3xl font-bold text-gray-900 mb-4">
+        Noticias 
+      </h2>
+        <!-- Mostrar noticias -->
         <CardsNotices noticias={noticias} />
-      </div>
+    </div>
+  </section>
 
+  <!-- ======================= DIRECTIVA ======================= -->
+  <section class="py-5 bg-white" id="direc">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8" >
       
-      
+      <div class="text-center mb-16" >
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">Nuestra Directiva</h2>
+        <div class="flex flex-wrap justify-center gap-6">
+          <FlipCard
+            name="Univ. Marvin Cruz Main"
+            role="Presidente de la Sociedad Científica SOCEI MET-MAT"
+            email=" marvincruzmain04@gmail.com"
+            phone="+591 74476325"
+            photo="/src/Image/SocMetMat/Presi.png"
+          />
+          <FlipCard
+            name="Univ. Kevin Aldrin Ajhuacho Pozo"
+            role="Vicepresidente de la Sociedad Científica SOCEI MET-MAT"
+            email="ajhuachopozokevinaldrin@gmail.com"
+            phone="+591 78680027"
+            photo=""
+          />
+          <FlipCard
+            name="Univ. Esperanza Escalera Sanchez "
+            role="Secretaria de Actas de la Sociedad Científica SOCEI MET-MAT"
+            email="esperanzasanchez.e@metalurgia.edu.bo"
+            phone="+591 71185663"
+            photo="/src/Image/SocMetMat/Actas.png"
+
+          />
+          <FlipCard
+            name="Univ. Esperanza Mauricio Bernard Garcia Duran"
+            role="Secretario de Hacienda de la Sociedad Científica SOCEI MET-MAT"
+            biografia={[
+              "Profesional altamente capacitado con una sólida formación en ingeniería y gestión ambiental, complementada por estudios de posgrado en administración y sistemas de calidad. Inició su trayectoria académica en 1996, obteniendo el título de Técnico Medio en Programación de Computadoras en el Centro de Asistencia Técnica. Posteriormente, cursó la carrera de Ingeniería Química con mención en Procesos Químicos en la Universidad Técnica de Oruro, finalizando en 1998.",
+              "En el año 2001, concluyó una Maestría en Ingeniería Ambiental en la Universidad Politécnica, consolidando su perfil técnico con una perspectiva enfocada en sostenibilidad. A lo largo de su carrera, se especializó en sistemas de gestión, obteniendo dos especialidades en normas ISO: ISO 9000 (2004) e ISO 14000 (2008), a través del Instituto Boliviano de Normalización.",
+              "En 2010, completó una Maestría en Administración de Empresas en una universidad privada, lo cual le permitió fortalecer su enfoque estratégico y de liderazgo. Actualmente, continúa su desarrollo profesional cursando Ingeniería Metalúrgica en la Universidad Técnica de Oruro, con estudios programados hasta el año 2025."
+            ]}
+            email="mauriciogarcia.e@metalurgia.edu.bo"
+            phone="+591 77473337"
+            photo="/src/Image/SocMetMat/Hacienda.png"
+          />
+          <FlipCard
+            name="Univ. Leonor Flores Gutierrez"
+            role="Vocal de la Sociedad Científica SOCEI MET-MAT"
+            email="leonorfloresgutierrez543@gmail.com"
+            phone="+591 74107446"
+            photo=""
+
+          />
+          <FlipCard
+            name="Univ. Javier Pablo Rosales Taquichiri "
+            role="Vocal de la Sociedad Científica SOCEI MET-MAT"
+            email="javierpablorosalestaquichiri@gmail.com "
+            phone="+591 68324883"
+            photo="/src/Image/SocMetMat/Vocal.png"
+
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= MISION Y VISION ======================= -->
+  <section class="py-5 bg-white" >
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8" >
+      <div class="bg-purple-50 py-16 px-6">
+        <div class="max-w-5xl mx-auto text-center">
+          <h2 class="text-4xl font-bold text-purple-900 mb-10">Misión y Visión</h2>
+          <div class="grid md:grid-cols-2 gap-8">
+            
+            <!-- Misión -->
+            <div class="bg-white p-8 rounded-xl shadow-md border-t-4 border-purple-300">
+              <h3 class="text-2xl font-semibold text-purple-700 mb-4">Nuestra Misión</h3>
+              <p class="text-gray-700 leading-relaxed text-justify">
+                Promover el desarrollo científico, tecnológico y académico de los estudiantes de 
+                la carrera de Ingeniería Metalúrgica y Ciencia de Materiales, mediante la investigación, 
+                la divulgación del conocimiento con el entorno productivo y la formación integral, 
+                contribuyendo en el avance de la ciencia y progreso del país.
+              </p>
+            </div>
+            
+            <!-- Visión -->
+            <div class="bg-white p-8 rounded-xl shadow-md border-t-4 border-purple-300">
+              <h3 class="text-2xl font-semibold text-purple-700 mb-4">Nuestra Visión</h3>
+              <p class="text-gray-700 leading-relaxed text-justify">
+                Ser una sociedad científica estudiantil activa y comprometida, que fomente la 
+                participación estudiantil en actividades de investigación, capacitación y difusión 
+                del conocimiento en el área de la Metalurgia y Ciencia de Materiales, fortaleciendo 
+                la formación profesional y contribuyendo gradualmente al desarrollo de la carrera y la 
+                facultad de ingeniería.
+              </p>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+   <!-- ======================= REFERENCIAS / REQUISITOS ======================= -->
+    <section class="py-10 bg-white">
       <div class="text-center">
         <h2 class="text-3xl font-bold text-gray-900 mb-4">¿Cómo ser parte?</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
