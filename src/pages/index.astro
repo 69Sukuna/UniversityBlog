@@ -38,7 +38,7 @@ const images = Object.values(modules)
   description="Bienvenido a mi aplicación construida con Astro y las mejores prácticas de desarrollo web"
 >
   <!-- ======================= PRESENTACIÓN ======================= -->
-  <section class="bg-gradient-to-r from-blue-300 to-indigo-50 py-5">
+  <section class="bg-gradient-to-r from-blue-300 to-indigo-500 py-5">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center">
         <div class="flex justify-between items-center ">
@@ -59,43 +59,65 @@ const images = Object.values(modules)
               forjando jóvenes con ganas de aprender y que tengan la valentía de sobresalir entre todos los demás.
               <br><br>Por ello, la Facultad Nacional de Ingeniería de la Universidad Técnica de Oruro comprende con 11 
               sociedades científicas actualmente, las cuales son representadas por la Organización de Sociedades Científicas de Estudiantes de la F.N.I. (OSCE-FNI)
-            </p>            
+            </p>
+                      <div class="flex flex-col sm:flex-row gap-4 pt-6">
+            <a href="#historia" 
+               class="inline-flex items-center justify-center bg-yellow-400 hover:bg-yellow-300 text-gray-900 px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 group">
+              <span>Conocer Más</span>
+              <svg class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+              </svg>
+            </a>
+            <a href="#sociedades" 
+               class="inline-flex items-center justify-center border-2 border-white text-white hover:bg-white hover:text-gray-900 px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+              Ver Sociedades
+            </a>
+          </div>            
           </div>
-          <div class="w-2/5 flex-none ">
-             <Carousel images={images} /></Carousel>
-          </div> 
-        </div>
-        
+          
+          <div class="lg:col-span-2">
+            <div class="relative">
+              <div class="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-600/20 rounded-3xl blur-xl transform scale-105"></div>
+              <div class="relative bg-white/10 backdrop-blur-lg rounded-3xl p-6 shadow-2xl border border-white/20">
+                <Carousel images={images} />
+              </div>
+            </div>
+          </div>
+        </div>        
       </div>
     </div>
   </section>
 
+
   <!-- ======================= HISTORIA ======================= -->
-  <section class="py-5 bg-white">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-16 py-4">
-        <h2 class="text-3xl font-bold text-gray-900 mb-4">Historia</h2>
-        <p class="text-2xl  text-gray-600 text-justify mx-auto py-4 ">
-          La Organización de Sociedades Científicas Estudiantiles (OSCE-FNI) fue creada hace 
-          algunos años con el propósito de unificar y coordinar todas las sociedades científicas 
-          pertenecientes a la Facultad Nacional de Ingeniería (FNI). Su objetivo principal es modernizar 
-          y reestructurar el enfoque tradicional, muchas veces fragmentado y desactualizado, que existía 
-          en la gestión y funcionamiento de estas sociedades.
-        </p>
-        <p class="text-2xl text-gray-600  text-justify mx-auto">
-          A través de OSCE-FNI, se busca fomentar la colaboración entre las diferentes sociedades, 
-          potenciar el desarrollo académico y científico de los estudiantes, así como promover actividades 
-          conjuntas que enriquezcan la formación integral dentro de la facultad. Esta organización actúa como 
-          un ente rector que facilita la comunicación, planificación y ejecución de proyectos que beneficien 
-          a toda la comunidad estudiantil de la FNI, promoviendo un sentido de pertenencia, innovación y trabajo 
-          en equipo.
-        </p>
+  <section class="py-5 bg-white" id="historia">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-3xl p-8 md:p-12">
+      <div class="text-center  py-4">
+        <h2 class="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Historia</h2>
+        <div >
+          <p class="text-2xl  text-black text-justify mx-auto py-4 ">
+            La Organización de Sociedades Científicas Estudiantiles (OSCE-FNI) fue creada hace 
+            algunos años con el propósito de unificar y coordinar todas las sociedades científicas 
+            pertenecientes a la Facultad Nacional de Ingeniería (FNI). Su objetivo principal es modernizar 
+            y reestructurar el enfoque tradicional, muchas veces fragmentado y desactualizado, que existía 
+            en la gestión y funcionamiento de estas sociedades.
+          </p>
+          <p class="text-2xl text-black  text-justify mx-auto">
+            A través de OSCE-FNI, se busca fomentar la colaboración entre las diferentes sociedades, 
+            potenciar el desarrollo académico y científico de los estudiantes, así como promover actividades 
+            conjuntas que enriquezcan la formación integral dentro de la facultad. Esta organización actúa como 
+            un ente rector que facilita la comunicación, planificación y ejecución de proyectos que beneficien 
+            a toda la comunidad estudiantil de la FNI, promoviendo un sentido de pertenencia, innovación y trabajo 
+            en equipo.
+          </p>          
+        </div>
+
       </div>
     </div>
   </section>
 
   <!-- ======================= AUTORIDADES ======================= -->
-  <section class=" bg-white">
+  <section class=" bg-white py-10">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">      
       <div class="text-center mb-16" id="direc">
         <h2 class="text-3xl font-bold text-gray-900 mb-4">Nuestras Autoridades</h2>
@@ -180,8 +202,6 @@ const images = Object.values(modules)
     <CardsNotices noticias={noticias} />
   </div>
 </section>
-
-
 
 
 </Layout>
