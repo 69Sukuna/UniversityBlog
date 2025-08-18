@@ -20,7 +20,7 @@ const convocatorias = await db
   .orderBy(desc(Convocatorias.fecha)); // Ordenar por fecha (más reciente primero)
 
 //carrusell
-const modules = import.meta.glob('../Image/FilArt/*.{png,jpg,jpeg,gif}', { eager: true });
+const modules = import.meta.glob('../Image/fotosGen/*.{png,jpg,jpeg,gif}', { eager: true });
 
 const images = Object.values(modules)
   .map(mod => {
