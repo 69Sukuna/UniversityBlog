@@ -1,7 +1,4 @@
 {
-  "build": {
-    "env": {
-      "NPM_CONFIG_FROZEN_LOCKFILE": "false"
-    }
-  }
+  "installCommand": "npm install -g pnpm && pnpm install --no-frozen-lockfile",
+  "buildCommand": "pnpm run build"
 }
