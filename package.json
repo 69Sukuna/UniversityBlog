@@ -2,10 +2,11 @@
   "name": "minor-matter",
   "type": "module",
   "version": "0.0.1",
+  "packageManager": "pnpm@11.2.2",
   "scripts": {
     "dev": "astro dev",
-    "build": "ASTRO_DATABASE_FILE=./local.db ASTRO_DB_REMOTE_URL=file:./local.db astro build && cp ./local.db ./dist/local.db",
-    "preview": "astro preview",
+    "build": "astro build",
+    "preview": "astro preview", 
     "astro": "astro",
     "lint": "eslint . --ext .js,.ts,.astro",
     "format": "prettier . --write"
