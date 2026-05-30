@@ -6,13 +6,13 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview", 
+    "preview": "astro preview",
     "astro": "astro",
     "lint": "eslint . --ext .js,.ts,.astro",
     "format": "prettier . --write"
   },
   "dependencies": {
-    "@astrojs/db": "^0.15.0",
+    "@astrojs/db": "^0.15.1",
     "@astrojs/node": "^9.3.0",
     "@astrojs/sitemap": "^3.4.1",
     "@astrojs/vercel": "^8.2.3",
