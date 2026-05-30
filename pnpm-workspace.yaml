@@ -1,4 +1,7 @@
-﻿onlyBuiltDependencies:
+allowBuilds:
+  esbuild: true
+  sharp: true
+onlyBuiltDependencies:
   - esbuild
   - sharp
   - '@tailwindcss/vite'
