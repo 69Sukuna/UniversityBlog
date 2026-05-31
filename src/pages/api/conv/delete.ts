@@ -1,12 +1,12 @@
-import type { APIRoute } from 'astro';
+﻿import type { APIRoute } from 'astro';
 import { db, Convocatorias, eq, and } from 'astro:db';
 import { getUserFromRequest } from '../../../utils/session';
 
 export const POST: APIRoute = async ({ request, redirect }) => {
   try {
-    const user = getUserFromRequest(request);
+    const user = await getUserFromRequest(request);
 
-    // Verificar que el usuario esté autenticado y pertenezca a la sociedad ID 1
+    // Verificar que el usuario estÃ© autenticado y pertenezca a la sociedad ID 1
     if (!user || user.socesId !== 1) {
       return redirect('/login');
     }

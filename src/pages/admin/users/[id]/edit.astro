@@ -8,7 +8,7 @@ import { getUserFromRequest } from '../../../../utils/session';
 import { requireRole } from '../../../../utils/auth';
 import { db, Usuarios, eq , Soces} from 'astro:db';
 
-const user = getUserFromRequest(Astro.request);
+const user = await getUserFromRequest(Astro.request);
 
 if (!user || !requireRole(user, ['admin'])) {
   return Astro.redirect('/login');

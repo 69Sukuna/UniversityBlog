@@ -1,4 +1,4 @@
-import type { APIRoute } from 'astro';
+﻿import type { APIRoute } from 'astro';
 import { db, Convocatorias } from 'astro:db';
 
 import { getUserFromRequest } from '../../../../utils/session';
@@ -10,36 +10,36 @@ export const POST: APIRoute = async ({ request, redirect }) => {
     // 1. Verificar usuario - con manejo de errores
     let user;
     try {
-      user = getUserFromRequest(request);
+      user = await getUserFromRequest(request);
       console.log('Usuario obtenido:', user ? { 
         id: user.id, 
         socesId: user.socesId, 
         role: user.role || 'no role' 
       } : 'null');
     } catch (userError) {
-      console.log('❌ Error obteniendo usuario:', userError);
+      console.log('âŒ Error obteniendo usuario:', userError);
       return redirect('/login');
     }
 
     if (!user) {
-      console.log('❌ Usuario no encontrado');
+      console.log('âŒ Usuario no encontrado');
       return redirect('/login');
     }
 
     // 2. Verificar que el usuario pertenezca a socesId = 1
     if (user.socesId !== 1) {
-      console.log('❌ Usuario no pertenece a socesId = 1. SocesId actual:', user.socesId);
+      console.log('âŒ Usuario no pertenece a socesId = 1. SocesId actual:', user.socesId);
       return redirect('/dashboard?error=unauthorized');
     }
 
     // 3. Verificar permisos para crear convocatorias (solo admin o user)
     const allowedRoles = ['admin', 'user'];
     if (!allowedRoles.includes(user.role)) {
-      console.log('❌ Usuario no autorizado para crear convocatorias. Rol actual:', user.role);
+      console.log('âŒ Usuario no autorizado para crear convocatorias. Rol actual:', user.role);
       return redirect('/dashboard/conv?error=unauthorized');
     }
 
-    console.log('✅ Usuario autorizado para crear convocatorias');
+    console.log('âœ… Usuario autorizado para crear convocatorias');
 
     // 4. Obtener datos del formulario
     const formData = await request.formData();
@@ -63,28 +63,28 @@ export const POST: APIRoute = async ({ request, redirect }) => {
 
     // 6. Validar campos requeridos
     if (!titulo || titulo.length === 0) {
-      console.log('❌ Título faltante o vacío');
+      console.log('âŒ TÃ­tulo faltante o vacÃ­o');
       return redirect('/dashboard/conv/create?error=validation');
     }
 
     if (!contenido || contenido.length === 0) {
-      console.log('❌ Contenido faltante o vacío');
+      console.log('âŒ Contenido faltante o vacÃ­o');
       return redirect('/dashboard/conv/create?error=validation');
     }
 
     if (!fechaStr || fechaStr.length === 0) {
-      console.log('❌ Fecha faltante o vacía');
+      console.log('âŒ Fecha faltante o vacÃ­a');
       return redirect('/dashboard/conv/create?error=validation');
     }
 
     // 7. Validar longitud de campos
     if (titulo.length > 200) {
-      console.log('❌ Título demasiado largo');
+      console.log('âŒ TÃ­tulo demasiado largo');
       return redirect('/dashboard/conv/create?error=validation');
     }
 
     if (contenido.length > 5000) {
-      console.log('❌ Contenido demasiado largo');
+      console.log('âŒ Contenido demasiado largo');
       return redirect('/dashboard/conv/create?error=validation');
     }
 
@@ -93,22 +93,22 @@ export const POST: APIRoute = async ({ request, redirect }) => {
     try {
       fecha = new Date(fechaStr + 'T00:00:00.000Z');
       if (isNaN(fecha.getTime())) {
-        throw new Error('Fecha inválida');
+        throw new Error('Fecha invÃ¡lida');
       }
     } catch (dateError) {
-      console.log('❌ Error al procesar fecha:', dateError);
+      console.log('âŒ Error al procesar fecha:', dateError);
       return redirect('/dashboard/conv/create?error=validation');
     }
 
     // 9. Validar URLs si se proporcionan
     const urlRegex = /^https?:\/\/.+/;
     if (link && !urlRegex.test(link)) {
-      console.log('❌ URL principal inválida');
+      console.log('âŒ URL principal invÃ¡lida');
       return redirect('/dashboard/conv/create?error=validation');
     }
 
     if (link2 && !urlRegex.test(link2)) {
-      console.log('❌ URL secundaria inválida');
+      console.log('âŒ URL secundaria invÃ¡lida');
       return redirect('/dashboard/conv/create?error=validation');
     }
 
@@ -120,7 +120,7 @@ export const POST: APIRoute = async ({ request, redirect }) => {
       link: link,
       link2: link2,
       fecha: fecha,
-      socesId: 1, // SIEMPRE 1 para esta sociedad específica
+      socesId: 1, // SIEMPRE 1 para esta sociedad especÃ­fica
     };
 
     console.log('=== DATOS PARA DB ===');
@@ -136,26 +136,26 @@ export const POST: APIRoute = async ({ request, redirect }) => {
     console.log('=== INSERTANDO EN DB ===');
     const result = await db.insert(Convocatorias).values(convData);
 
-    console.log('✅ Resultado de inserción:', result);
-    console.log('✅ Filas afectadas:', result.rowsAffected);
-    console.log('✅ ID insertado:', result.lastInsertRowid);
+    console.log('âœ… Resultado de inserciÃ³n:', result);
+    console.log('âœ… Filas afectadas:', result.rowsAffected);
+    console.log('âœ… ID insertado:', result.lastInsertRowid);
 
-    console.log('✅ Noticia creada exitosamente para socesId = 1');
+    console.log('âœ… Noticia creada exitosamente para socesId = 1');
     return redirect('/dashboard/conv?message=created');
 
   } catch (error) {
-    console.error('❌ ERROR DETALLADO:', error);
-    console.error('❌ Stack trace:', error instanceof Error ? error.stack : 'No stack available');
+    console.error('âŒ ERROR DETALLADO:', error);
+    console.error('âŒ Stack trace:', error instanceof Error ? error.stack : 'No stack available');
     
     if (error instanceof Error) {
-      console.error('❌ Error name:', error.name);
-      console.error('❌ Error message:', error.message);
+      console.error('âŒ Error name:', error.name);
+      console.error('âŒ Error message:', error.message);
     }
 
-    // Si es un error de base de datos, logear más info
+    // Si es un error de base de datos, logear mÃ¡s info
     if (error && typeof error === 'object' && 'code' in error) {
-      console.error('❌ Database error code:', error.code);
-      console.error('❌ Database error detail:', error);
+      console.error('âŒ Database error code:', error.code);
+      console.error('âŒ Database error detail:', error);
     }
 
     return redirect('/dashboard/conv/create?error=server');

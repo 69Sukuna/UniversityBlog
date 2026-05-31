@@ -1,9 +1,9 @@
----
+﻿---
 import Layout from '../../../layouts/Layout.astro';
 import { getUserFromRequest } from '../../../utils/session';
 import { requireRole } from '../../../utils/auth';
 
-const user = getUserFromRequest(Astro.request);
+const user = await getUserFromRequest(Astro.request);
 
 if (!user || !requireRole(user, ['admin'])) {
   return Astro.redirect('/login');
@@ -139,3 +139,4 @@ const today = new Date().toISOString().split('T')[0];
     </main>
   </div>
 </Layout>
+

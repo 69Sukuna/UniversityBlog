@@ -1,4 +1,4 @@
-import type { APIRoute } from 'astro';
+﻿import type { APIRoute } from 'astro';
 import { db, Usuarios, eq, or } from 'astro:db';
 import { AuthService } from '../../../../utils/auth';
 import { getUserFromRequest } from '../../../../utils/session';
@@ -6,7 +6,7 @@ import { requireRole } from '../../../../utils/auth';
 
 export const POST: APIRoute = async ({ request, redirect }) => {
   try {
-    const user = getUserFromRequest(request);
+    const user = await getUserFromRequest(request);
 
     if (!user || !requireRole(user, ['admin'])) {
       return redirect('/login');
@@ -43,7 +43,7 @@ export const POST: APIRoute = async ({ request, redirect }) => {
       return redirect('/admin/users/create?error=exists');
     }
 
-    // Hashear contraseña
+    // Hashear contraseÃ±a
     const hashedPassword = await AuthService.hashPassword(password);
 
     // Crear usuario
@@ -62,3 +62,4 @@ export const POST: APIRoute = async ({ request, redirect }) => {
     return redirect('/admin/users/create?error=server');
   }
 };
+

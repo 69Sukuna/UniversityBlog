@@ -1,4 +1,4 @@
-import type { APIRoute } from 'astro';
+﻿import type { APIRoute } from 'astro';
 import { db, Usuarios, eq, or, and } from 'astro:db';
 import { AuthService } from '../../../../utils/auth';
 import { getUserFromRequest } from '../../../../utils/session';
@@ -8,7 +8,7 @@ import { sql } from 'astro:db';
 export const POST: APIRoute = async ({ request, redirect }) => {
   let userId = 0;
   try {
-    const user = getUserFromRequest(request);
+    const user = await getUserFromRequest(request);
 
     if (!user || !requireRole(user, ['admin'])) {
       return redirect('/login');
@@ -28,7 +28,7 @@ export const POST: APIRoute = async ({ request, redirect }) => {
       return redirect(`/admin/users/${userId}/edit?error=validation`);
     }
 
-    // Si se proporciona contraseña, validar
+    // Si se proporciona contraseÃ±a, validar
     if (password && password !== confirmPassword) {
       return redirect(`/admin/users/${userId}/edit?error=validation`);
     }
@@ -62,7 +62,7 @@ export const POST: APIRoute = async ({ request, redirect }) => {
       role,
     };
 
-    // Solo actualizar contraseña si se proporciona
+    // Solo actualizar contraseÃ±a si se proporciona
     if (password) {
       updateData.password = await AuthService.hashPassword(password);
     }
@@ -80,3 +80,4 @@ export const POST: APIRoute = async ({ request, redirect }) => {
     return redirect(`/admin/users/${userId}/edit?error=server`);
   }
 };
+
