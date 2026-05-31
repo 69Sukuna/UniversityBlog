@@ -1,4 +1,4 @@
-import type { APIRoute } from 'astro';
+﻿import type { APIRoute } from 'astro';
 import { db, News } from 'astro:db';
 
 import { getUserFromRequest } from '../../../utils/session';
@@ -9,7 +9,7 @@ export const POST: APIRoute = async ({ request, redirect }) => {
   
   try {
     // 1. Verificar usuario
-    const user = getUserFromRequest(request);
+    const user = await getUserFromRequest(request);
     console.log('Usuario:', user ? { id: user.id, socesId: user.socesId } : 'null');
 
     if (!user || !requireRole(user, ['admin'])) {
@@ -39,19 +39,19 @@ export const POST: APIRoute = async ({ request, redirect }) => {
 
     // 4. Validar campos requeridos
     if (!titulo || !contenido || !fechaStr) {
-      console.log('❌ Campos faltantes');
+      console.log('âŒ Campos faltantes');
       return redirect('/admin/news/create?error=validation');
     }
 
     if (!user.id || !user.socesId) {
-      console.log('❌ Usuario sin ID o socesId');
+      console.log('âŒ Usuario sin ID o socesId');
       return redirect('/admin/news/create?error=validation');
     }
 
     // 5. Validar fecha
     const fecha = new Date(fechaStr);
     if (isNaN(fecha.getTime())) {
-      console.log('❌ Fecha inválida');
+      console.log('âŒ Fecha invÃ¡lida');
       return redirect('/admin/news/create?error=validation');
     }
 
@@ -71,12 +71,13 @@ export const POST: APIRoute = async ({ request, redirect }) => {
 
     // 7. Insertar
     await db.insert(News).values(newsData);
-    console.log('✅ Inserción exitosa');
+    console.log('âœ… InserciÃ³n exitosa');
 
     return redirect('/admin/news?message=created');
     
   } catch (error) {
-    console.error('❌ ERROR:', error);
+    console.error('âŒ ERROR:', error);
     return redirect('/admin/news/create?error=server');
   }
 };
+

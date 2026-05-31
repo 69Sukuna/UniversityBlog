@@ -1,4 +1,4 @@
-import type { APIRoute } from 'astro';
+﻿import type { APIRoute } from 'astro';
 import { db, News } from 'astro:db';
 
 import { getUserFromRequest } from '../../../../utils/session';
@@ -11,19 +11,19 @@ export const POST: APIRoute = async ({ request, redirect }) => {
     // 1. Verificar usuario - con manejo de errores
     let user;
     try {
-      user = getUserFromRequest(request);
+      user = await getUserFromRequest(request);
       console.log('Usuario obtenido:', user ? { 
         id: user.id, 
         socesId: user.socesId, 
         role: user.role || 'no role' 
       } : 'null');
     } catch (userError) {
-      console.log('❌ Error obteniendo usuario:', userError);
+      console.log('âŒ Error obteniendo usuario:', userError);
       return redirect('/login');
     }
 
     if (!user) {
-      console.log('❌ Usuario no encontrado');
+      console.log('âŒ Usuario no encontrado');
       return redirect('/login');
     }
 
@@ -31,15 +31,15 @@ export const POST: APIRoute = async ({ request, redirect }) => {
     let hasRole = false;
     try {
       hasRole = requireRole(user, ['user', 'admin']);
-      console.log('Verificación de rol - hasRole:', hasRole);
+      console.log('VerificaciÃ³n de rol - hasRole:', hasRole);
     } catch (roleError) {
-      console.log('❌ Error verificando rol:', roleError);
-      // Si hay error en verificación de rol, permitir por ahora para debugging
+      console.log('âŒ Error verificando rol:', roleError);
+      // Si hay error en verificaciÃ³n de rol, permitir por ahora para debugging
       hasRole = true;
     }
 
     if (!hasRole) {
-      console.log('❌ Usuario no autorizado - Rol actual:', user.role);
+      console.log('âŒ Usuario no autorizado - Rol actual:', user.role);
       return redirect('/login');
     }
 
@@ -65,17 +65,17 @@ export const POST: APIRoute = async ({ request, redirect }) => {
 
     // 5. Validar campos requeridos
     if (!titulo || titulo.length === 0) {
-      console.log('❌ Título faltante o vacío');
+      console.log('âŒ TÃ­tulo faltante o vacÃ­o');
       return redirect('/dashboard/news/create?error=validation');
     }
 
     if (!contenido || contenido.length === 0) {
-      console.log('❌ Contenido faltante o vacío');
+      console.log('âŒ Contenido faltante o vacÃ­o');
       return redirect('/dashboard/news/create?error=validation');
     }
 
     if (!fechaStr || fechaStr.length === 0) {
-      console.log('❌ Fecha faltante o vacía');
+      console.log('âŒ Fecha faltante o vacÃ­a');
       return redirect('/dashboard/news/create?error=validation');
     }
 
@@ -84,12 +84,12 @@ export const POST: APIRoute = async ({ request, redirect }) => {
     let socesId = user.socesId;
 
     if (!userId) {
-      console.log('⚠️ Usuario sin ID, usando ID por defecto');
+      console.log('âš ï¸ Usuario sin ID, usando ID por defecto');
       userId = 1; // ID por defecto para testing
     }
 
     if (!socesId) {
-      console.log('⚠️ Usuario sin socesId, usando socesId por defecto');
+      console.log('âš ï¸ Usuario sin socesId, usando socesId por defecto');
       socesId = 1; // socesId por defecto para testing
     }
 
@@ -98,10 +98,10 @@ export const POST: APIRoute = async ({ request, redirect }) => {
     try {
       fecha = new Date(fechaStr + 'T00:00:00.000Z');
       if (isNaN(fecha.getTime())) {
-        throw new Error('Fecha inválida');
+        throw new Error('Fecha invÃ¡lida');
       }
     } catch (dateError) {
-      console.log('❌ Error al procesar fecha:', dateError);
+      console.log('âŒ Error al procesar fecha:', dateError);
       return redirect('/dashboard/news/create?error=validation');
     }
 
@@ -128,28 +128,29 @@ export const POST: APIRoute = async ({ request, redirect }) => {
     // 9. Insertar
     console.log('=== INSERTANDO EN DB ===');
     const result = await db.insert(News).values(newsData);
-    console.log('✅ Resultado de inserción:', result);
-    console.log('✅ Filas afectadas:', result.rowsAffected);
-    console.log('✅ ID insertado:', result.lastInsertRowid);
+    console.log('âœ… Resultado de inserciÃ³n:', result);
+    console.log('âœ… Filas afectadas:', result.rowsAffected);
+    console.log('âœ… ID insertado:', result.lastInsertRowid);
 
-    console.log('✅ Noticia creada exitosamente');
+    console.log('âœ… Noticia creada exitosamente');
     return redirect('/dashboard/news?message=created');
 
   } catch (error) {
-    console.error('❌ ERROR DETALLADO:', error);
-    console.error('❌ Stack trace:', error instanceof Error ? error.stack : 'No stack available');
+    console.error('âŒ ERROR DETALLADO:', error);
+    console.error('âŒ Stack trace:', error instanceof Error ? error.stack : 'No stack available');
     
     if (error instanceof Error) {
-      console.error('❌ Error name:', error.name);
-      console.error('❌ Error message:', error.message);
+      console.error('âŒ Error name:', error.name);
+      console.error('âŒ Error message:', error.message);
     }
 
-    // Si es un error de base de datos, logear más info
+    // Si es un error de base de datos, logear mÃ¡s info
     if (error && typeof error === 'object' && 'code' in error) {
-      console.error('❌ Database error code:', error.code);
-      console.error('❌ Database error detail:', error);
+      console.error('âŒ Database error code:', error.code);
+      console.error('âŒ Database error detail:', error);
     }
     
     return redirect('/dashboard/news/create?error=server');
   }
 };
+

@@ -1,4 +1,4 @@
-import type { APIRoute } from 'astro';
+﻿import type { APIRoute } from 'astro';
 import { db, Convocatorias, eq } from 'astro:db';
 import { getUserFromRequest } from '../../../../utils/session';
 import { requireRole } from '../../../../utils/auth';
@@ -7,7 +7,7 @@ export const POST: APIRoute = async ({ request, redirect }) => {
   let convocatoriaId = 0;
 
   try {
-    const user = getUserFromRequest(request);
+    const user = await getUserFromRequest(request);
 
     if (!user || !requireRole(user, ['user'])) {
       return redirect('/login');
@@ -22,7 +22,7 @@ export const POST: APIRoute = async ({ request, redirect }) => {
     const link = formData.get('link')?.toString() || '';
     const link2 = formData.get('link2')?.toString() || '';
 
-    // Validación mejorada
+    // ValidaciÃ³n mejorada
     if (!convocatoriaId || !titulo?.trim() || !contenido?.trim()) {
       return redirect(`/dashboard/conv/${convocatoriaId}/edit?error=validation`);
     }

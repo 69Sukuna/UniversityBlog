@@ -1,4 +1,4 @@
----
+﻿---
 import Layout from '../../../layouts/Layout.astro';
 import Button from '../../../components/ui/Button.astro';
 import Alert from '../../../components/ui/Alert.astro';
@@ -6,9 +6,9 @@ import { getUserFromRequest } from '../../../utils/session';
 import { requireRole } from '../../../utils/auth';
 import { db, Usuarios, Convocatorias, Soces, eq } from 'astro:db';
 
-const user = getUserFromRequest(Astro.request);
+const user = await getUserFromRequest(Astro.request);
 
-// Verificar que el usuario esté autenticado y pertenezca a la sociedad ID 1
+// Verificar que el usuario estÃ© autenticado y pertenezca a la sociedad ID 1
 if (!user || user.socesId !== 1) {
   return Astro.redirect('/login');
 }
@@ -29,7 +29,7 @@ const urlParams = new URLSearchParams(new URL(Astro.request.url).search);
 const message = urlParams.get('message');
 const error = urlParams.get('error');
 
-// Función para formatear fecha
+// FunciÃ³n para formatear fecha
 const formatDate = (fecha: Date) => {
   return new Intl.DateTimeFormat('es-BO', {
     year: 'numeric',
@@ -38,13 +38,13 @@ const formatDate = (fecha: Date) => {
   }).format(fecha);
 };
 
-// Función para truncar texto
+// FunciÃ³n para truncar texto
 const truncateText = (text: string, maxLength: number = 150) => {
   if (!text || text.length <= maxLength) return text;
   return text.substring(0, maxLength) + '...';
 };
 
-// Función para obtener color del avatar basado en el título
+// FunciÃ³n para obtener color del avatar basado en el tÃ­tulo
 const getAvatarColor = (titulo: string) => {
   const colors = [
     'bg-blue-500', 'bg-green-500', 'bg-purple-500', 'bg-indigo-500', 'bg-teal-500'
@@ -54,7 +54,7 @@ const getAvatarColor = (titulo: string) => {
   return colors[index];
 };
 
-// Función para obtener iniciales del título
+// FunciÃ³n para obtener iniciales del tÃ­tulo
 const getInitials = (titulo: string) => {
   if (!titulo || typeof titulo !== 'string') return '?';
   return titulo.trim().split(' ').slice(0, 2).map(word => word.charAt(0)).join('').toUpperCase() || '?';

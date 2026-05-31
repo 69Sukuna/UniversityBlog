@@ -1,4 +1,4 @@
-import { defineMiddleware } from 'astro:middleware';
+﻿import { defineMiddleware } from 'astro:middleware';
 import { getUserFromRequest } from './utils/session';
 
 export const onRequest = defineMiddleware(async (context, next) => {
@@ -21,7 +21,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
   // Verificar autenticación para rutas protegidas
   if (protectedRoutes.some((route) => pathname.startsWith(route))) {
-    const user = getUserFromRequest(request);
+    const user = await getUserFromRequest(request);
 
     if (!user) {
       return Response.redirect(new URL('/login', url), 302);

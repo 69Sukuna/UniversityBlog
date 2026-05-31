@@ -1,4 +1,4 @@
----
+﻿---
 import Layout from '../layouts/Layout.astro';
 import Form from '../components/ui/Form.astro';
 import Input from '../components/ui/Input.astro';
@@ -6,73 +6,111 @@ import Button from '../components/ui/Button.astro';
 import Alert from '../components/ui/Alert.astro';
 import { getUserFromRequest } from '../utils/session';
 
-// Redirigir si ya está logueado
-const user = getUserFromRequest(Astro.request);
+const user = await getUserFromRequest(Astro.request);
 if (user) {
   return Astro.redirect(user.role === 'admin' ? '/admin' : '/dashboard');
 }
 
-// Obtener mensajes de error o éxito de la URL
 const urlParams = new URLSearchParams(new URL(Astro.request.url).search);
 const error = urlParams.get('error');
 const message = urlParams.get('message');
 ---
 
-<Layout title="Iniciar Sesión - Mi App" description="Inicia sesión en tu cuenta">
-  <div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-md w-full space-y-8">
-      <div>
-        <div class="mx-auto h-12 w-12 bg-blue-600 rounded-lg flex items-center justify-center">
-          <span class="text-white font-bold text-lg">MA</span>
+<Layout title="Iniciar Sesión - OSCE FNI" description="Inicia sesión en tu cuenta">
+  <div class="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+
+    <div class="w-full max-w-md">
+
+      <!-- Card -->
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+
+        <!-- Header azul -->
+        <div class="bg-[#023059] px-8 py-8 text-center relative overflow-hidden">
+          <div class="absolute -top-8 -right-8 w-32 h-32 rounded-full bg-white/5"></div>
+          <div class="absolute -bottom-8 -left-8 w-24 h-24 rounded-full bg-white/5"></div>
+          <div class="relative">
+            <div class="w-14 h-14 bg-amber-300 rounded-2xl mx-auto mb-4 flex items-center justify-center">
+              <svg class="w-7 h-7 text-[#023059]" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+              </svg>
+            </div>
+            <h1 class="text-xl font-bold text-white">Iniciar Sesión</h1>
+            <p class="text-white/50 text-sm mt-1">OSCE - Facultad Nacional de Ingeniería</p>
+          </div>
         </div>
-        <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">Iniciar Sesión</h2>
-        <p class="mt-2 text-center text-sm text-gray-600">Ingresa tus credenciales para acceder</p>
+
+        <!-- Formulario -->
+        <div class="px-8 py-8">
+
+          {error && (
+            <div class="mb-5 bg-red-50 border border-red-100 rounded-xl px-4 py-3 flex items-start gap-3">
+              <svg class="w-4 h-4 text-red-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+              <p class="text-red-600 text-sm">
+                {error === 'invalid' && 'Usuario o contraseña incorrectos'}
+                {error === 'required' && 'Todos los campos son obligatorios'}
+                {error === 'server' && 'Error del servidor. Intenta nuevamente'}
+                {error === 'blocked' && `Demasiados intentos. Espera ${urlParams.get('minutes')} minutos`}
+              </p>
+            </div>
+          )}
+
+          {message && (
+            <div class="mb-5 bg-green-50 border border-green-100 rounded-xl px-4 py-3 flex items-start gap-3">
+              <svg class="w-4 h-4 text-green-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+              <p class="text-green-600 text-sm">{message}</p>
+            </div>
+          )}
+
+          <Form action="/api/auth/login" method="POST" class="space-y-5">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                Nombre de Usuario
+              </label>
+              <Input
+                name="userName"
+                type="text"
+                placeholder="Ingresa tu usuario"
+                required={true}
+              />
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                Contraseña
+              </label>
+              <Input
+                name="password"
+                type="password"
+                placeholder="Ingresa tu contraseña"
+                required={true}
+              />
+            </div>
+
+            <Button type="submit" variant="primary" class="w-full bg-[#023059] hover:bg-[#034070] text-white py-2.5 rounded-xl font-medium transition-colors">
+              Iniciar Sesión
+            </Button>
+          </Form>
+
+          <div class="mt-6 text-center">
+            <p class="text-sm text-gray-500">
+              ¿No tienes cuenta?
+              <a href="/register" class="text-[#023059] font-medium hover:underline ml-1">
+                Regístrate aquí
+              </a>
+            </p>
+          </div>
+        </div>
       </div>
 
-      {
-        error && (
-          <Alert type="error" title="Error">
-            {error === 'invalid' && 'Usuario o contraseña incorrectos'}
-            {error === 'required' && 'Todos los campos son obligatorios'}
-            {error === 'server' && 'Error del servidor. Intenta nuevamente'}
-          </Alert>
-        )
-      }
-
-      {message && <Alert type="success">{message}</Alert>}
-
-      <Form action="/api/auth/login" method="POST" class="mt-8 space-y-6">
-        <div class="space-y-4">
-          <Input
-            name="userName"
-            type="text"
-            label="Nombre de Usuario"
-            placeholder="Ingresa tu usuario"
-            required={true}
-          />
-
-          <Input
-            name="password"
-            type="password"
-            label="Contraseña"
-            placeholder="Ingresa tu contraseña"
-            required={true}
-          />
-        </div>
-
-        <div>
-          <Button type="submit" variant="primary" class="w-full"> Iniciar Sesión </Button>
-        </div>
-
-        <div class="text-center">
-          <p class="text-sm text-gray-600">
-            ¿No tienes cuenta?
-            <a href="/register" class="font-medium text-blue-600 hover:text-blue-500">
-              Regístrate aquí
-            </a>
-          </p>
-        </div>
-      </Form>
+      <!-- Footer -->
+      <p class="text-center text-xs text-gray-400 mt-6">
+        © {new Date().getFullYear()} OSCE - F.N.I. · Universidad Técnica de Oruro
+      </p>
     </div>
+
   </div>
 </Layout>

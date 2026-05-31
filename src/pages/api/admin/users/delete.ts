@@ -1,11 +1,11 @@
-import type { APIRoute } from 'astro';
+﻿import type { APIRoute } from 'astro';
 import { db, Usuarios, News, eq } from 'astro:db';
 import { getUserFromRequest } from '../../../../utils/session';
 import { requireRole } from '../../../../utils/auth';
 
 export const POST: APIRoute = async ({ request, redirect }) => {
   try {
-    const user = getUserFromRequest(request);
+    const user = await getUserFromRequest(request);
 
     if (!user || !requireRole(user, ['admin'])) {
       return redirect('/login');
@@ -18,7 +18,7 @@ export const POST: APIRoute = async ({ request, redirect }) => {
       return redirect('/admin/users?error=not_found');
     }
 
-    // No permitir que se elimine a sí mismo
+    // No permitir que se elimine a sÃ­ mismo
     if (userId === user.id) {
       return redirect('/admin/users?error=delete_failed');
     }
@@ -35,3 +35,4 @@ export const POST: APIRoute = async ({ request, redirect }) => {
     return redirect('/admin/users?error=delete_failed');
   }
 };
+

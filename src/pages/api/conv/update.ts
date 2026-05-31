@@ -1,4 +1,4 @@
-import type { APIRoute } from 'astro';
+﻿import type { APIRoute } from 'astro';
 import { db, Convocatorias, eq } from 'astro:db';
 import { getUserFromRequest } from '../../../utils/session';
 import { requireRole } from '../../../utils/auth';
@@ -7,7 +7,7 @@ export const POST: APIRoute = async ({ request, redirect }) => {
   let convocatoriaId = 0;
 
   try {
-    const user = getUserFromRequest(request);
+    const user = await getUserFromRequest(request);
 
     if (!user || !requireRole(user, ['admin'])) {
       return redirect('/login');
@@ -39,3 +39,4 @@ export const POST: APIRoute = async ({ request, redirect }) => {
     return redirect(`/admin/conv/${convocatoriaId}/edit?error=server`);
   }
 };
+

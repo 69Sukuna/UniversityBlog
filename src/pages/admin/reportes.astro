@@ -1,11 +1,11 @@
----
+﻿---
 import Layout from '../../layouts/Layout.astro';
 import Button from '../../components/ui/Button.astro';
 import { getUserFromRequest } from '../../utils/session';
 import { requireRole } from '../../utils/auth';
 import { db, Usuarios, News, Soces } from 'astro:db';
 
-const user = getUserFromRequest(Astro.request);
+const user = await getUserFromRequest(Astro.request);
 
 if (!user || !requireRole(user, ['admin'])) {
   return Astro.redirect('/login');
@@ -82,11 +82,11 @@ socesConDetalle.sort(function(a, b) {
   return b.noticias_count - a.noticias_count;
 });
 
-// Estadísticas generales
+// EstadÃ­sticas generales
 const usuariosActivos = new Set(noticias.map(n => n.userId)).size;
 const usuariosInactivos = totalUsuarios - usuariosActivos;
 
-// Top usuarios más activos
+// Top usuarios mÃ¡s activos
 const usuariosActividad = usuarios.map(usuario => {
   const noticiasUsuario = noticias.filter(n => n.userId === usuario.id);
   return {
@@ -98,7 +98,7 @@ const usuariosActividad = usuarios.map(usuario => {
   .sort((a, b) => b.noticias_count - a.noticias_count)
   .slice(0, 10); // Top 10
 
-// Actividad por mes (últimos 6 meses) - VERSION BASICA
+// Actividad por mes (Ãºltimos 6 meses) - VERSION BASICA
 const hoy = new Date();
 const hace6Meses = new Date(hoy.getFullYear(), hoy.getMonth() - 6, 1);
 
@@ -142,7 +142,7 @@ for (let i = 5; i >= 0; i--) {
   mesesData.push(mesData);
 }
 
-// Calcular máximo
+// Calcular mÃ¡ximo
 let maxActividad = 1;
 for (let i = 0; i < mesesData.length; i++) {
   if (mesesData[i].cantidad > maxActividad) {

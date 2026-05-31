@@ -1,11 +1,11 @@
----
+﻿---
 import Layout from '../../layouts/Layout.astro';
 import { requireRole } from '../../utils/auth';
 import { getUserFromRequest } from '../../utils/session';
 import { db, Usuarios, News, Soces, Convocatorias } from 'astro:db';
 
 
-const user = getUserFromRequest(Astro.request);
+const user = await getUserFromRequest(Astro.request);
 
 if (!user) {
   return Astro.redirect('/login');

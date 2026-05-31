@@ -1,4 +1,4 @@
----
+﻿---
 import Layout from '../../../layouts/Layout.astro';
 import Button from '../../../components/ui/Button.astro';
 import Alert from '../../../components/ui/Alert.astro';
@@ -6,7 +6,7 @@ import { getUserFromRequest } from '../../../utils/session';
 import { requireRole } from '../../../utils/auth';
 import { db, Usuarios, News, Soces } from 'astro:db';
 
-const user = getUserFromRequest(Astro.request);
+const user = await getUserFromRequest(Astro.request);
 
 if (!user || !requireRole(user, ['admin'])) {
   return Astro.redirect('/login');
@@ -33,13 +33,13 @@ const urlParams = new URLSearchParams(new URL(Astro.request.url).search);
 const message = urlParams.get('message');
 const error = urlParams.get('error');
 
-// Función para obtener iniciales
+// FunciÃ³n para obtener iniciales
 const getInitials = (nombre: string) => {
   if (!nombre || typeof nombre !== 'string') return '?';
   return nombre.trim().split(' ').map(n => n.charAt(0)).join('').toUpperCase() || '?';
 };
 
-// Función para obtener color del avatar basado en el nombre
+// FunciÃ³n para obtener color del avatar basado en el nombre
 const getAvatarColor = (nombre: string) => {
   const colors = [
     'bg-red-500', 'bg-blue-500', 'bg-green-500', 'bg-yellow-500', 
@@ -648,3 +648,5 @@ const getAvatarColor = (nombre: string) => {
     }
   </style>
 </Layout>
+
+

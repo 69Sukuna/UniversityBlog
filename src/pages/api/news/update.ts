@@ -1,4 +1,4 @@
-import type { APIRoute } from 'astro';
+﻿import type { APIRoute } from 'astro';
 import { db, News, eq } from 'astro:db';
 import { getUserFromRequest } from '../../../utils/session';
 import { requireRole } from '../../../utils/auth';
@@ -7,7 +7,7 @@ export const POST: APIRoute = async ({ request, redirect }) => {
   let newsId = 0;
 
   try {
-    const user = getUserFromRequest(request);
+    const user = await getUserFromRequest(request);
 
     if (!user || !requireRole(user, ['admin'])) {
       return redirect('/login');
@@ -39,3 +39,4 @@ export const POST: APIRoute = async ({ request, redirect }) => {
     return redirect(`/admin/news/${newsId}/edit?error=server`);
   }
 };
+
