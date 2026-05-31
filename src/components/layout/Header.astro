@@ -1,55 +1,85 @@
 ---
 import Navigation from "./Navigation.astro"
+import osceLogo from '../Image/OSCE.png';
 ---
 
-<header class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
-  <div class="container mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16">
-    {/* Logo */}
-    <div class="flex-shrink-0">
-      <a href="/" class="flex items-center space-x-2">
-        <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-          <span class="text-white font-bold text-sm">FNI</span>
-        </div>
-        <span class="text-xl font-semibold text-gray-900">Blog FNI</span>
-      </a>
-    </div>
+<header class="bg-[#023059] sticky top-0 z-50 border-b border-white/10">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-14">
+    
+    <!-- Logo -->
+<a href="/" class="block hover:opacity-80 transition-opacity">
+  <h1 class="text-white font-bold text-base">
+    SOCIEDADES CIENTÍFICAS
+  </h1>
 
-    {/* Botón menú lateral — siempre visible */}
+  <div class="flex items-center gap-2 mt-1">
+    <div class="w-8 h-px bg-amber-300"></div>
+
+    <span class="text-white/50 text-xs uppercase tracking-wider">
+      F.N.I. · U.T.O.
+    </span>
+  </div>
+</a>
+
+    <!-- Botón hamburguesa -->
     <button
       id="mobile-menu-button"
       type="button"
-      class="text-gray-500 hover:text-gray-700 focus:outline-none focus:text-gray-700"
+      class="text-white/60 hover:text-white transition-colors focus:outline-none"
       aria-label="Abrir menú lateral"
       aria-expanded="false"
       aria-controls="sidebar"
     >
-      <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
       </svg>
     </button>
   </div>
 </header>
 
-{/* Overlay — siempre disponible, oculto inicialmente */}
+<!-- Overlay -->
 <div
   id="overlay"
-  class="fixed inset-0 bg-transparent hidden z-40"
+  class="fixed inset-0 bg-black/40 backdrop-blur-sm hidden z-40"
   tabindex="-1"
 ></div>
 
-{/* Sidebar lateral derecha */}
+<!-- Sidebar -->
 <nav
   id="sidebar"
-  class="fixed top-0 right-0 h-full w-150 bg-white shadow-md border-l border-gray-200 transform translate-x-full transition-transform duration-300 ease-in-out z-50"
+  class="fixed top-0 right-0 h-full w-72 bg-[#023059] border-l border-white/10 transform translate-x-full transition-transform duration-300 ease-in-out z-50"
   aria-label="Navegación lateral"
 >
-  <div class="px-4 py-6">
+  <!-- Header del sidebar -->
+  <div class="flex items-center justify-between px-5 py-4 border-b border-white/10">
+    <div class="flex items-center gap-2">
+      
+      <span class="text-white font-semibold text-sm">OSCE - FNI</span>
+    </div>
+    <button
+      id="close-sidebar"
+      class="text-white/50 hover:text-white transition-colors"
+      aria-label="Cerrar menú"
+    >
+      <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+  </div>
+
+  <div class="px-4 py-5">
     <Navigation />
+  </div>
+
+  <!-- Footer del sidebar -->
+  <div class="absolute bottom-0 left-0 right-0 px-5 py-4 border-t border-white/10">
+    <p class="text-white/30 text-xs text-center">© {new Date().getFullYear()} OSCE - F.N.I.</p>
   </div>
 </nav>
 
 <script is:inline>
   const mobileMenuButton = document.getElementById('mobile-menu-button');
+  const closeButton = document.getElementById('close-sidebar');
   const sidebar = document.getElementById('sidebar');
   const overlay = document.getElementById('overlay');
   const navLinks = sidebar.querySelectorAll('a');
@@ -67,16 +97,10 @@ import Navigation from "./Navigation.astro"
   }
 
   mobileMenuButton.addEventListener('click', () => {
-    if (sidebar.classList.contains('translate-x-full')) {
-      openSidebar();
-    } else {
-      closeSidebar();
-    }
+    sidebar.classList.contains('translate-x-full') ? openSidebar() : closeSidebar();
   });
 
+  closeButton.addEventListener('click', closeSidebar);
   overlay.addEventListener('click', closeSidebar);
-
-  navLinks.forEach(link => {
-    link.addEventListener('click', closeSidebar);
-  });
+  navLinks.forEach(link => link.addEventListener('click', closeSidebar));
 </script>
