@@ -18,12 +18,12 @@ const noticias = await db
 
 const items = [
   {
-    img: '/src/Image/SocCiv/Logo_carrera1.png',
+    img: '../../public/Image/SocCiv/Logo_carrera1.png',
     text: 'Carrera de Ing. Civil',
     text_URL: 'https://www.facebook.com/p/Ingenier%C3%ADa-Civil-FNI-Oficial-61555386868039/',
   },
   {
-    img: '/src/Image/SocCiv/Logo_Soc.png',
+    img: '../../public/Image/SocCiv/Logo_Soc.png',
     text: 'So.C.E.I.C.',
     text_URL: 'https://www.facebook.com/profile.php?id=61564625678940',
   },
@@ -36,77 +36,104 @@ const items = [
   description="Bienvenido a mi aplicación construida con Astro y las mejores prácticas de desarrollo web"
 >
   <!-- ======================= PRESENTACIÓN ======================= -->
-  <section class="bg-gradient-to-r from-blue-600 to-indigo-50 py-5">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center">
-        <div class="flex justify-between items-center">
-          <!-- Logo Izquierdo -->
-          <img src="/src/Image/UTO.png" alt="Logo izquierdo" class="w-30 h-auto" />
-          <h1 class="text-4xl md:text-4xl font-bold text-gray-900 mb-6">
-            <span style="color:#C6CBD1" class="font-bold drop-shadow-[2px_2px_0px_black]">
-              Sociedad Científica de Estudiantes de<br /> Ingeniería Civil
-            </span>
-          </h1>
-          <!-- Logo derecho -->
-          <img src="/src/Image/FNI.png" alt="Logo derecho" class="w-30 h-auto" />
-        </div>
-        <div class="flex gap-8 py-10">
-          <div class="w-1/2 flex-none">
-            <h4 class="text-5xl text-[#C6CBD1] font-bold text-justify px-4 mb-4 drop-shadow-[2px_2px_0px_black]">
-              Nuestra Historia
-            </h4>
-            <p class="text-xl text-[#C6CBD1] text-justify px-4 leading-relaxed font-bold drop-shadow-[2px_2px_0px_black]">
-              La SOCIEDAD CIENTIFICA DE ESTUDIANTES DE INGENIERÍA CIVIL 
+   <section class="bg-[#023059] rounded-2xl mx-4 mt-4 px-6 py-7 relative overflow-hidden">
+  <div class="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-white/5"></div>
+  <div class="absolute -bottom-12 -left-8 w-32 h-32 rounded-full bg-white/5"></div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+    <div>
+      <div class="flex gap-2 flex-wrap mb-4">
+        <span class="bg-teal-300/15 border border-teal-300/40 text-teal-300 text-xs font-medium px-3 py-1 rounded-full tracking-wide">
+          Universidad Técnica de Oruro
+        </span>
+        <span class="bg-teal-300/15 border border-teal-300/40 text-teal-300 text-xs font-medium px-3 py-1 rounded-full tracking-wide">
+          Facultad Nacional de Ingeniería
+        </span>
+      </div>
+
+      <h1 class="text-3xl font-bold text-white leading-tight mb-3">
+        Sociedad Científica de Estudiantes<br>
+        de <span class="text-teal-300 italic">Ingeniería Civil</span>
+      </h1>
+
+      <div class="w-10 h-0.5 bg-teal-300/50 mb-4 rounded"></div>
+
+      <p class="text-white/60 text-sm leading-relaxed mb-6 max-w-lg text-justify">
+         La SOCIEDAD CIENTIFICA DE ESTUDIANTES DE INGENIERÍA CIVIL 
               (So.C.E.I.C.) fué fundada el 24 de Marzo de 2018 y es acreditada bajo 
               el Honorable Consejo Universitario.
-            </p>
-          </div>
-          <div class="w-1/2 flex-none">
-            <ImageFocusGallery items={items} textColor="text-[#C6CBD1] font-bold drop-shadow-[2px_2px_0px_black]" columnsPerRow={2}/>
-          </div>
+      </p>
+
+      <div class="flex items-center gap-4 flex-wrap">
+        <a href="#noticias" class="inline-flex items-center gap-2 bg-teal-300 text-[#115464] text-sm font-semibold px-5 py-2.5 rounded-full hover:bg-teal-200 transition-colors">
+          Ver noticias
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+        <a href="#mision" class="text-white/50 text-sm hover:text-white/80 transition-colors underline underline-offset-4">
+          Misión y Visión
+        </a>
+      </div>
+
+      <div class="flex gap-6 mt-7 pt-5 border-t border-white/10">
+        <div>
+          <span class="block text-2xl font-bold text-teal-300">2018</span>
+          <span class="text-white/40 text-xs mt-0.5 block">Año de fundación</span>
+        </div>
+        <div class="w-px bg-white/10"></div>
+        <div>
+          <span class="block text-2xl font-bold text-teal-300">F.N.I.</span>
+          <span class="text-white/40 text-xs mt-0.5 block">Facultad</span>
+        </div>
+        <div class="w-px bg-white/10"></div>
+        <div>
+          <span class="block text-2xl font-bold text-teal-300">U.T.O.</span>
+          <span class="text-white/40 text-xs mt-0.5 block">Universidad</span>
         </div>
       </div>
     </div>
-  </section>
 
-  <!-- ======================= NOTICIAS ======================= -->
-  <section class="bg-white py-10 px-6 sm:px-12 lg:px-16" id="noticias">
-    <div class="flex flex-wrap gap-6 items-start">
-      <h2 class="w-full text-center text-3xl font-bold text-gray-900 mb-4">
-        Noticias 
-      </h2>
-        <!-- Mostrar noticias -->
-        <CardsNotices noticias={noticias} />
+    <div class="flex flex-col gap-4">
+      <div class="rounded-xl overflow-hidden bg-white/8 border border-white/10 p-4">
+        <ImageFocusGallery items={items} textColor="text-white" columnsPerRow={2} />
+      </div>
     </div>
+  </div>
+</section>
+
+   <!-- ======================= NOTICIAS ======================= -->
+  <section class="max-w-5xl mx-auto px-6 py-12" id="noticias">
+    <h2 class="text-3xl font-bold text-gray-900 mb-2">Noticias</h2>
+    <div class="w-9 h-1 bg-[#023059] rounded mb-6"></div>
+    <CardsNotices noticias={noticias} />
   </section>
 
   <!-- ======================= DIRECTIVA ======================= -->
-  <section class="py-5 bg-white" id="direc">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8" >
-      
-      <div class="text-center mb-16" >
-        <h2 class="text-3xl font-bold text-gray-900 mb-4">Nuestra Directiva</h2>
+  <section class="max-w-5xl mx-auto px-6 py-12" id="direc">
+    <h2 class="text-3xl font-bold text-gray-900 mb-2">Nuestra Directiva</h2>
+    <div class="w-9 h-1 bg-[#023059] rounded mb-6"></div>
         <div class="flex flex-wrap justify-center gap-6">
           <FlipCard
             name="Univ. Rocha Zubieta Karen Soledad"
             role="Presidente de la Sociedad Científica So.C.E.I.C."
             email="Soledad24fenix@gmail.com"
             phone="+591 68298255"
-            photo="/src/Image/SocCiv/Presi.jpeg"
+            photo="../../public/Image/SocCiv/Presi.jpeg"
           />
           <FlipCard
             name="Univ. Paqui Huayllas Nelson Gustavo"
             role="Vicepresidente de la Sociedad Científica So.C.E.I.C."
             email="nelsonpaqui@gmail.com"
             phone="+591 77147456"
-            photo="/src/Image/SocCiv/Vice.jpeg"
+            photo="../../public/Image/SocCiv/Vice.jpeg"
           />
           <FlipCard
             name="Univ. Lia Veronica Alicia "
             role="Secretaria General de la Sociedad Científica So.C.E.I.C."
             email="Liaveronica49@gmail.com"
             phone="+591 683999001"
-            photo="/src/Image/SocCiv/General.jpeg"
+            photo="../../public/Image/SocCiv/General.jpeg"
 
           />
           <FlipCard
@@ -114,14 +141,14 @@ const items = [
             role="Secretaria de Hacienda de la Sociedad Científica So.C.E.I.C."
             email="tatykggv@gmail.com"
             phone="+591 75411306"
-            photo="/src/Image/SocCiv/Hacienda.jpeg"
+            photo="../../public/Image/SocCiv/Hacienda.jpeg"
           />
           <FlipCard
             name="Univ. Aranibar Agreda Mauricio Benjamin"
             role="Secretario de Difusión de la Sociedad Científica So.C.E.I.C."
             email="agredamauricio7@gmail.com"
             phone="+591 74840219"
-            photo="/src/Image/SocCiv/Difusion.jpeg"
+            photo="../../public/Image/SocCiv/Difusion.jpeg"
 
           />
           <FlipCard
@@ -129,7 +156,7 @@ const items = [
             role="Secretario de Actas de la Sociedad Científica So.C.E.I.C."
             email="diegobarretavillca@gmail.com"
             phone="+591 70414217"
-            photo="/src/Image/SocCiv/Actas.jpeg"
+            photo="../../public/Image/SocCiv/Actas.jpeg"
 
           />
           <FlipCard
@@ -137,7 +164,7 @@ const items = [
             role="Vocal de la Sociedad Científica So.C.E.I.C."
             email="caceresanahi778@gmail.com"
             phone="+591 71850776"
-            photo="/src/Image/SocCiv/Vocal.jpeg"
+            photo="../../public/Image/SocCiv/Vocal.jpeg"
 
           />
         </div>
@@ -146,163 +173,95 @@ const items = [
   </section>
 
   <!-- ======================= MISION Y VISION ======================= -->
-  <section class="py-5 bg-white" >
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8" >
-      <div class="bg-purple-50 py-16 px-6">
-        <div class="max-w-5xl mx-auto text-center">
-          <h2 class="text-4xl font-bold text-purple-900 mb-10">Misión y Visión</h2>
-          <div class="grid md:grid-cols-2 gap-8">
-            
-            <!-- Misión -->
-            <div class="bg-white p-8 rounded-xl shadow-md border-t-4 border-purple-300">
-              <h3 class="text-2xl font-semibold text-purple-700 mb-4">Nuestra Misión</h3>
-              <p class="text-gray-700 leading-relaxed text-justify">
-                La SOCIEDAD CIENTIFICA DE ESTUDIANTES DE INGENIERIA CIVIL tiene la misión de desarrollar y 
-                producir investigación científica-tecnológica en beneficio y progreso de la sociedad, e 
-                interactuar con la comunidad estudiantil.
-              </p>
-            </div>
-            
-            <!-- Visión -->
-            <div class="bg-white p-8 rounded-xl shadow-md border-t-4 border-purple-300">
-              <h3 class="text-2xl font-semibold text-purple-700 mb-4">Nuestra Visión</h3>
-              <p class="text-gray-700 leading-relaxed text-justify">
-                La SOCIEDAD CIENTIFICA DE ESTUDIANTES DE INGENIERIA CIVIL, busca motivar una cultura de 
-                investigación y planificación de manera que sea competitiva a nivel nacional e internacional, 
-                llegando a 
-                formar líderes del mañana con ideas innovadoras, comprometidos con el desarrollo del país, 
-                sirviendo de modelo a través del cumplimiento de sus principios. 
-              </p>
-            </div>
-
+    <section class="max-w-5xl mx-auto px-6 pb-12" id="mision">
+    <h2 class="text-3xl font-bold text-gray-900 mb-2">Misión y Visión</h2>
+    <div class="w-9 h-1 bg-[#023059] rounded mb-6"></div>
+    <div class="grid md:grid-cols-2 gap-6">
+      <div class="bg-white border border-gray-100 rounded-2xl p-6 border-t-4 border-t-[#023059] hover:shadow-md transition-shadow">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-10 h-10 bg-[#023059]/10 rounded-xl flex items-center justify-center">
+            <svg class="w-5 h-5 text-[#023059]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+            </svg>
           </div>
+          <h3 class="text-lg font-semibold text-gray-900">Nuestra Misión</h3>
         </div>
+        <p class="text-gray-600 text-sm leading-relaxed text-justify">
+          La SOCIEDAD CIENTIFICA DE ESTUDIANTES DE INGENIERIA CIVIL tiene la misión de desarrollar y 
+          producir investigación científica-tecnológica en beneficio y progreso de la sociedad, e 
+          interactuar con la comunidad estudiantil.
+        </p>
+      </div>
+
+      <div class="bg-white border border-gray-100 rounded-2xl p-6 border-t-4 border-t-amber-400 hover:shadow-md transition-shadow">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-10 h-10 bg-amber-50 rounded-xl flex items-center justify-center">
+            <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-gray-900">Nuestra Visión</h3>
+        </div>
+        <p class="text-gray-600 text-sm leading-relaxed text-justify">
+          La SOCIEDAD CIENTIFICA DE ESTUDIANTES DE INGENIERIA CIVIL, busca motivar una cultura de 
+          investigación y planificación de manera que sea competitiva a nivel nacional e internacional, 
+          llegando a formar líderes del mañana con ideas innovadoras, comprometidos con el desarrollo del país, 
+          sirviendo de modelo a través del cumplimiento de sus principios. 
+        </p>
       </div>
     </div>
   </section>
 
   <!-- ======================= REFERENCIAS / REQUISITOS ======================= -->
-  <section class="py-5 bg-white" >
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8" >
-      <div class="text-center">
-        <h2 class="text-3xl font-bold text-gray-900 mb-4">¿Cómo ser parte?</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div class="text-center p-6">
-            <div
-              class="w-12 h-12 bg-blue-100 rounded-lg mx-auto mb-4 flex items-center justify-center"
-            >
-              <svg
-                class="w-12 h-12 text-blue-600"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"
-                ></path>
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 3v6h6"
-                ></path>
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6"
-                ></path>
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17h6"
-                ></path>
-              </svg>
-            </div>
-            <h3 class="text-xl font-semibold text-gray-900 mb-2">Matricula Universitaria</h3>
-            <p class="text-gray-600">
-              Presenta tu matricula del semestre actual, la cual se puede descargar de:
-              <br /><a class="text-blue-600 hover:underline" href="https://matricula.uto.edu.bo/">
-                Consulta Matricula U.T.O.</a
-              >
-            </p>
-          </div>
+  <section class="max-w-5xl mx-auto px-6 pb-16" id="unirse">
+    <h2 class="text-3xl font-bold text-gray-900 mb-2">¿Cómo ser parte?</h2>
+    <div class="w-9 h-1 bg-[#023059] rounded mb-6"></div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
-          <div class="text-center p-6">
-            <div
-              class="w-12 h-12 bg-green-100 rounded-lg mx-auto mb-4 flex items-center justify-center"
-            >
-              <svg
-                class="w-12 h-12 text-blue-600"
-                fill="none"
-                viewBox="0 0 64 64"
-                stroke="currentColor"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <!-- Borde del carnet -->
-                <rect
-                  x="4"
-                  y="8"
-                  width="56"
-                  height="48"
-                  rx="4"
-                  stroke-width="2"
-                  stroke="currentColor"
-                  fill="none"></rect>
-                <!-- Silueta del usuario -->
-                <circle cx="20" cy="28" r="6" stroke-width="2" stroke="currentColor" fill="none"
-                ></circle>
-                <path
-                  d="M14 40c0-4 4-6 6-6s6 2 6 6"
-                  stroke-width="2"
-                  stroke="currentColor"
-                  fill="none"></path>
-                <!-- Líneas de texto -->
-                <line x1="34" y1="22" x2="50" y2="22" stroke-width="2" stroke="currentColor"></line>
-                <line x1="34" y1="30" x2="50" y2="30" stroke-width="2" stroke="currentColor"></line>
-                <line x1="34" y1="38" x2="50" y2="38" stroke-width="2" stroke="currentColor"></line>
-              </svg>
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-            </div>
-              <h3 class="text-xl font-semibold text-gray-900 mb-2">
-                Carnet de Identidad <br /> o <br />Carnet Universitario
-              </h3>
-              <p class="text-gray-600">
-                Cualquiera de los documento para poder identificarte junto con la matricula
-              </p>           
-          </div>
-            <div class="text-center p-6">
-              <div
-                class="w-12 h-12 bg-purple-100 rounded-lg mx-auto mb-4 flex items-center justify-center"
-              >
-                <svg
-                  class="w-12 h-12 text-blue-600"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <rect
-                    x="3"
-                    y="3"
-                    width="18"
-                    height="18"
-                    rx="2"
-                    stroke-width="2"
-                    stroke="currentColor"
-                    fill="none"></rect>
-                  <line x1="7" y1="8" x2="17" y2="8" stroke-width="2" stroke="currentColor"></line>
-                  <line x1="7" y1="12" x2="17" y2="12" stroke-width="2" stroke="currentColor"></line>
-                  <line x1="7" y1="16" x2="13" y2="16" stroke-width="2" stroke="currentColor"></line>
-                </svg>
-              </div>
-              <h3 class="text-xl font-semibold text-gray-900 mb-2">Formulario de Inscripcion</h3>
-              <p class="text-gray-600">
-                Formulario de no participación de alguna entidad políitica y/o partidaria de algun
-                centro facultativo o de carrera
-                <br /><a class="text-blue-600 hover:underline" href="https://docs.google.com/spreadsheets/d/1FtsuWQa7_OlWuXJzL_LDw1zUMV1zT7FC/edit?usp=drive_link&ouid=104725137215055273039&rtpof=true&sd=true">
-                  Formulario de Inscripcion</a
-                >
-              </p>
-            </div>
+      <div class="bg-white border border-gray-100 rounded-2xl p-6 text-center hover:shadow-md transition-shadow">
+        <div class="w-12 h-12 bg-blue-50 rounded-2xl mx-auto mb-4 flex items-center justify-center">
+          <svg class="w-6 h-6 text-[#023059]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+          </svg>
         </div>
+        <h3 class="text-base font-semibold text-gray-900 mb-2">Matrícula Universitaria</h3>
+        <p class="text-gray-500 text-sm leading-relaxed">
+          Presenta tu matrícula del semestre actual.
+        </p>
+        <a href="https://matricula.uto.edu.bo/" target="_blank" class="inline-block mt-3 text-xs text-[#023059] font-medium hover:underline">
+          Consulta tu matrícula →
+        </a>
       </div>
+
+      <div class="bg-white border border-gray-100 rounded-2xl p-6 text-center hover:shadow-md transition-shadow">
+        <div class="w-12 h-12 bg-green-50 rounded-2xl mx-auto mb-4 flex items-center justify-center">
+          <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0"/>
+          </svg>
+        </div>
+        <h3 class="text-base font-semibold text-gray-900 mb-2">Carnet de Identidad</h3>
+        <p class="text-gray-500 text-sm leading-relaxed">
+          Carnet de identidad o carnet universitario para identificarte.
+        </p>
+      </div>
+
+      <div class="bg-white border border-gray-100 rounded-2xl p-6 text-center hover:shadow-md transition-shadow">
+        <div class="w-12 h-12 bg-amber-50 rounded-2xl mx-auto mb-4 flex items-center justify-center">
+          <svg class="w-6 h-6 text-amber-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+          </svg>
+        </div>
+        <h3 class="text-base font-semibold text-gray-900 mb-2">Formulario de Inscripción</h3>
+        <p class="text-gray-500 text-sm leading-relaxed">
+          Formulario de no participación de alguna entidad política o partidaria.
+        </p>
+        <a href="https://docs.google.com/spreadsheets/d/1FtsuWQa7_OlWuXJzL_LDw1zUMV1zT7FC/edit" target="_blank" class="inline-block mt-3 text-xs text-[#023059] font-medium hover:underline">
+          Ir al formulario →
+        </a>
+      </div>
+
     </div>
   </section>
+
 </Layout>
