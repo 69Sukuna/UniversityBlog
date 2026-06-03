@@ -1,0 +1,94 @@
+---
+const { name, role, email, phone } = Astro.props;
+---
+
+<div class="member-card">
+  <div class="member-info">
+    <h3 class="member-name">{name}</h3>
+    <p class="member-role">{role}</p>
+
+    {(email || phone) && (
+      <div class="member-contact">
+        {email && (
+          <div class="contact-row">
+            <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+              <polyline points="22,6 12,13 2,6"/>
+            </svg>
+            <span>{email}</span>
+          </div>
+        )}
+        {phone && (
+          <div class="contact-row">
+            <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.06 1.22 2 2 0 012 .04h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
+            </svg>
+            <span>{phone}</span>
+          </div>
+        )}
+      </div>
+    )}
+  </div>
+</div>
+
+<style>
+  .member-card {
+    background: linear-gradient(135deg, #1e3a5f 0%, #0f2439 100%);
+    border: 1px solid #2c5282;
+    border-left: 4px solid #4299e1;
+    border-radius: 0 10px 10px 0;
+    padding: 16px 20px;
+    transition: border-left-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .member-card:hover {
+    border-left-color: #90cdf4;
+    transform: translateX(4px);
+    box-shadow: -4px 0 16px rgba(66, 153, 225, 0.2);
+  }
+
+  .member-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .member-name {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #ffffff;
+    line-height: 1.3;
+  }
+
+  .member-role {
+    margin: 0;
+    font-size: 0.8rem;
+    color: #90cdf4;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .member-contact {
+    margin-top: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .contact-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #cbd5e0;
+    font-size: 0.78rem;
+  }
+
+  .contact-icon {
+    width: 13px;
+    height: 13px;
+    color: #4299e1;
+    flex-shrink: 0;
+  }
+</style>
