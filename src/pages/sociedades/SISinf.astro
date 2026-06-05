@@ -16,7 +16,12 @@ const noticias = await db
 
 const items = [
   {
-    img: '/Image/SocSISinf/Logo_carreraOF.png',
+    img: '/Image/SocSISinf/Logo_carrera1.png',
+    text: 'Carrera de Ing. de Sistemas',
+    text_URL: 'https://www.sisinf.fni.uto.edu.bo/',
+  },
+    {
+    img: '/Image/SocSISinf/Logo_carrera2.png',
     text: 'Carrera de Ing. de Sistemas',
     text_URL: 'https://www.sisinf.fni.uto.edu.bo/',
   },
@@ -99,7 +104,7 @@ const items = [
 
     <div class="flex flex-col gap-4">
       <div class="rounded-xl overflow-hidden bg-white/8 border border-white/10 p-4">
-        <ImageFocusGallery items={items} textColor="text-white" columnsPerRow={2} />
+        <ImageFocusGallery items={items} textColor="text-white" columnsPerRow={3} />
       </div>
     </div>
   </div>
