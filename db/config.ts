@@ -47,6 +47,7 @@ const Convocatorias = defineTable({
   },
 });
 
+
 export default defineDb({
   tables: { Usuarios, News, Soces, Convocatorias },
 });
