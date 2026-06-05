@@ -53,7 +53,7 @@ export default async function () {
     nombre: 'Sociedad Científica de Minas',
     correo: 'minas@a.com',
     userName: 'SocMinas',
-    password: 'SocMinas2025',
+    password: await AuthService.hashPassword('SocMinas2025'),
     role: 'user',
     socesId: 2,
   },
