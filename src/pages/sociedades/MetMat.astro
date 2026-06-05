@@ -7,6 +7,7 @@ import FlipCard from '../../components/ui/MemberCardSimple.astro';
 import ImageFocusGallery from '../../components/ui/ImageFocusGallery.astro';
 import CardsNotices from '../../components/ui/CardsNotices.astro';
 import { db, News, eq , desc} from 'astro:db';
+import { Miembros } from 'astro:db';
 
 // Obtener noticias de la Soce con id = 1
 const noticias = await db
@@ -27,7 +28,10 @@ const items = [
     text_URL: 'https://www.facebook.com/share/1DmkWMq78A/',
   },
 ];
-
+const miembros = await db
+.select()
+.from(Miembros)
+.where(eq(Miembros.socesId, 4));
 ---
 
 <Layout
@@ -109,64 +113,13 @@ const items = [
   </section>
 
   <!-- ======================= DIRECTIVA ======================= -->
-  <section class="max-w-5xl mx-auto px-6 py-12" id="direc">
-    <h2 class="text-3xl font-bold text-gray-900 mb-2">Nuestra Directiva</h2>
-    <div class="w-9 h-1 bg-[#023059] rounded mb-6"></div>
-        <div class="flex flex-wrap justify-center gap-6">
-          <FlipCard
-            name="Univ. Marvin Cruz Main"
-            role="Presidente de la Sociedad Científica SOCEI MET-MAT"
-            email=" marvincruzmain04@gmail.com"
-            phone="+591 74476325"
-            photo="/Image/SocMetMat/Presi.png"
-          />
-          <FlipCard
-            name="Univ. Kevin Aldrin Ajhuacho Pozo"
-            role="Vicepresidente de la Sociedad Científica SOCEI MET-MAT"
-            email="ajhuachopozokevinaldrin@gmail.com"
-            phone="+591 78680027"
-            photo=""
-          />
-          <FlipCard
-            name="Univ. Esperanza Escalera Sanchez "
-            role="Secretaria de Actas de la Sociedad Científica SOCEI MET-MAT"
-            email="esperanzasanchez.e@metalurgia.edu.bo"
-            phone="+591 71185663"
-            photo="/Image/SocMetMat/Actas.png"
-
-          />
-          <FlipCard
-            name="Univ. Esperanza Mauricio Bernard Garcia Duran"
-            role="Secretario de Hacienda de la Sociedad Científica SOCEI MET-MAT"
-            biografia={[
-              "Profesional altamente capacitado con una sólida formación en ingeniería y gestión ambiental, complementada por estudios de posgrado en administración y sistemas de calidad. Inició su trayectoria académica en 1996, obteniendo el título de Técnico Medio en Programación de Computadoras en el Centro de Asistencia Técnica. Posteriormente, cursó la carrera de Ingeniería Química con mención en Procesos Químicos en la Universidad Técnica de Oruro, finalizando en 1998.",
-              "En el año 2001, concluyó una Maestría en Ingeniería Ambiental en la Universidad Politécnica, consolidando su perfil técnico con una perspectiva enfocada en sostenibilidad. A lo largo de su carrera, se especializó en sistemas de gestión, obteniendo dos especialidades en normas ISO: ISO 9000 (2004) e ISO 14000 (2008), a través del Instituto Boliviano de Normalización.",
-              "En 2010, completó una Maestría en Administración de Empresas en una universidad privada, lo cual le permitió fortalecer su enfoque estratégico y de liderazgo. Actualmente, continúa su desarrollo profesional cursando Ingeniería Metalúrgica en la Universidad Técnica de Oruro, con estudios programados hasta el año 2025."
-            ]}
-            email="mauriciogarcia.e@metalurgia.edu.bo"
-            phone="+591 77473337"
-            photo="/Image/SocMetMat/Hacienda.png"
-          />
-          <FlipCard
-            name="Univ. Leonor Flores Gutierrez"
-            role="Vocal de la Sociedad Científica SOCEI MET-MAT"
-            email="leonorfloresgutierrez543@gmail.com"
-            phone="+591 74107446"
-            photo=""
-
-          />
-          <FlipCard
-            name="Univ. Javier Pablo Rosales Taquichiri "
-            role="Vocal de la Sociedad Científica SOCEI MET-MAT"
-            email="javierpablorosalestaquichiri@gmail.com "
-            phone="+591 68324883"
-            photo="/Image/SocMetMat/Vocal.png"
-
-          />
-        </div>
-      </div>
-    </div>
-  </section>
+  {miembros.length > 0 && (
+    <section class="max-w-5xl mx-auto px-6 py-12" id="direc">
+      <h2 class="text-3xl font-bold text-gray-900 mb-2">Nuestra Directiva</h2>
+      <div class="w-9 h-1 bg-[#023059] rounded mb-6"></div>
+      <FlipCard socesId={4} />
+    </section>
+  )}
 
   <!-- ======================= MISION Y VISION ======================= -->
    <section class="max-w-5xl mx-auto px-6 pb-12" id="mision">

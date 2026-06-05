@@ -7,8 +7,9 @@ import FlipCard from '../../components/ui/MemberCardSimple.astro';
 import ImageFocusGallery from '../../components/ui/ImageFocusGallery.astro';
 import CardsNotices from '../../components/ui/CardsNotices.astro';
 import { db, News, eq, desc } from 'astro:db';
+import { Miembros } from 'astro:db';
 
-// Obtener noticias de la Soce con id = 1
+
 const noticias = await db
   .select()
   .from(News)
@@ -28,6 +29,11 @@ const items = [
     text_URL: 'https://www.facebook.com/profile.php?id=61564625678940',
   },
 ];
+
+const miembros = await db
+.select()
+.from(Miembros)
+.where(eq(Miembros.socesId, 3));
 
 ---
 
@@ -110,67 +116,13 @@ const items = [
   </section>
 
   <!-- ======================= DIRECTIVA ======================= -->
-  <section class="max-w-5xl mx-auto px-6 py-12" id="direc">
-    <h2 class="text-3xl font-bold text-gray-900 mb-2">Nuestra Directiva</h2>
-    <div class="w-9 h-1 bg-[#023059] rounded mb-6"></div>
-        <div class="flex flex-wrap justify-center gap-6">
-          <FlipCard
-            name="Univ. Rocha Zubieta Karen Soledad"
-            role="Presidente de la Sociedad Científica So.C.E.I.C."
-            email="Soledad24fenix@gmail.com"
-            phone="+591 68298255"
-            photo="/Image/SocCiv/Presi.jpeg"
-          />
-          <FlipCard
-            name="Univ. Paqui Huayllas Nelson Gustavo"
-            role="Vicepresidente de la Sociedad Científica So.C.E.I.C."
-            email="nelsonpaqui@gmail.com"
-            phone="+591 77147456"
-            photo="/Image/SocCiv/Vice.jpeg"
-          />
-          <FlipCard
-            name="Univ. Lia Veronica Alicia "
-            role="Secretaria General de la Sociedad Científica So.C.E.I.C."
-            email="Liaveronica49@gmail.com"
-            phone="+591 683999001"
-            photo="/Image/SocCiv/General.jpeg"
-
-          />
-          <FlipCard
-            name="Univ. Gomez Garcia Vargas Tatiana Katherin "
-            role="Secretaria de Hacienda de la Sociedad Científica So.C.E.I.C."
-            email="tatykggv@gmail.com"
-            phone="+591 75411306"
-            photo="/Image/SocCiv/Hacienda.jpeg"
-          />
-          <FlipCard
-            name="Univ. Aranibar Agreda Mauricio Benjamin"
-            role="Secretario de Difusión de la Sociedad Científica So.C.E.I.C."
-            email="agredamauricio7@gmail.com"
-            phone="+591 74840219"
-            photo="/Image/SocCiv/Difusion.jpeg"
-
-          />
-          <FlipCard
-            name="Univ. Barreta Villca Diego Raul"
-            role="Secretario de Actas de la Sociedad Científica So.C.E.I.C."
-            email="diegobarretavillca@gmail.com"
-            phone="+591 70414217"
-            photo="/Image/SocCiv/Actas.jpeg"
-
-          />
-          <FlipCard
-            name="Univ. Caceres Troncozo Anahi Yashira"
-            role="Vocal de la Sociedad Científica So.C.E.I.C."
-            email="caceresanahi778@gmail.com"
-            phone="+591 71850776"
-            photo="/Image/SocCiv/Vocal.jpeg"
-
-          />
-        </div>
-      </div>
-    </div>
-  </section>
+  {miembros.length > 0 && (
+    <section class="max-w-5xl mx-auto px-6 py-12" id="direc">
+      <h2 class="text-3xl font-bold text-gray-900 mb-2">Nuestra Directiva</h2>
+      <div class="w-9 h-1 bg-[#023059] rounded mb-6"></div>
+      <FlipCard socesId={3} />
+    </section>
+  )}
 
   <!-- ======================= MISION Y VISION ======================= -->
     <section class="max-w-5xl mx-auto px-6 pb-12" id="mision">

@@ -7,6 +7,7 @@ import FlipCard from '../../components/ui/MemberCardSimple.astro';
 import ImageFocusGallery from '../../components/ui/ImageFocusGallery.astro';
 import CardsNotices from '../../components/ui/CardsNotices.astro';
 import { db, News, eq , desc} from 'astro:db';
+import { Miembros } from 'astro:db';
 
 // Obtener noticias de la Soce con id = 1
 const noticias = await db
@@ -29,6 +30,10 @@ const items = [
   },
 ];
 
+const miembros = await db
+.select()
+.from(Miembros)
+.where(eq(Miembros.socesId, 7));
 
 ---
 
@@ -116,19 +121,13 @@ const items = [
   </section>
 
   <!-- ======================= DIRECTIVA ======================= -->
-  <section class="py-5 bg-white" id="direc">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-16">
-        <h2 class="text-3xl font-bold text-gray-900 mb-4">Nuestra Directiva</h2>
-        <div class="flex flex-wrap justify-center gap-6">
-          <FlipCard name="Univ. Rodríguez Humerez Eddy Paul" role="Presidente de la SIDDFAC" />
-          <FlipCard name="Univ. Ariel Ramiro Villán Flores" role="Secretario De Proyectos de la SIDDFAC" />
-          <FlipCard name="Univ. Micael Villca Lopez" role="Secretario De Actas de la SIDDFAC" />
-          <FlipCard name="Univ. Simón Pedro Mamani Yugar" role="Secretario De Logística de la SIDDFAC" />
-        </div>
-      </div>
-    </div>
-  </section>
+  {miembros.length > 0 && (
+    <section class="max-w-5xl mx-auto px-6 py-12" id="direc">
+      <h2 class="text-3xl font-bold text-gray-900 mb-2">Nuestra Directiva</h2>
+      <div class="w-9 h-1 bg-[#023059] rounded mb-6"></div>
+      <FlipCard socesId={7} />
+    </section>
+  )}
 
   <!-- ======================= REFERENCIAS / REQUISITOS ======================= -->
   <section class="max-w-5xl mx-auto px-6 pb-16" id="unirse">

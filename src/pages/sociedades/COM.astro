@@ -6,7 +6,7 @@ import Carousel from '../../components/ui/Carousel.astro';
 import FlipCard from '../../components/ui/MemberCardSimple.astro';
 import ImageFocusGallery from '../../components/ui/ImageFocusGallery.astro';
 import CardsNotices from '../../components/ui/CardsNotices.astro';
-import { db, News, eq , desc} from 'astro:db';
+import { db, News, eq , desc, Miembros} from 'astro:db';
 
 // Obtener noticias de la Soce con id = 1
 const noticias = await db
@@ -29,6 +29,10 @@ const items = [
   },
 ];
 
+const miembros = await db
+.select()
+.from(Miembros)
+.where(eq(Miembros.socesId, 6));
 
 ---
 
@@ -127,53 +131,13 @@ const items = [
   </section>
 
   <!-- ======================= DIRECTIVA ======================= -->
-  <section class="py-5 bg-white" id="direc">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-16">
-        <h2 class="text-3xl font-bold text-gray-900 mb-4">Nuestra Directiva</h2>
-        <div class="flex flex-wrap justify-center gap-6">
-          <FlipCard
-            name="Univ. Mamani Cossio Fabricio Gabriel "
-            role="Presidente de la COM"
-            email="fabriciomamanicossio@gmail.com"
-            phone="+591 65436960"
-            photo="/Image/SocMec/Vice.jpeg"
-          />
-          <FlipCard
-            name="Univ. Davila Olazo Adriana "
-            role="Unidad De Finanzas de la COM"
-            email="adrianadaol97@gmail.com"
-            phone="+591 72476397"
-            photo=""
-          />
-          <FlipCard
-            name="Univ. Javier Quispe Andres Abraham"
-            role="Unidad De Documentación de la COM"
-            email="javierabraham51@gmail.com"
-            phone="+591 73844268"
-            photo="/Image/SocMec/COM/Documentacion.jpg"
-
-          />
-          <FlipCard
-            name="Univ. Puña Canaviri Gabriela Katherine"
-            role="Unidad De Logística de la COM"
-            email="gabriela14.puna@gmail.com"
-            phone=""
-            photo="/Image/SocMec/COM/Logistica.jpg"
-            
-          />
-          <FlipCard
-            name="Univ. Quinto Chino Ronald"
-            role="Unidad De Proyectos de la COM"
-            email="ronaldquinto609@gmail.com"
-            phone="+591 76157589"
-            photo="/Image/SocMec/COM/Proyectos.jpg"
-            
-          />
-        </div>
-      </div>
-    </div>
-  </section>
+  {miembros.length > 0 && (
+    <section class="max-w-5xl mx-auto px-6 py-12" id="direc">
+      <h2 class="text-3xl font-bold text-gray-900 mb-2">Nuestra Directiva</h2>
+      <div class="w-9 h-1 bg-[#023059] rounded mb-6"></div>
+      <FlipCard socesId={6} />
+    </section>
+  )}
 
   <!-- ======================= REFERENCIAS / REQUISITOS ======================= -->
   <section class="max-w-5xl mx-auto px-6 pb-16" id="unirse">
