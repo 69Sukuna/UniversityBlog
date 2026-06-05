@@ -7,6 +7,7 @@ import FlipCard from '../../components/ui/MemberCardSimple.astro';
 import ImageFocusGallery from '../../components/ui/ImageFocusGallery.astro';
 import CardsNotices from '../../components/ui/CardsNotices.astro';
 import { db, News, eq , desc} from 'astro:db';
+import { Miembros } from 'astro:db';
 
 // Obtener noticias de la Soce con id = 1
 const noticias = await db
@@ -38,6 +39,10 @@ const items = [
   },
 ];
 
+const miembros = await db
+.select()
+.from(Miembros)
+.where(eq(Miembros.socesId, 5));
 
 ---
 
@@ -162,93 +167,13 @@ const items = [
   </section>
 
   <!-- ======================= DIRECTIVA ======================= -->
- <section class="max-w-5xl mx-auto px-6 py-12" id="direc">
-    <h2 class="text-3xl font-bold text-gray-900 mb-2">Nuestra Directiva</h2>
-    <div class="w-9 h-1 bg-[#023059] rounded mb-6"></div>
-        <div class="flex flex-wrap justify-center gap-6">
-          <FlipCard
-            name="Univ. Amanda Lorena Main Hurtado"
-            role="Presidente de la Sociedad Científica SCEIMEM"
-            biografia={[
-              "Estudiante de la carrera de Ingeniería Electromecánica en la FNI, y Mecánica Industrial en el Instituto Tecnológico IAI.",
-              "Técnico Medio en Programación y tiene título en provisión nacional en técnico superior en Análisis de Sistemas.",
-              "Actualmente trabaja de diseñador gráfico independiente y videografo.",
-              "Anteriormente trabajo en producción audiovisual y camarógrafo en el programa 'El carnavalero'.",
-              "Ha sido parte de diferentes grupos de investigación científica y voluntariado como entre ellos el Planetario Max Schreier de La Paz, Grupo Armstrong's Quarks, Astro Chaska UMSS.",
-              "Ha sido socio fundador de la Sociedad Científica Estudiantil de Ingeniería de Sistemas e Ingeniería Informática SOCIEISII.",
-              "También fundador principal junto al Univ. Osmar David Paredes Mamani de la Sociedad de Investigación Científica Estudiantil del Instituto Tecnológico IAI SOCITEC-IAI.",
-              "Tiene experiencia como presidente del Club Oruro Mecatrónica COM, Sociedad de Investigación en Ingeniería Energética SIIE, Sociedad Científica Estudiantil de Ingeniería Mecánica Electromecanica Mecatrónica SCEIMEM.",
-              "También como Secretaria de Proyectos en la Organización de Sociedades Científicas Estudiantiles de la FNI OSCE-FNI y recientemente fue invitada a ser parte de la Asociación de Sociedades Científicas Estudiantiles de la UTO ASCE-UTO como Secretaria de Proyectos.",
-              "Cómo actividades extracurriculares ha sido parte de la Orquesta Filarmónica de Oruro, el Coro Polifónico de la UTO, Cold Land Power Metal Sinfónico, Laboratorio Audiovisual de Cine, Elenco Teatral Carpediem Oruro y Conjunto Universitario SURI UTO."
-            ]}
-            email=""
-            phone=""
-            photo="/Image/SocMec/Presi.jpg"
-            
-          />
-          <FlipCard
-            name="Univ. Fabricio Gabriel Mamani Cossio"
-            role="Vicepresidente de la Sociedad Científica SCEIMEM "
-            email="fabriciomamanicossio@gmail.com"
-            phone="+591 65436960"
-            photo="/Image/SocMec/Vice.jpeg"
-          />
-          <FlipCard
-            name="Univ. Ariel Ramiro Villan Flores"
-            role="Secretario General de la Sociedad Científica SCEIMEM"
-            email="villanfloresarielramiro@gmail.com"
-            phone="+591 74466993"
-            photo="/Image/SocMec/General.jpeg"
-
-          />
-          <FlipCard
-            name="Univ. Osmar David Paredes Mamani"
-            role="Secretario Académico de la Sociedad Científica SCEIMEM"
-            biografia={[
-              "Estudiante de la carrera de Ingeniería Mecánica ",
-              "Técnico Superior en Mecánica ",
-              "Tiene experiencia como soldador y es músico multi instrumentista de música rock y subgéneros.",
-              "Tiene experiencia como Secretario de Proyectos en la Sociedad de Investigación en Ingeniería Energética SIIE, Secretario Académico en la Sociedad Científica Estudiantil de Ingeniería Mecánica Electromecanica Mecatrónica SCEIMEM, Vicepresidente de la Organización de Sociedades Científicas Estudiantiles de la FNI OSCE-FNI y actualmente fue invitado a ser parte de la Asociación de Sociedades Científicas Estudiantiles de la UTO ASCE-UTO como Secretario de Producción Industrial.",
-              "Ha sido fundador principal junto a la Univ. Amanda Lorena Main Hurtado en la Sociedad de Investigación Científica Estudiantil del Instituto Tecnológico IAI.",
-              "Actualmente trabaja de forma independiente como organizador de eventos de música rock."
-            ]}
-            email=""
-            phone=""
-            photo="/Image/SocMec/Academico.jpg"
-            
-          />
-          <FlipCard
-            name="Univ. Jorge Luis Helguero Velasquez"
-            role="Secretario de Hacienda de la Sociedad Científica SCEIMEM"
-            biografia={[
-              "Trayectoria:",
-              "-Bachiller Colegio Nacional Simon Bolivar 2018",
-              "-Secretario General de la Sociedad Científica Estudiantil del Departamento de Física de Ciclo Básico (SCEDFCB) 2023-2024",
-              "-Secretario de Hacienda de la Organización de Sociedades Científicas Estudiantiles de la FNI (OSCE-FNI) 2023-2025",
-              "-Secretario de Hacienda de la Sociedad Científica Estudiantil de Ingenieria Mecánica Electromecánica Mecatrónica (SCEIMEM) 2024-2025",
-              "-Auxiliar invitado en la asignatura Mecánica de Fluidos II MEC 2249   gestion 2/2023",
-              "Actualmente ocupa:",
-              "-Secretario de Hacienda de la Organización de Sociedades Científicas Estudiantiles de la FNI (OSCE-FNI) 2023-2025",
-              "-Secretario de Hacienda de la Sociedad Científica Estudiantil de Ingenieria Mecánica Electromecánica Mecatrónica (SCEIMEM) 2024-2025"
-            ]}
-            email="jorgehelguero410@gmail.com "
-            phone="+591 62764787"
-            photo="/Image/SocMec/Hacienda.jpeg"
-            
-          />
-          
-          <FlipCard
-            name="Univ. Ronald Quinto Chino"
-            role="Secretario de Relaciones Públicas y Redes Sociales de la Sociedad Científica SCEIMEM"
-            email="ronaldquinto609@gmail.com"
-            phone="+591 76157589"
-            photo="/Image/SocMec/Publicas.jpeg"
-            
-          />
-        </div>
-      </div>
-    </div>
-  </section>
+  {miembros.length > 0 && (
+    <section class="max-w-5xl mx-auto px-6 py-12" id="direc">
+      <h2 class="text-3xl font-bold text-gray-900 mb-2">Nuestra Directiva</h2>
+      <div class="w-9 h-1 bg-[#023059] rounded mb-6"></div>
+      <FlipCard socesId={5} />
+    </section>
+  )}
 
   <!-- ======================= MISION Y VISION ======================= -->
    <section class="max-w-5xl mx-auto px-6 pb-12" id="mision">

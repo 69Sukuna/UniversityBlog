@@ -7,6 +7,7 @@ import FlipCard from '../../components/ui/MemberCardSimple.astro';
 import ImageFocusGallery from '../../components/ui/ImageFocusGallery.astro';
 import CardsNotices from '../../components/ui/CardsNotices.astro';
 import { db, News, eq, desc } from 'astro:db';
+import { Miembros } from 'astro:db';
 
 // Obtener noticias de la Soce con id = 1
 const noticias = await db
@@ -28,7 +29,10 @@ const items = [
   },
 ];
 
-
+const miembros = await db
+.select()
+.from(Miembros)
+.where(eq(Miembros.socesId, 13));
 ---
 
 <Layout
@@ -117,51 +121,15 @@ const items = [
   </section>
 
   <!-- ======================= DIRECTIVA ======================= -->
-  <section class="max-w-5xl mx-auto px-6 py-12" id="direc">
-    <h2 class="text-3xl font-bold text-gray-900 mb-2">Nuestra Directiva</h2>
-    <div class="w-9 h-1 bg-[#023059] rounded mb-6"></div>
-        <div class="flex flex-wrap justify-center gap-6">
-          <FlipCard
-            name="Univ. Ventura Gonzales Alizon"
-            role="Presidente de la Sociedad Científica SCEDFCB"
-            email="Venv8902@gmail.com"
-            phone="+591 67214899"
-            photo="/src/Image/SocFis/Presi.jpg"
-          />
-          <FlipCard
-            name="Univ. Maria Isabel Nava Alba"
-            role="Vicepresidente de la Sociedad Científica SCEDFCB"
-            email="Navam6835@gmail.com"
-            phone="+591 71100488"
-            photo="/src/Image/SocFis/Vice.jpg"
-          />
-          <FlipCard
-            name="Univ. Miranda Cabrera Angely"
-            role="Secretaria General de la Sociedad Científica SCEDFCB"
-            email="mirandacabreraangely@gmail.com"
-            phone="+591 75704373"
-            photo="/src/Image/SocFis/General.jpg"
+  {miembros.length > 0 && (
+    <section class="max-w-5xl mx-auto px-6 py-12" id="direc">
+      <h2 class="text-3xl font-bold text-gray-900 mb-2">Nuestra Directiva</h2>
+      <div class="w-9 h-1 bg-[#023059] rounded mb-6"></div>
+      <FlipCard socesId={13} />
+    </section>
+  )}
 
-          />
-          <FlipCard
-            name="Univ. Carlos Fernando Flores Uscamaita "
-            role="Secretario de Hacienda de la Sociedad Científica SCEDFCB"
-            email="carlosfernandofloresu@gmail.com"
-            phone="+591 61819400"
-            photo="/src/Image/SocFis/Hacienda.jpg"
-          />
-          <FlipCard
-            name="Univ. Daniel Rodrigo Caceres Ruiz"
-            role="Vocal de la Sociedad Científica SCEDFCB"
-            email="racquetplayer7772@gmail.com"
-            phone="+591 62965459"
-            photo="/src/Image/SocFis/Vocal.jpg"
 
-          />
-        </div>
-      </div>
-    </div>
-  </section>
   <section class="max-w-5xl mx-auto px-6 pb-12" id="mision">
     <h2 class="text-3xl font-bold text-gray-900 mb-2">Misión y Visión</h2>
     <div class="w-9 h-1 bg-[#023059] rounded mb-6"></div>

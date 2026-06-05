@@ -1,43 +1,67 @@
 ---
-const { name, role, email, phone } = Astro.props;
+import { db, Miembros, eq, asc } from 'astro:db';
+
+const { socesId } = Astro.props;
+
+const miembros = await db
+  .select()
+  .from(Miembros)
+  .where(eq(Miembros.socesId, socesId))
+  .orderBy(asc(Miembros.orden));
 ---
 
-<div class="member-card">
-  <div class="member-info">
-    <h3 class="member-name">{name}</h3>
-    <p class="member-role">{role}</p>
+<div class="members-grid">
+  {miembros.map((m) => (
+    <div class="member-card">
+      <div class="member-info">
+        <h3 class="member-name">{m.nombre}</h3>
+        <p class="member-role">{m.cargo}</p>
 
-    {(email || phone) && (
-      <div class="member-contact">
-        {email && (
-          <div class="contact-row">
-            <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-              <polyline points="22,6 12,13 2,6"/>
-            </svg>
-            <span>{email}</span>
-          </div>
-        )}
-        {phone && (
-          <div class="contact-row">
-            <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.06 1.22 2 2 0 012 .04h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
-            </svg>
-            <span>{phone}</span>
+        {(m.correo || m.celular) && (
+          <div class="member-contact">
+            {m.correo && (
+              <div class="contact-row">
+                <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                  <polyline points="22,6 12,13 2,6"/>
+                </svg>
+                <span>{m.correo}</span>
+              </div>
+            )}
+            {m.celular && (
+              <div class="contact-row">
+                <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.06 1.22 2 2 0 012 .04h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
+                </svg>
+                <span>{m.celular}</span>
+              </div>
+            )}
           </div>
         )}
       </div>
-    )}
-  </div>
+    </div>
+  ))}
 </div>
 
 <style>
+  .members-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+    align-items: stretch;
+  }
+
   .member-card {
     background: linear-gradient(135deg, #1e3a5f 0%, #0f2439 100%);
     border: 1px solid #2c5282;
     border-left: 4px solid #4299e1;
     border-radius: 0 10px 10px 0;
     padding: 16px 20px;
+    min-height: 110px;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    align-items: flex-start;
     transition: border-left-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
   }
 
@@ -51,6 +75,7 @@ const { name, role, email, phone } = Astro.props;
     display: flex;
     flex-direction: column;
     gap: 4px;
+    width: 100%;
   }
 
   .member-name {

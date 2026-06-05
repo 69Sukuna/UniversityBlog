@@ -2,8 +2,11 @@
 import Layout from '../../layouts/Layout.astro';
 import Carousel from '../../components/ui/Carousel.astro';
 import ImageFocusGallery from '../../components/ui/ImageFocusGallery.astro';
+import FlipCard from '../../components/ui/MemberCardSimple.astro';
 import CardsNotices from '../../components/ui/CardsNotices.astro';
 import { db, News, eq, desc } from 'astro:db';
+import { Miembros } from 'astro:db';
+import { asc } from 'astro:db';
 
 const noticias = await db
   .select()
@@ -23,6 +26,11 @@ const items = [
     text_URL: 'https://www.facebook.com/profile.php?id=100084975262112#',
   },
 ];
+
+const miembros = await db
+.select()
+.from(Miembros)
+.where(eq(Miembros.socesId, 2));
 ---
 
 <Layout
@@ -106,6 +114,14 @@ const items = [
     <CardsNotices noticias={noticias} />
   </section>
 
+  <!-- ======================= DIRECTIVA ======================= -->
+    {miembros.length > 0 && (
+      <section class="max-w-5xl mx-auto px-6 py-12" id="direc">
+        <h2 class="text-3xl font-bold text-gray-900 mb-2">Nuestra Directiva</h2>
+        <div class="w-9 h-1 bg-[#023059] rounded mb-6"></div>
+        <FlipCard socesId={2} />
+      </section>
+    )}
   
   <!-- MISIÓN Y VISIÓN -->
   <section class="max-w-5xl mx-auto px-6 pb-12" id="mision">

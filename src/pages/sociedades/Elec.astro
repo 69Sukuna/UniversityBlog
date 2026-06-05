@@ -3,12 +3,13 @@ import Layout from '../../layouts/Layout.astro';
 import Button from '../../components/ui/Button.astro';
 import { BRAND } from 'astro:schema';
 import Carousel from '../../components/ui/Carousel.astro';
-import FlipCard from '../../components/ui/Target.astro';
+import FlipCard from '../../components/ui/MemberCardSimple.astro';
 import ImageFocusGallery from '../../components/ui/ImageFocusGallery.astro';
 import CardsNotices from '../../components/ui/CardsNotices.astro';
 import { db, News, eq , desc} from 'astro:db';
+import { Miembros } from 'astro:db';
 
-// Obtener noticias de la Soce con id = 1
+
 const noticias = await db
   .select()
   .from(News)
@@ -27,6 +28,11 @@ const items = [
     text_URL: 'https://www.facebook.com/SCEIEIE/?locale=es_LA',
   },
 ];
+
+const miembros = await db
+.select()
+.from(Miembros)
+.where(eq(Miembros.socesId, 8));
 ---
 
 <Layout
@@ -114,6 +120,15 @@ const items = [
     <div class="w-9 h-1 bg-[#023059] rounded mb-6"></div>
     <CardsNotices noticias={noticias} />
   </section>
+
+    <!-- ======================= DIRECTIVA ======================= -->
+  {miembros.length > 0 && (
+    <section class="max-w-5xl mx-auto px-6 py-12" id="direc">
+      <h2 class="text-3xl font-bold text-gray-900 mb-2">Nuestra Directiva</h2>
+      <div class="w-9 h-1 bg-[#023059] rounded mb-6"></div>
+      <FlipCard socesId={8} />
+    </section>
+  )}
 
    <!-- ======================= MISION Y VISION ======================= -->
     <section class="max-w-5xl mx-auto px-6 pb-12" id="mision">
