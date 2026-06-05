@@ -35,7 +35,6 @@ const message = urlParams.get('message');
               </svg>
             </div>
             <h1 class="text-xl font-bold text-white">Iniciar Sesión</h1>
-            <p class="text-white/50 text-sm mt-1">OSCE - Facultad Nacional de Ingeniería</p>
           </div>
         </div>
 
@@ -78,39 +77,83 @@ const message = urlParams.get('message');
               />
             </div>
 
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1.5">
-                Contraseña
-              </label>
-              <Input
-                name="password"
-                type="password"
-                placeholder="Ingresa tu contraseña"
-                required={true}
-              />
-            </div>
+<div>
+  <label class="block text-sm font-medium text-gray-700 mb-1.5">
+    Contraseña
+  </label>
+
+  <div class="relative">
+    <Input
+      id="password"
+      name="password"
+      type="password"
+      placeholder="Ingresa tu contraseña"
+      required={true}
+      class="pr-12"
+    />
+
+    <button
+      type="button"
+      id="togglePassword"
+      class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600 transition-colors"
+      aria-label="Mostrar contraseña"
+    >
+      <svg
+        id="eyeIcon"
+        class="w-5 h-5"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+        />
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M2.458 12C3.732 7.943 7.523 5 12 5s8.268 2.943 9.542 7c-1.274 4.057-5.065 7-9.542 7S3.732 16.057 2.458 12z"
+        />
+      </svg>
+    </button>
+  </div>
+</div>
 
             <Button type="submit" variant="primary" class="w-full bg-[#023059] hover:bg-[#034070] text-white py-2.5 rounded-xl font-medium transition-colors">
               Iniciar Sesión
             </Button>
           </Form>
 
-          <div class="mt-6 text-center">
-            <p class="text-sm text-gray-500">
-              ¿No tienes cuenta?
-              <a href="/register" class="text-[#023059] font-medium hover:underline ml-1">
-                Regístrate aquí
-              </a>
-            </p>
-          </div>
         </div>
       </div>
 
       <!-- Footer -->
       <p class="text-center text-xs text-gray-400 mt-6">
-        © {new Date().getFullYear()} OSCE - F.N.I. · Universidad Técnica de Oruro
+        © {new Date().getFullYear()} Drakvur Company<br>Todos los derechos reservados.
       </p>
     </div>
 
   </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const passwordInput = document.querySelector('#password');
+    const toggleButton = document.querySelector('#togglePassword');
+
+    toggleButton?.addEventListener('click', () => {
+      if (!passwordInput) return;
+
+      const isPassword = passwordInput.getAttribute('type') === 'password';
+
+      passwordInput.setAttribute(
+        'type',
+        isPassword ? 'text' : 'password'
+      );
+    });
+  });
+</script>
+
 </Layout>
